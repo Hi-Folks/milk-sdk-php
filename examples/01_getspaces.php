@@ -3,15 +3,15 @@ require __DIR__ . "/../vendor/autoload.php";
 
 use HiFolks\Milk\Here\Xyz\Space\XyzSpace;
 
-
-Dotenv\Dotenv::createImmutable(__DIR__ . "/../")->load();
-$xyzToken = $_ENV['XYZ_ACCESS_TOKEN'];
-
-
 function print_row($item, $key)
 {
     echo $key + 1 . " " . $item->id . " " . $item->owner . " " . $item->title . "\n";
 }
+
+
+Dotenv\Dotenv::createImmutable(__DIR__ . "/../")->load();
+$xyzToken = $_ENV['XYZ_ACCESS_TOKEN'];
+
 
 $space = XyzSpace::instance($xyzToken);
 echo "GET" . PHP_EOL;
