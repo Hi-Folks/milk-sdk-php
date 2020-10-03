@@ -1,0 +1,49 @@
+{
+    "name": "hi-folks/milk-sdk-php",
+    "description": "Milk SDK PHP is a (fluent) open-source PHP library that makes it easy to integrate your PHP application with location services",
+    "keywords": [
+        "geolocation",
+        "location",
+        "sdk",
+        "php-sdk",
+        "xyz-spaces",
+        "hi-folks",
+        "milk-sdk-php"
+    ],
+    "homepage": "https://github.com/hi-folks/milk-sdk-php",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Roberto Butti",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "guzzlehttp/guzzle": "^7.1",
+        "vlucas/phpdotenv": "^5.2",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "HiFolks\\Milk\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "HiFolks\\Milk\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
