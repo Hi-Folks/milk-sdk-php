@@ -245,7 +245,7 @@ abstract class XyzClient
      * @param boolean $wannaCache
      * @return XyzClient
      */
-    public function cacheResponse(bool $wannaCache): XyzClient
+    public function cacheResponse(bool $wannaCache = true): XyzClient
     {
         $this->cacheResponse = $wannaCache;
         return $this;
@@ -264,11 +264,11 @@ abstract class XyzClient
     }
 
     /**
-     * @return \Psr\Http\Message\ResponseInterface|null
+     * @return XyzResponse|null
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getResponse()
     {
-        $res = false;
         try {
             $res = $this->call(
                 $this->getUrl(),
@@ -277,25 +277,25 @@ abstract class XyzClient
                 $this->requestBody,
                 $this->contentType
             );
+            $response = XyzResponse::createFromHttpResponse($res);
         } catch (RequestException $e) {
             if ($e->hasResponse()) {
-                $res = $e->getResponse();
+                //$res = $e->getResponse();
+                $response = XyzResponse::createFromException($e);
             } else {
+                $response = XyzResponse::createFromException($e);
+                /**
                 $res = new Response(500, [], (object) [
                     "message" => $e->getMessage(),
                     "code" => $e->getCode()
                 ]);
-                /*
-                $res = (object) [
-                    "message" => $e->getMessage(),
-                    "code" => $e->getCode()
-                ];
-                */
+                 */
             }
         } catch (Exception $e) {
-            //echo $res->getStatusCode();
+            $response = XyzResponse::createFromException($e);
+
         }
-        return $res;
+        return $response;
     }
 
     /**
@@ -308,14 +308,16 @@ abstract class XyzClient
             $cache_tag = md5($this->getUrl() . $this->acceptContentType . $this->method);
             $file_cache = "./cache/" . $cache_tag;
             if (file_exists($file_cache)) {
-                $content = file_get_contents($file_cache);
+                $response = unserialize(file_get_contents($file_cache));
             } else {
-                $content = $this->getResponse()->getBody();
-                file_put_contents($file_cache, $content);
+                $response = $this->getResponse();
+                $cachedContent = serialize($response);
+                file_put_contents($file_cache, $cachedContent);
             }
         } else {
             try {
-                $response = XyzResponse::createFromHttpResponse($this->getResponse());
+                //$response = XyzResponse::createFromHttpResponse($this->getResponse());
+                $response = $this->getResponse();
                 //$response->getAsArray();
             } catch (Exception $e) {
                 $response = XyzResponse::createFromException($e);
@@ -359,7 +361,7 @@ abstract class XyzClient
      * @param $method
      * @param null $body
      * @param string $contentType
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return Response
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function call($uri, $acceptContentType = 'application/json', $method = 'GET', $body = null, $contentType = "application/json")

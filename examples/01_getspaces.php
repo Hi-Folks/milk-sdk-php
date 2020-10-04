@@ -19,15 +19,15 @@ echo "GET" . PHP_EOL;
 $s = $space->get();
 if ($s->isError()) {
     echo "Error: " . $s->getErrorMessage();
-    die();
+} else {
+    echo $space->getUrl();
+    $space->debug();
+    $a = $s->getData();
+    array_walk($a, 'print_row');
+    $string = $s->getDataAsJsonString();
+    var_dump($string);
 }
 
-echo $space->getUrl();
-$space->debug();
-$a = $s->getData();
-array_walk($a, 'print_row');
-$string = $s->getDataAsJsonString();
-var_dump($string);
 
 
 
@@ -49,3 +49,14 @@ $space->reset();
 $s =  $space->ownerOthers()->includeRights()->getLimited(2);
 array_walk($s, 'print_row');
 $space->debug();
+
+$space->reset();
+$time_start = microtime(true);
+$space->get();
+echo 'Total execution time in seconds: ' . (microtime(true) - $time_start);
+$time_start = microtime(true);
+$space->cacheResponse()->get();
+echo 'Total execution time in seconds: ' . (microtime(true) - $time_start);
+$time_start = microtime(true);
+$space->cacheResponse()->get();
+echo 'Total execution time in seconds: ' . (microtime(true) - $time_start);
