@@ -3,9 +3,6 @@
 namespace HiFolks\Milk\Here\Xyz\Space;
 
 use HiFolks\Milk\Here\Xyz\Common\XyzConfig;
-use HiFolks\Milk\Here\Xyz\Space\XyzSpaceFeatureBase;
-use HiFolks\Milk\Here\Xyz\Common\XyzClient;
-use stdClass;
 
 /**
  * Class XyzSpaceFeature
@@ -15,21 +12,27 @@ class XyzSpaceFeature extends XyzSpaceFeatureBase
 {
     public function __construct()
     {
+        parent::__construct();
         $this->reset();
     }
 
-    public static function instance($xyzToken = ""): XyzSpaceFeature
+    /**
+     * @param string $xyzToken
+     * @return XyzSpaceFeature
+     */
+
+    public static function instance($xyzToken = "")
     {
-        $features = XyzSpaceFeature::config(XyzConfig::getInstance($xyzToken));
-        return $features;
+        return self::config(XyzConfig::getInstance($xyzToken));
     }
 
-    public static function config(XyzConfig $c): XyzSpaceFeature
+    public static function config(XyzConfig $c): self
     {
         $features = new XyzSpaceFeature();
         $features->c = $c;
         return $features;
     }
+
 
     public static function setToken(string $token): XyzSpaceFeature
     {
@@ -37,6 +40,7 @@ class XyzSpaceFeature extends XyzSpaceFeatureBase
         $features->c->setToken($token);
         return $features;
     }
+
 
     public function reset()
     {

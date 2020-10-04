@@ -115,7 +115,7 @@ abstract class XyzClient
     /**
      * @var string
      */
-    protected string $apiType;
+    protected $apiType;
 
     /**
      * Return the query string based on value setted by the user
@@ -293,7 +293,6 @@ abstract class XyzClient
             }
         } catch (Exception $e) {
             $response = XyzResponse::createFromException($e);
-
         }
         return $response;
     }
@@ -364,8 +363,13 @@ abstract class XyzClient
      * @return Response
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function call($uri, $acceptContentType = 'application/json', $method = 'GET', $body = null, $contentType = "application/json")
-    {
+    public function call(
+        $uri,
+        $acceptContentType = 'application/json',
+        $method = 'GET',
+        $body = null,
+        $contentType = "application/json"
+    ) {
         $client = new Client();
 
         $headers = [

@@ -10,49 +10,85 @@ use stdClass;
  * Class XyzSpaceFeatureBase
  * @package HiFolks\Milk\Xyz\Space
  */
-class XyzSpaceFeatureBase extends XyzClient
+abstract class XyzSpaceFeatureBase extends XyzClient
 {
-    protected string $featureId = "";
-    protected array $paramFeatureIds = [];
-    protected ?int $paramLimit = null;
-    protected array $paramSelection = [];
-    protected bool $paramSkipCache = false;
-    protected string $paramHandle = "";
-    private array $paramTags = [];
-    private array $paramSearchParams = [];
-    protected ?float $paramLatitude = null;
-    protected ?float $paramLongitude = null;
-    protected ?int $paramRadius = null;
+    /**
+     * @var string
+     */
+    protected $featureId = "";
+    /**
+     * @var array
+     */
+    protected $paramFeatureIds = [];
+    /**
+     * @var int|null
+     */
+    protected $paramLimit = null;
+    /**
+     * @var array
+     */
+    protected $paramSelection = [];
+    /**
+     * @var bool
+     */
+    protected $paramSkipCache = false;
+    /**
+     * @var string
+     */
+    protected $paramHandle = "";
+    /**
+     * @var array
+     */
+    private $paramTags = [];
+    /**
+     * @var array
+     */
+    private $paramSearchParams = [];
+    /**
+     * @var float|null
+     */
+    protected $paramLatitude = null;
+    /**
+     * @var float|null
+     */
+    protected $paramLongitude = null;
+    /**
+     * @var int|null
+     */
+    protected $paramRadius = null;
 
 
-
-
-
-
+    /**
+     * XyzSpaceFeatureBase constructor.
+     */
     public function __construct()
     {
+        parent::__construct();
         $this->reset();
     }
 
-    public static function instance($xyzToken = ""): XyzSpaceFeatureBase
+    abstract public static function instance($xyzToken = "");
+    /*
     {
-        $features = XyzSpaceFeatureBase::config(XyzConfig::getInstance($xyzToken));
-        return $features;
+        return XyzSpaceFeatureBase::config(XyzConfig::getInstance($xyzToken));
     }
+    */
 
-    public static function config(XyzConfig $c): XyzSpaceFeatureBase
-    {
+    abstract public static function config(XyzConfig $c);
+/*    {
         $features = new XyzSpaceFeatureBase();
         $features->c = $c;
         return $features;
-    }
+    }*/
 
-    public static function setToken(string $token): XyzSpaceFeatureBase
+    abstract public static function setToken(string $token);
+    /*
     {
         $features = XyzSpaceFeatureBase::config(XyzConfig::getInstance());
         $features->c->setToken($token);
         return $features;
     }
+    */
 
     public function reset()
     {
@@ -120,18 +156,21 @@ class XyzSpaceFeatureBase extends XyzClient
 
     /**
      * If set to true the response is not returned from cache. Default is false.
+     * @param bool $skipCache
      * @return $this
      */
-    public function skipCache(bool $skipcache = true): XyzSpaceFeatureBase
+    public function skipCache(bool $skipCache = true): XyzSpaceFeatureBase
     {
-        $this->paramSkipCache = $skipcache;
+        $this->paramSkipCache = $skipCache;
         return $this;
     }
 
 
     /**
-     * List the properties you want to include in the response. If you have a property "title" and "description" you need to
+     * List the properties you want to include in the response.
+     * If you have a property "title" and "description" you need to
      * use ["p.title", "p.description"].
+     * @param array $propertiesList
      * @return $this
      */
     public function selection(array $propertiesList): XyzSpaceFeatureBase
@@ -156,9 +195,9 @@ class XyzSpaceFeatureBase extends XyzClient
     /**
      * Set the tags for search endpoint
      * @param array $tags
-     * @return $this
+     * @return XyzSpaceFeatureBase
      */
-    public function tags(array $tags): XyzSpaceFeature
+    public function tags(array $tags): XyzSpaceFeatureBase
     {
         $this->paramTags = $tags;
         return $this;
@@ -181,10 +220,9 @@ class XyzSpaceFeatureBase extends XyzClient
 
     /**
      * Clean search params list
-     * @param array $tags
      * @return $this
      */
-    public function cleanSearchParams(): XyzSpaceFeature
+    public function cleanSearchParams(): XyzSpaceFeatureBase
     {
         $this->paramSearchParams = [];
         return $this;
@@ -192,16 +230,18 @@ class XyzSpaceFeatureBase extends XyzClient
 
     /**
      * Clean search params list
-     * @param array $tags
+     * @param $name
+     * @param $value
+     * @param string $operator
      * @return $this
      */
-    public function addSearchParams($name, $value, $operator = "="): XyzSpaceFeature
+    public function addSearchParams($name, $value, $operator = "="): XyzSpaceFeatureBase
     {
-        $searachParam = new stdClass();
-        $searachParam->name = $name;
-        $searachParam->operator = $operator;
-        $searachParam->value = $value;
-        $this->paramSearchParams[] = $searachParam;
+        $searchParam = new stdClass();
+        $searchParam->name = $name;
+        $searchParam->operator = $operator;
+        $searchParam->value = $value;
+        $this->paramSearchParams[] = $searchParam;
         return $this;
     }
 
@@ -245,17 +285,11 @@ class XyzSpaceFeatureBase extends XyzClient
         if ($this->paramRadius) {
             $retString = $this->addQueryParam($retString, "radius", $this->paramRadius);
         }
-
-
+        
         if (is_array($this->paramSearchParams) && count($this->paramSearchParams) > 0) {
-            $tempString = "";
-            //$separator = "";
             foreach ($this->paramSearchParams as $key => $searchParam) {
-                //$tempString = $tempString . $separator . $searchParam->name .  $searchParam->operator . $searchParam->value;
-                //$separator = ",";
                 $retString = $this->addQueryParam($retString, $searchParam->name, $searchParam->value);
             }
-            //$retString = $this->addQueryParam($retString, "params", $tempString);
         }
 
         return $retString;

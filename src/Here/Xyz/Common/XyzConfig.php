@@ -6,9 +6,18 @@ class XyzConfig
 {
     private static $instance = null;
 
-    private XyzCredentials $credentials;
-    private string $hostname = self::HOST_PROD;
-    private string $environment = self::ENV_PROD;
+    /**
+     * @var XyzCredentials
+     */
+    private $credentials;
+    /**
+     * @var string
+     */
+    private $hostname = self::HOST_PROD;
+    /**
+     * @var string
+     */
+    private $environment = self::ENV_PROD;
 
     private const ENV_PROD = "PRD";
     private const ENV_STAGE = "STAGE";
