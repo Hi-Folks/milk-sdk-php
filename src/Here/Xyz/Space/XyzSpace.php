@@ -2,7 +2,6 @@
 
 namespace HiFolks\Milk\Here\Xyz\Space;
 
-use GuzzleHttp\Exception\RequestException;
 use HiFolks\Milk\Here\Xyz\Common\XyzClient;
 use HiFolks\Milk\Here\Xyz\Common\XyzConfig;
 use HiFolks\Milk\Here\Xyz\Common\XyzResponse;
@@ -13,10 +12,22 @@ use HiFolks\Milk\Here\Xyz\Common\XyzResponse;
  */
 class XyzSpace extends XyzClient
 {
-    private bool $paramIncludeRights = false;
-    private string $paramOwner = "";
-    private string $paramOwnerId = "";
-    private ?int $paramLimit = null;
+    /**
+     * @var bool
+     */
+    private $paramIncludeRights = false;
+    /**
+     * @var string
+     */
+    private $paramOwner = "";
+    /**
+     * @var string
+     */
+    private $paramOwnerId = "";
+    /**
+     * @var null|int
+     */
+    private $paramLimit = null;
 
     public const PARAM_OWNER_ME = "me";
     public const PARAM_OWNER_ID = "someother";
@@ -26,13 +37,13 @@ class XyzSpace extends XyzClient
 
     public function __construct()
     {
+        parent::reset();
         $this->reset();
     }
 
     public static function instance($xyzToken = ""): XyzSpace
     {
-        $space = XyzSpace::config(XyzConfig::getInstance($xyzToken));
-        return $space;
+        return XyzSpace::config(XyzConfig::getInstance($xyzToken));
     }
 
     public static function config(XyzConfig $c): XyzSpace
@@ -70,7 +81,13 @@ class XyzSpace extends XyzClient
         return  $this->getResponse();
     }
 
-    public function create($title, $description)
+    /**
+     * @param string $title
+     * @param string $description
+     * @return XyzResponse|null
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function create(string $title, string $description)
     {
         $this->httpPost();
         $this->setType(self::API_TYPE_SPACECREATE);
@@ -201,10 +218,17 @@ class XyzSpace extends XyzClient
     }
 
 
-    public function getLimited($limit)
+    /**
+     * @param int $limit
+     * @return array
+     */
+    public function getLimited(int $limit)
     {
         /** @var XyzResponse $response */
         $response = $this->get();
+        if ($response->isError()) {
+            return [];
+        }
         $array = $response->getData();
         return array_slice($array, 0, $limit);
     }

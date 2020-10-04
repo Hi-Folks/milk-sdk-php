@@ -6,6 +6,7 @@ use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Class XyzClient
@@ -30,7 +31,7 @@ abstract class XyzClient
      */
     protected $contentType;
     /**
-     * @var
+     * @var string|null
      */
     protected $requestBody;
     /**
@@ -252,12 +253,12 @@ abstract class XyzClient
     }
 
     /**
-     * @param $url, the URL (or the path) to add the parameter
-     * @param $name, the name of the parameter
-     * @param $value, the value of the parameter
+     * @param string $url, the URL (or the path) to add the parameter
+     * @param string $name, the name of the parameter
+     * @param mixed $value, the value of the parameter
      * @return string
      */
-    protected function addQueryParam(string $url, string $name, $value): string
+    protected function addQueryParam( string $url, string $name, $value): string
     {
         $url .= (parse_url($url, PHP_URL_QUERY) ? '&' : '?') . urlencode($name) . '=' . urlencode($value);
         return $url;
@@ -302,7 +303,6 @@ abstract class XyzClient
      */
     public function get()
     {
-        //echo $this->getUrl() . PHP_EOL;
         if ($this->cacheResponse) {
             $cache_tag = md5($this->getUrl() . $this->acceptContentType . $this->method);
             $file_cache = "./cache/" . $cache_tag;
@@ -355,16 +355,16 @@ abstract class XyzClient
 
 
     /**
-     * @param $uri
+     * @param string $uri
      * @param string $acceptContentType
-     * @param $method
-     * @param null $body
+     * @param string $method
+     * @param null|mixed $body
      * @param string $contentType
-     * @return Response
+     * @return Response|ResponseInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function call(
-        $uri,
+        string $uri,
         $acceptContentType = 'application/json',
         $method = 'GET',
         $body = null,

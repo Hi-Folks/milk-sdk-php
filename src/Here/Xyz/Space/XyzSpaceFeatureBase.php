@@ -230,12 +230,12 @@ abstract class XyzSpaceFeatureBase extends XyzClient
 
     /**
      * Clean search params list
-     * @param $name
-     * @param $value
+     * @param string $name
+     * @param string $value
      * @param string $operator
      * @return $this
      */
-    public function addSearchParams($name, $value, $operator = "="): XyzSpaceFeatureBase
+    public function addSearchParams(string $name, string $value, $operator = "="): XyzSpaceFeatureBase
     {
         $searchParam = new stdClass();
         $searchParam->name = $name;
@@ -285,7 +285,7 @@ abstract class XyzSpaceFeatureBase extends XyzClient
         if ($this->paramRadius) {
             $retString = $this->addQueryParam($retString, "radius", $this->paramRadius);
         }
-        
+
         if (is_array($this->paramSearchParams) && count($this->paramSearchParams) > 0) {
             foreach ($this->paramSearchParams as $key => $searchParam) {
                 $retString = $this->addQueryParam($retString, $searchParam->name, $searchParam->value);
