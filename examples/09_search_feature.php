@@ -32,7 +32,7 @@ $result = $xyzSpaceFeature->search($spaceId)->get();
 if ($result->isError()) {
     echo "Error: ". $result->getErrorMessage();
 } else {
-    
+
     array_walk($result->getData()->features, 'print_row');
 
 }
