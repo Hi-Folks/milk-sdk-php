@@ -17,6 +17,8 @@ use HiFolks\Milk\Utils\Obj;
 function print_row($item, $key)
 {
     Obj::echo($item);
+    Obj::echo($item->properties);
+
     echo "------------------------" . PHP_EOL;
 }
 
