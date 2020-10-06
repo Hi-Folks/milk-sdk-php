@@ -266,7 +266,7 @@ abstract class ApiClient
             $headers['Accept'] = $acceptContentType;
         }
         if ($this->c->getCredentials()->getAccessToken() != "") {
-            $headers['Authorization'] = "Bearer {$this->c->getCredentials()->getAccessToken()}";
+            //$headers['Authorization'] = "Bearer {$this->c->getCredentials()->getAccessToken()}";
         }
         if (in_array($method, ["POST", "PATCH", "PUT", "DELETE"])) {
             if ($contentType !== "") {
