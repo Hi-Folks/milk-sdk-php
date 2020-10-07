@@ -4,7 +4,10 @@ namespace HiFolks\Milk\Here\Xyz\Common;
 
 class XyzCredentials
 {
-    private string $token;
+    /**
+     * @var string
+     */
+    private $token;
 
 
     /**
