@@ -4,7 +4,10 @@ namespace HiFolks\Milk\Utils;
 
 class GeoJson
 {
-    private array $featureCollection = [];
+    /**
+     * @var array
+     */
+    private $featureCollection = [];
 
 
     public function addPoint($latitude, $longitude, $properties = null, $id = null)
