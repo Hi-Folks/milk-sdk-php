@@ -2,15 +2,17 @@
 
 namespace HiFolks\Milk\Here\RestApi;
 
-use HiFolks\Milk\Here\RestApi\Common\ApiClient;
-use HiFolks\Milk\Here\RestApi\Common\ApiConfig;
+use HiFolks\Milk\Here\RestApi\Common\RestClient;
+use HiFolks\Milk\Here\RestApi\Common\RestConfig;
 
 /**
  * Class ApiWeather
  * @package Rbit\Milk\HRestApi\Weather
  */
-class Weather extends ApiClient
+class Weather extends RestClient
 {
+
+    private const BASE_URL = "https://weather.api.here.com";
     /**
      * @var string
      */
@@ -83,12 +85,12 @@ class Weather extends ApiClient
 
     public static function instance($apiToken = ""): self
     {
-        $hostname = "https://weather.ls.hereapi.com";
-        $weather = Weather::config(ApiConfig::getInstance($apiToken, $hostname, self::ENV_WEATHER));
+
+        $weather = Weather::config(RestConfig::getInstance($apiToken, self::BASE_URL, self::ENV_WEATHER));
         return $weather;
     }
 
-    public static function config(ApiConfig $c): self
+    public static function config(RestConfig $c): self
     {
         $weather = new Weather();
         $weather->c = $c;
@@ -97,15 +99,22 @@ class Weather extends ApiClient
 
     public static function setToken(string $token): self
     {
-        $weather = self::config(ApiConfig::getInstance());
+        $weather = self::config(RestConfig::getInstance($token, self::BASE_URL, self::ENV_WEATHER));
         $weather->c->setToken($token);
         return $weather;
     }
 
     public function setAppIdAppCode(string $appId, string $appCode): self
     {
-        $weather = self::config(ApiConfig::getInstance());
+        $weather = self::config(RestConfig::getInstance("",self::BASE_URL, self::ENV_WEATHER));
         $weather->c->setAppIdAppCode($appId, $appCode);
+        return $weather;
+    }
+
+    public function setApiKey(string $apiKey): self
+    {
+        $weather = self::config(RestConfig::getInstance("",self::BASE_URL, self::ENV_WEATHER));
+        $weather->c->setApiKey($apiKey);
         return $weather;
     }
 
@@ -265,10 +274,16 @@ class Weather extends ApiClient
             $retString = $this->addQueryParam($retString, "latitude", $this->paramLatitude);
             $retString = $this->addQueryParam($retString, "longitude", $this->paramLongitude);
         }
-
-        $retString = $this->addQueryParam($retString, "apiKey", $this->c->getCredentials()->getAccessToken());
-        //$retString = $this->addQueryParam($retString, "app_id", $this->c->getCredentials()->getAppId());
-        //$retString = $this->addQueryParam($retString, "app_code", $this->c->getCredentials()->getAppCode());
+        $cred = $this->c->getCredentials();
+        if (! $cred->isBearer()) {
+            if ($cred->getApiKey() !== "") {
+                $retString = $this->addQueryParam($retString, "apiKey", $cred->getApiKey());
+            }
+            if ($cred->getAppId() !== "" && $cred->getAppCode() !== "") {
+                $retString = $this->addQueryParam($retString, "app_id", $cred->getAppId());
+                $retString = $this->addQueryParam($retString, "app_code", $cred->getAppCode());
+            }
+        }
         return $retString;
     }
 

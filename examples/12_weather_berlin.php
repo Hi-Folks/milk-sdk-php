@@ -17,13 +17,15 @@ function print_row($item, $key)
     echo $key + 1 . " " . $item->id . " " . $item->owner . " " . $item->title . "\n";
 }
 
-$w = Weather::instance($hereApiKey);
+$w = Weather::instance();
 
-//$w->setAppIdAppCode($hereAppId, $hereAppCode);
+
 $jsonWeather = $w
+    //->setApiKey($hereApiKey)
+        ->setAppIdAppCode($hereAppId, $hereAppCode)
                 ->productAlerts()
                 ->name("Berlin")
-                ->getJson();
+                ->get();
 
 $w->debug();
 
