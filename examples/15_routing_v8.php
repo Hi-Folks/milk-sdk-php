@@ -13,7 +13,8 @@ function print_row($item, $key)
     echo $key + 1 . " " . $item->id . " " . $item->owner . " " . $item->title . "\n";
 }
 
-$routing = RoutingV8::instance($hereApiKey)
+$routing = RoutingV8::instance()
+    ->setApiKey($hereApiKey)
     ->byCar()
     ->routingModeFast()
     ->startingPoint(52.5160, 13.3779)
@@ -31,8 +32,13 @@ $routing = RoutingV8::instance($hereApiKey)
 //var_dump($routing->get());
 $r = $routing->get();
 //var_dump($r);
-$actions = $r->routes[0]->sections[0]->actions;
-foreach ($actions as $key => $action) {
-    echo " - ".$action->instruction . PHP_EOL;
+if ($r->isError()) {
+    echo "Error: ". $r->getErrorMessage();
+} else {
+    $actions = $r->getData()->routes[0]->sections[0]->actions;
+    foreach ($actions as $key => $action) {
+        echo " - ".$action->instruction . PHP_EOL;
+    }
+
 }
-//var_dump($routing->debug());
+

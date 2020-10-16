@@ -2,16 +2,18 @@
 
 namespace HiFolks\Milk\Here\RestApi;
 
-use HiFolks\Milk\Here\RestApi\Common\ApiClient;
-use HiFolks\Milk\Here\RestApi\Common\ApiConfig;
-use HiFolks\Milk\Here\RestApi\Common\LatLong;
+use HiFolks\Milk\Here\RestApi\Common\RestClient;
+use HiFolks\Milk\Here\RestApi\Common\RestConfig;
+use HiFolks\Milk\Here\Common\LatLong;
 
 /**
  * Class RoutingV8
  * @package HiFolks\Milk\Here\RestApi
  */
-class RoutingV8 extends ApiClient
+class RoutingV8 extends RestClient
 {
+
+    private const BASE_URL = "https://router.hereapi.com";
     /**
      *  @property string $routingMode Specifies which optimization is applied during route calculation.
      * Enum [ fast | short ]
@@ -57,12 +59,10 @@ class RoutingV8 extends ApiClient
 
     public static function instance($apiToken = ""): self
     {
-        $hostname = "https://router.hereapi.com";
-        $routing = self::config(ApiConfig::getInstance($apiToken, $hostname, self::ENV_ROUTING_V8));
-        return $routing;
+        return self::config(RestConfig::getInstance($apiToken, self::BASE_URL, self::ENV_ROUTING_V8));
     }
 
-    public static function config(ApiConfig $c): self
+    public static function config(RestConfig $c): self
     {
         $routing = new self();
         $routing->c = $c;
@@ -71,7 +71,7 @@ class RoutingV8 extends ApiClient
 
     public static function setToken(string $token): self
     {
-        $routing = self::config(ApiConfig::getInstance());
+        $routing = self::config(RestConfig::getInstance("", self::BASE_URL, self::ENV_ROUTING_V8));
         $routing->c->setToken($token);
         return $routing;
     }
@@ -92,7 +92,12 @@ class RoutingV8 extends ApiClient
     }
 
 
-
+    public static function setApiKey(string $apiKey): self
+    {
+        $space = self::config(RestConfig::getInstance("", self::BASE_URL, self::ENV_ROUTING_V8));
+        $space->c->setApiKey($apiKey);
+        return $space;
+    }
 
 
 
@@ -207,8 +212,16 @@ class RoutingV8 extends ApiClient
             $retString = $this->addQueryParam($retString, "destination", $this->destination->getString(), false);
         }
 
-        $retString = $this->addQueryParam($retString, "apiKey", $this->c->getCredentials()->getAccessToken());
-
+        $cred = $this->c->getCredentials();
+        if (! $cred->isBearer()) {
+            if ($cred->getApiKey() !== "") {
+                $retString = $this->addQueryParam($retString, "apiKey", $cred->getApiKey());
+            }
+            if ($cred->getAppId() !== "" && $cred->getAppCode() !== "") {
+                $retString = $this->addQueryParam($retString, "app_id", $cred->getAppId());
+                $retString = $this->addQueryParam($retString, "app_code", $cred->getAppCode());
+            }
+        }
 
         return $retString;
     }
