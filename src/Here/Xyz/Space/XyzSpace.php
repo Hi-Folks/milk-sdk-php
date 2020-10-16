@@ -37,7 +37,7 @@ class XyzSpace extends XyzClient
 
     public function __construct()
     {
-        parent::reset();
+        parent::__construct();
         $this->reset();
     }
 
@@ -213,6 +213,7 @@ class XyzSpace extends XyzClient
             }
         }
 
+        //$retString = $this->addQueryParam($retString, "access_token", $this->c->getCredentials()->getAccessToken());
 
         return $retString;
     }

@@ -72,7 +72,7 @@ class XyzConfig
     {
         // Setting things:
         $this->setEnvironment($env);
-        $this->credentials = XyzCredentials::token($xyzToken);
+        $this->credentials = new XyzCredentials($xyzToken);
     }
 
     public static function getInstance($xyzToken = "", $env = self::ENV_CUSTOM)

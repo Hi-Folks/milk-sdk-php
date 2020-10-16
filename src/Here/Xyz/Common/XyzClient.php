@@ -6,42 +6,19 @@ use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Response;
+use HiFolks\Milk\Here\Common\ApiClient;
 use Psr\Http\Message\ResponseInterface;
 
 /**
  * Class XyzClient
  * @package HiFolks\Milk\Xyz\Common
  */
-abstract class XyzClient
+abstract class XyzClient extends  ApiClient
 {
-    /**
-     * @var XyzConfig
-     */
-    protected $c;
-    /**
-     * @var string
-     */
-    protected $uri;
-    /**
-     * @var string
-     */
-    protected $acceptContentType;
-    /**
-     * @var string
-     */
-    protected $contentType;
-    /**
-     * @var string|null
-     */
-    protected $requestBody;
     /**
      * @var string
      */
     protected $spaceId;
-    /**
-     * @var string
-     */
-    private $method;
     /**
      * @var bool
      */
@@ -131,6 +108,7 @@ abstract class XyzClient
     public function __construct()
     {
         $this->reset();
+        parent::__construct();
     }
 
     /**
@@ -142,15 +120,11 @@ abstract class XyzClient
     {
         echo "CLIENT : " . PHP_EOL;
         echo "=========" . PHP_EOL;
-        echo "URL    : " . $this->getUrl() . PHP_EOL;
-        echo "METHOD : " . $this->method . PHP_EOL;
+        parent::debug();
+
         echo "SPA ID : " . $this->spaceId . PHP_EOL;
-        echo "ACCEPT : " . $this->acceptContentType . PHP_EOL;
-        echo "C TYPE : " . $this->contentType . PHP_EOL;
         echo "API    : " . $this->apiType . PHP_EOL;
-        echo "TOKEN  : " . $this->c->getCredentials()->getAccessToken() . PHP_EOL;
         echo "GEOJSON: " . $this->geojsonFile . PHP_EOL;
-        var_dump($this->requestBody);
         echo "=========" . PHP_EOL;
     }
 
@@ -161,13 +135,8 @@ abstract class XyzClient
      */
     protected function reset()
     {
-        $this->uri = "";
-        $this->contentType = "application/json";
-        $this->acceptContentType = "application/json";
-        $this->method = "GET";
+        parent::reset();
         $this->apiType = self::API_TYPE_SPACES;
-        $this->cacheResponse = false;
-        $this->requestBody = null;
         $this->geojsonFile = null;
     }
 
@@ -184,147 +153,14 @@ abstract class XyzClient
         $this->uri = $this->apiHostPaths[$apiType];
     }
 
-    /**
-     * Set the HTTP Method for the endpoint ("GET", "POST", "DELETE", "PATCH", "PUT")
-     * @param string $method
-     * @return $this
-     */
-    public function method(string $method)
-    {
-        $this->method = $method;
-        return $this;
-    }
 
-    /**
-     * Set the GET method
-     * @return $this
-     */
-    public function httpGet()
-    {
-        return $this->method("GET");
-    }
 
-    /**
-     * Set the POST method
-     * @return $this
-     */
-    public function httpPost()
-    {
-        return $this->method("POST");
-    }
 
-    /**
-     * Set the PUT method
-     * @return $this
-     */
-    public function httpPut()
-    {
-        return $this->method("PUT");
-    }
 
-    /**
-     * Set the PATCH method
-     * @return $this
-     */
-    public function httpPatch()
-    {
-        return $this->method("PATCH");
-    }
 
-    /**
-     * Set the DELETE method
-     * @return $this
-     */
-    public function httpDelete()
-    {
-        return $this->method("DELETE");
-    }
 
-    /**
-     * Define if switch on or of caching response from APIs
-     *
-     * @param boolean $wannaCache
-     * @return XyzClient
-     */
-    public function cacheResponse(bool $wannaCache = true): XyzClient
-    {
-        $this->cacheResponse = $wannaCache;
-        return $this;
-    }
 
-    /**
-     * @param string $url, the URL (or the path) to add the parameter
-     * @param string $name, the name of the parameter
-     * @param mixed $value, the value of the parameter
-     * @return string
-     */
-    protected function addQueryParam( string $url, string $name, $value): string
-    {
-        $url .= (parse_url($url, PHP_URL_QUERY) ? '&' : '?') . urlencode($name) . '=' . urlencode($value);
-        return $url;
-    }
 
-    /**
-     * @return XyzResponse|null
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function getResponse()
-    {
-        try {
-            $res = $this->call(
-                $this->getUrl(),
-                $this->acceptContentType,
-                $this->method,
-                $this->requestBody,
-                $this->contentType
-            );
-            $response = XyzResponse::createFromHttpResponse($res);
-        } catch (RequestException $e) {
-            if ($e->hasResponse()) {
-                //$res = $e->getResponse();
-                $response = XyzResponse::createFromException($e);
-            } else {
-                $response = XyzResponse::createFromException($e);
-                /**
-                $res = new Response(500, [], (object) [
-                    "message" => $e->getMessage(),
-                    "code" => $e->getCode()
-                ]);
-                 */
-            }
-        } catch (Exception $e) {
-            $response = XyzResponse::createFromException($e);
-        }
-        return $response;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function get()
-    {
-        if ($this->cacheResponse) {
-            $cache_tag = md5($this->getUrl() . $this->acceptContentType . $this->method);
-            $file_cache = "./cache/" . $cache_tag;
-            if (file_exists($file_cache)) {
-                $response = unserialize(file_get_contents($file_cache));
-            } else {
-                $response = $this->getResponse();
-                $cachedContent = serialize($response);
-                file_put_contents($file_cache, $cachedContent);
-            }
-        } else {
-            try {
-                //$response = XyzResponse::createFromHttpResponse($this->getResponse());
-                $response = $this->getResponse();
-                //$response->getAsArray();
-            } catch (Exception $e) {
-                $response = XyzResponse::createFromException($e);
-            }
-        }
-        return $response;
-        //return is_array($content) ? $content : json_decode($content);
-    }
 
     /**
      * Return the URL of the API, replacing the placeholder with real values.
@@ -338,76 +174,17 @@ abstract class XyzClient
         if ($this->spaceId != "") {
             $retUrl = str_replace("{spaceId}", $this->spaceId, $this->uri);
         }
+        /*
         $queryParams = $this->queryString();
         if ($queryParams !== "") {
             $retUrl = $retUrl . $queryParams;
-        }
+        }*/
         return $retUrl;
     }
 
-    /**
-     * @return string
-     */
-    public function getUrl(): string
-    {
-        return $this->c->getHostname() . $this->getPath();
-    }
 
 
-    /**
-     * @param string $uri
-     * @param string $acceptContentType
-     * @param string $method
-     * @param null|mixed $body
-     * @param string $contentType
-     * @return Response|ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function call(
-        string $uri,
-        $acceptContentType = 'application/json',
-        $method = 'GET',
-        $body = null,
-        $contentType = "application/json"
-    ) {
-        $client = new Client();
-
-        $headers = [
-            'User-Agent' => 'milk-sdk-php/0.1.0',
-            'Accept'     => $acceptContentType,
-        ];
-        if ($this->c->getCredentials()->getAccessToken() != "") {
-            $headers['Authorization'] = "Bearer {$this->c->getCredentials()->getAccessToken()}";
-        }
-        if (in_array($method, ["POST", "PATCH", "PUT", "DELETE"])) {
-            $headers['Content-Type'] = $contentType;
-        }
 
 
-        $requestOptions = [
-            //'debug' => true,
-            'headers' => $headers
-        ];
-        if (! is_null($body)) {
-            $requestOptions["body"] = $body;
-        } else {
-            if (! is_null($this->geojsonFile)) {
-                $requestOptions["body"] = file_get_contents($this->geojsonFile);
-            }
-        }
 
-        $res = $client->request($method, $this->getUrl(), $requestOptions);
-        //echo $res->getStatusCode();
-        //echo $res->getBody();
-        return $res;
-    }
-
-
-    /**
-     * @return XyzConfig
-     */
-    protected function getConfig(): XyzConfig
-    {
-        return $this->c;
-    }
 }

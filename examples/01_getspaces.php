@@ -24,9 +24,11 @@ if ($s->isError()) {
     $space->debug();
     $a = $s->getData();
     array_walk($a, 'print_row');
-    $string = $s->getDataAsJsonString();
-    var_dump($string);
+    //$string = $s->getDataAsJsonString();
+    //var_dump($string);
 }
+
+die();
 
 
 
