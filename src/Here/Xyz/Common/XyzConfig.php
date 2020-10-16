@@ -2,42 +2,25 @@
 
 namespace HiFolks\Milk\Here\Xyz\Common;
 
-class XyzConfig
+use HiFolks\Milk\Here\Common\ApiConfig;
+
+class XyzConfig extends ApiConfig
 {
-    private static $instance = null;
 
-    /**
-     * @var XyzCredentials
-     */
-    private $credentials;
-    /**
-     * @var string
-     */
-    private $hostname = self::HOST_PROD;
-    /**
-     * @var string
-     */
-    private $environment = self::ENV_PROD;
 
-    private const ENV_PROD = "PRD";
-    private const ENV_STAGE = "STAGE";
-    private const ENV_CUSTOM = "CUSTOM";
-    private const ENV_NONE = "";
     private const HOST_PROD = "https://xyz.api.here.com";
     private const HOST_STAGE = "https://xyz.cit.api.here.com";
     private const HOST_NONE = "";
 
 
-
-
-    /**
-     * Return the hostname of Xyz API HUB
-     * @return string
-     */
-    public function getHostname(): string
+    public static function getInstance($apiToken = "", $hostname = "", $env = self::ENV_CUSTOM)
     {
-        return $this->hostname;
+        if (self::$instance == null) {
+            self::$instance = new XyzConfig($apiToken, $hostname, $env);
+        }
+        return self::$instance;
     }
+
 
     public function setEnvironment($environment = self::ENV_CUSTOM): bool
     {
@@ -60,32 +43,7 @@ class XyzConfig
         return $retVal;
     }
 
-    /**
-     * @return XyzCredentials
-     */
-    public function getCredentials(): XyzCredentials
-    {
-        return $this->credentials;
-    }
 
-    private function __construct($xyzToken = "", $env = self::ENV_CUSTOM)
-    {
-        // Setting things:
-        $this->setEnvironment($env);
-        $this->credentials = new XyzCredentials($xyzToken);
-    }
 
-    public static function getInstance($xyzToken = "", $env = self::ENV_CUSTOM)
-    {
-        if (self::$instance == null) {
-            self::$instance = new XyzConfig($xyzToken, $env);
-        }
-        return self::$instance;
-    }
 
-    public function setToken(string $token): bool
-    {
-        $this->credentials->setAccessToken($token);
-        return true;
-    }
 }

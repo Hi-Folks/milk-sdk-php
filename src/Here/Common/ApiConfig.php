@@ -7,33 +7,33 @@ class ApiConfig
     /**
      * @var null
      */
-    private static $instance = null;
+    protected static $instance = null;
 
     /**
      * @var ApiCredentials
      */
-    private $credentials;
+    protected $credentials;
     /**
      * @var mixed|string
      */
-    private $hostname = "";
+    protected $hostname = "";
     /**
      * @var string
      */
-    private $environment = "";
+    protected $environment = "";
 
     /**
      *
      */
-    private const ENV_PROD = "PRD";
+    protected const ENV_PROD = "PRD";
     /**
      *
      */
-    private const ENV_STAGE = "STAGE";
+    protected const ENV_STAGE = "STAGE";
     /**
      *
      */
-    private const ENV_CUSTOM = "CUSTOM";
+    protected const ENV_CUSTOM = "CUSTOM";
 
 
 
@@ -61,12 +61,13 @@ class ApiConfig
         return $this->credentials;
     }
 
-    private function __construct($apiToken = "", $hostname = "", $env = self::ENV_CUSTOM)
+    protected function __construct($apiToken = "", $hostname = "", $env = self::ENV_CUSTOM)
     {
         // Setting things:
-        $this->setEnvironment($env);
+
         $this->hostname = $hostname;
-        $this->credentials = ApiCredentials::token($apiToken);
+        $this->setEnvironment($env);
+        $this->credentials = new ApiCredentials($apiToken);
     }
 
     public static function getInstance($apiToken = "", $hostname = "", $env = self::ENV_CUSTOM)
@@ -88,4 +89,11 @@ class ApiConfig
         $this->credentials->setAppIdAppCode($appId, $appCode);
         return true;
     }
+
+    public function setApiKey(string $apiKey): bool
+    {
+        $this->credentials->setApiKey($apiKey);
+        return true;
+    }
+
 }

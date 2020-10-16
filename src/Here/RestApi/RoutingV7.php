@@ -2,16 +2,17 @@
 
 namespace HiFolks\Milk\Here\RestApi;
 
-use HiFolks\Milk\Here\RestApi\Common\ApiClient;
-use HiFolks\Milk\Here\RestApi\Common\ApiConfig;
-use HiFolks\Milk\Here\RestApi\Common\LatLong;
+use HiFolks\Milk\Here\RestApi\Common\RestClient;
+use HiFolks\Milk\Here\RestApi\Common\RestConfig;
+use HiFolks\Milk\Here\Common\LatLong;
 
 /**
  * Class RoutingV7
  * @package Rbit\Milk\HRestApi\Routing
  */
-class RoutingV7 extends ApiClient
+class RoutingV7 extends RestClient
 {
+    private const BASE_URL = "https://route.ls.hereapi.com";
     /**
      * @var string
      */
@@ -48,16 +49,15 @@ class RoutingV7 extends ApiClient
     public function __construct()
     {
         $this->reset();
+        parent::__construct();
     }
 
     public static function instance($apiToken = ""): self
     {
-        $hostname = "https://route.ls.hereapi.com";
-        $routing = self::config(ApiConfig::getInstance($apiToken, $hostname, self::ENV_WEATHER));
-        return $routing;
+        return self::config(RestConfig::getInstance($apiToken, self::BASE_URL, self::ENV_WEATHER));
     }
 
-    public static function config(ApiConfig $c): self
+    public static function config(RestConfig $c): self
     {
         $routing = new self();
         $routing->c = $c;
@@ -66,9 +66,16 @@ class RoutingV7 extends ApiClient
 
     public static function setToken(string $token): self
     {
-        $routing = self::config(ApiConfig::getInstance());
+        $routing = self::config(RestConfig::getInstance("", self::BASE_URL, self::ENV_WEATHER));
         $routing->c->setToken($token);
         return $routing;
+    }
+
+    public static function setApiKey(string $apiKey): self
+    {
+        $space = self::config(RestConfig::getInstance("", self::BASE_URL, self::ENV_WEATHER));
+        $space->c->setApiKey($apiKey);
+        return $space;
     }
 
     public function reset()
@@ -145,7 +152,7 @@ class RoutingV7 extends ApiClient
             $retString = $this->addQueryParam($retString, "waypoint1", $this->paramWaypoint1->getString(), false);
         }
 
-        $retString = $this->addQueryParam($retString, "apiKey", $this->c->getCredentials()->getAccessToken());
+        $retString = $this->addQueryParam($retString, "apiKey", $this->c->getCredentials()->getApiKey());
 
 
         return $retString;
@@ -153,9 +160,14 @@ class RoutingV7 extends ApiClient
 
     public function getManeuverInstructions()
     {
-        $array = [];
         $result = $this->get();
-        return $result->response->route[0]->leg[0]->maneuver;
+
+        if ($result->isError()) {
+            echo "Error:" . $result->getErrorMessage();
+            return [];
+        }
+
+        return $result->getData()->response->route[0]->leg[0]->maneuver;
     }
 
     protected function getPath(): string

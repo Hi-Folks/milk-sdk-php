@@ -15,7 +15,7 @@ use GuzzleHttp\Exception\ClientException;
  * https://developer.twitter.com/en/docs/basics/authentication/oauth-1-0a/creating-a-signature
  *
  */
-class ApiAuth
+class RestAuth
 {
 
     /**
@@ -78,6 +78,7 @@ class ApiAuth
             "&oauth_timestamp=" . urlencode($oauth1Param['oauth_timestamp']) .
             //        "&oauth_token=".
             "&oauth_version=" . urlencode($oauth1Param['oauth_version']);
+
         $baseString = self::$httpMethod . "&"
             . urlencode(self::$httpUrl) . "&"
             . urlencode($paramString);

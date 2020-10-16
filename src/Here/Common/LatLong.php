@@ -1,6 +1,6 @@
 <?php
 
-namespace HiFolks\Milk\Here\RestApi\Common;
+namespace HiFolks\Milk\Here\Common;
 
 class LatLong
 {
