@@ -13,9 +13,15 @@ use stdClass;
  */
 class XyzSpaceFeatureEditor extends XyzSpaceFeatureBase
 {
+    /**
+     * @var array
+     */
+    protected $paramAddTags = [];
 
-    protected array $paramAddTags = [];
-    protected array $paramRemoveTags = [];
+    /**
+     * @var array
+     */
+    protected $paramRemoveTags = [];
 
 
     public function __construct()

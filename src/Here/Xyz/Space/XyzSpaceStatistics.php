@@ -11,9 +11,10 @@ use HiFolks\Milk\Here\Xyz\Common\XyzConfig;
  */
 class XyzSpaceStatistics extends XyzClient
 {
-
-
-    private bool $paramSkipCache = false;
+    /**
+     * @var bool
+     */
+    private $paramSkipCache = false;
 
 
 
