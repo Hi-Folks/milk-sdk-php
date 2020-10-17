@@ -5,7 +5,7 @@ namespace HiFolks\Milk\Here\Common;
 class ApiConfig
 {
     /**
-     * @var null
+     * @var ApiConfig|null
      */
     protected static $instance = null;
 
@@ -73,7 +73,7 @@ class ApiConfig
     public static function getInstance($apiToken = "", $hostname = "", $env = self::ENV_CUSTOM)
     {
         if (self::$instance == null) {
-            self::$instance = new ApiConfig($apiToken, $hostname, $env);
+            self::$instance = new self($apiToken, $hostname, $env);
         }
         return self::$instance;
     }
