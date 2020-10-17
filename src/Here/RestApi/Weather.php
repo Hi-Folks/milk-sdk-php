@@ -106,14 +106,14 @@ class Weather extends RestClient
 
     public function setAppIdAppCode(string $appId, string $appCode): self
     {
-        $weather = self::config(RestConfig::getInstance("",self::BASE_URL, self::ENV_WEATHER));
+        $weather = self::config(RestConfig::getInstance("", self::BASE_URL, self::ENV_WEATHER));
         $weather->c->setAppIdAppCode($appId, $appCode);
         return $weather;
     }
 
     public function setApiKey(string $apiKey): self
     {
-        $weather = self::config(RestConfig::getInstance("",self::BASE_URL, self::ENV_WEATHER));
+        $weather = self::config(RestConfig::getInstance("", self::BASE_URL, self::ENV_WEATHER));
         $weather->c->setApiKey($apiKey);
         return $weather;
     }
@@ -143,7 +143,8 @@ class Weather extends RestClient
      * - forecast_7days – morning, afternoon, evening and night weather forecasts for the next seven days.
      * - forecast_7days_simple – daily weather forecasts for the next seven days
      * - forecast_hourly – hourly weather forecasts for the next seven days
-     * - forecast_astronomy – information on when the sun and moon rise and set, and on the phase of the moon for the next seven days
+     * - forecast_astronomy – information on when the sun and moon rise and set,
+     * and on the phase of the moon for the next seven days
      * - alerts – forecasted weather alerts for the next 24 hours
      * - nws_alerts – all active watches and warnings for the US and Canada
      * @param string $product
@@ -268,7 +269,11 @@ class Weather extends RestClient
         }
 
         if (!is_null($this->paramOneobservation)) {
-            $retString = $this->addQueryParam($retString, "oneobservation", $this->paramOneobservation ? "true" : "false");
+            $retString = $this->addQueryParam(
+                $retString,
+                "oneobservation",
+                $this->paramOneobservation ? "true" : "false"
+            );
         }
         if (!is_null($this->paramLatitude) && !is_null($this->paramLongitude)) {
             $retString = $this->addQueryParam($retString, "latitude", $this->paramLatitude);

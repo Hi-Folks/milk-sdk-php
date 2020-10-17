@@ -13,7 +13,7 @@ use Psr\Http\Message\ResponseInterface;
  * Class XyzClient
  * @package HiFolks\Milk\Xyz\Common
  */
-abstract class XyzClient extends  ApiClient
+abstract class XyzClient extends ApiClient
 {
     /**
      * @var string
@@ -181,10 +181,4 @@ abstract class XyzClient extends  ApiClient
         }*/
         return $retUrl;
     }
-
-
-
-
-
-
 }

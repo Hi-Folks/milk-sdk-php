@@ -84,5 +84,4 @@ class ApiResponse
     {
         return  json_encode($this->getData());
     }
-
 }

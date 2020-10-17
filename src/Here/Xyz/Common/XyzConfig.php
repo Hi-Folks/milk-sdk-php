@@ -42,8 +42,4 @@ class XyzConfig extends ApiConfig
 
         return $retVal;
     }
-
-
-
-
 }

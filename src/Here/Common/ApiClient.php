@@ -258,8 +258,13 @@ abstract class ApiClient
     }
 
 
-    public function call($uri, $acceptContentType = 'application/json', $method="GET", $body = null, $contentType = "application/json")
-    {
+    public function call(
+        $uri,
+        $acceptContentType = 'application/json',
+        $method = "GET",
+        $body = null,
+        $contentType = "application/json"
+    ) {
         $client = new Client();
 
         $headers = [

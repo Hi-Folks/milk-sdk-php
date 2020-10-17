@@ -95,5 +95,4 @@ class ApiConfig
         $this->credentials->setApiKey($apiKey);
         return true;
     }
-
 }

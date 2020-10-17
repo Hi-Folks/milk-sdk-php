@@ -12,9 +12,9 @@ namespace HiFolks\Milk\Here\Common;
  */
 class ApiCredentials
 {
-    const CREDENTIAL_TYPE_API_KEY ="APIKEY";
-    const CREDENTIAL_TYPE_OAUTH2TOKEN ="OAUTH2TOKEN";
-    const CREDENTIAL_TYPE_APPCODE ="APPCODE";
+    public const CREDENTIAL_TYPE_API_KEY = "APIKEY";
+    public const CREDENTIAL_TYPE_OAUTH2TOKEN = "OAUTH2TOKEN";
+    public const CREDENTIAL_TYPE_APPCODE = "APPCODE";
 
     private $credentialTypeSelected = self::CREDENTIAL_TYPE_API_KEY;
     /**
@@ -62,12 +62,11 @@ class ApiCredentials
         $this->apiKey = "";
 
         $this->credentialTypeSelected = self::CREDENTIAL_TYPE_OAUTH2TOKEN;
-
-
     }
 
 
-    public function setAppIdAppCode($appId, $appCode) {
+    public function setAppIdAppCode($appId, $appCode)
+    {
         $this->appId = $appId;
         $this->appCode = $appCode;
         $this->credentialTypeSelected = self::CREDENTIAL_TYPE_APPCODE;
@@ -116,7 +115,7 @@ class ApiCredentials
     public function setApiKey(string $apiKey): void
     {
         $this->apiKey = $apiKey;
-        $this->credentialTypeSelected =self::CREDENTIAL_TYPE_API_KEY;
+        $this->credentialTypeSelected = self::CREDENTIAL_TYPE_API_KEY;
     }
 
     /**
@@ -148,12 +147,14 @@ class ApiCredentials
         $this->apiKey = $data['apiKey'];
     }
 
-    public function isBearer() {
+    public function isBearer()
+    {
 
         return $this->credentialTypeSelected === self::CREDENTIAL_TYPE_OAUTH2TOKEN;
     }
 
-    public function getHeaderAuthorization() {
+    public function getHeaderAuthorization()
+    {
         return "Bearer {$this->getAccessToken()}";
     }
 }

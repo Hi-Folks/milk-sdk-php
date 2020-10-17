@@ -2,9 +2,7 @@
 
 namespace HiFolks\Milk\Here\RestApi\Common;
 
-
 use GuzzleHttp\Client;
-
 use GuzzleHttp\Exception\ClientException;
 
 /**

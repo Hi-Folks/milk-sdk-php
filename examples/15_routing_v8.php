@@ -24,14 +24,7 @@ $routing = RoutingV8::instance()
 
 
 
-
-//echo $routing->getUrl();
-
-//echo $routing->getJson();
-
-//var_dump($routing->get());
 $r = $routing->get();
-//var_dump($r);
 if ($r->isError()) {
     echo "Error: ". $r->getErrorMessage();
 } else {
@@ -39,6 +32,4 @@ if ($r->isError()) {
     foreach ($actions as $key => $action) {
         echo " - ".$action->instruction . PHP_EOL;
     }
-
 }
-

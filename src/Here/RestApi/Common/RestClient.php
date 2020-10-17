@@ -2,10 +2,9 @@
 
 namespace HiFolks\Milk\Here\RestApi\Common;
 
-
 use HiFolks\Milk\Here\Common\ApiClient;
 
-abstract class RestClient  extends ApiClient
+abstract class RestClient extends ApiClient
 {
 
 
@@ -51,7 +50,4 @@ abstract class RestClient  extends ApiClient
     {
         parent::reset();
     }
-
-
-
 }

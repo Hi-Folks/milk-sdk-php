@@ -19,6 +19,4 @@ class RestConfig extends ApiConfig
         }
         return self::$instance;
     }
-
-
 }
