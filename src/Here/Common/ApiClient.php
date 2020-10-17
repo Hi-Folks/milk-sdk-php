@@ -4,9 +4,8 @@ namespace HiFolks\Milk\Here\Common;
 
 use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Psr7\Response;
-use Psr\Http\Message\ResponseInterface;
 
 abstract class ApiClient
 {
@@ -27,7 +26,7 @@ abstract class ApiClient
      */
     protected $contentType;
     /**
-     * @var
+     * @var string|null
      */
     protected $requestBody;
     /**
@@ -43,6 +42,11 @@ abstract class ApiClient
      */
     private $cacheResponse;
 
+    /**
+     * @var string|null
+     */
+    private $geojsonFile;
+
 
     /**
      * for example: /weather/1.0/report.json
@@ -50,7 +54,7 @@ abstract class ApiClient
     abstract protected function getPath(): string;
 
     /**
-     * Return the query string based on value setted by the user
+     * Return the query string based on value set by the user
      *
      * @return string
      */
@@ -171,12 +175,16 @@ abstract class ApiClient
     /**
      * @param string $url , the URL (or the path) to add the new $name parameter with the value $value
      * @param string $name
-     * @param $value
+     * @param mixed $value
      * @param bool $encodeValue
      * @return string
      */
-    protected function addQueryParam(string $url, string $name, $value, $encodeValue = true): string
-    {
+    protected function addQueryParam(
+        string $url,
+        string $name,
+        $value,
+        $encodeValue = true
+    ): string {
         $value = $encodeValue ? urlencode($value) : $value;
         $url .= (parse_url($url, PHP_URL_QUERY) ? '&' : '?') . urlencode($name) . '=' . $value;
         return $url;
@@ -184,7 +192,6 @@ abstract class ApiClient
 
     /**
      * @return ApiResponse|null
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getResponse()
     {
@@ -203,6 +210,8 @@ abstract class ApiClient
             } else {
                 $response = ApiResponse::createFromException($e);
             }
+        } catch (GuzzleException $e) {
+            $response = ApiResponse::createFromException($e);
         } catch (Exception $e) {
             $response = ApiResponse::createFromException($e);
         }
@@ -258,8 +267,15 @@ abstract class ApiClient
     }
 
 
+    /**
+     * @param string $uri
+     * @param string $acceptContentType
+     * @param string $method
+     * @param null $body
+     * @param string $contentType
+     */
     public function call(
-        $uri,
+        string $uri,
         $acceptContentType = 'application/json',
         $method = "GET",
         $body = null,
@@ -282,7 +298,6 @@ abstract class ApiClient
                 $headers['Content-Type'] = $contentType;
             }
         }
-
 
         $requestOptions = [
             //'debug' => true,

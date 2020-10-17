@@ -181,4 +181,9 @@ abstract class XyzClient extends ApiClient
         }*/
         return $retUrl;
     }
+
+    public function getResponse(): XyzResponse
+    {
+        return new XyzResponse(parent::getResponse());
+    }
 }

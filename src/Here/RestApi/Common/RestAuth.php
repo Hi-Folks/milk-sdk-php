@@ -50,7 +50,7 @@ class RestAuth
 
     private static function initOauth()
     {
-        self::$oauthNonce = mt_rand();
+        self::$oauthNonce = strval(mt_rand());
         self::$oauthTimestamp = time();
         self::$oauthSignatureMethod = "HMAC-SHA256";
         self::$oauthVersion = "1.0";
@@ -63,7 +63,7 @@ class RestAuth
         $oauth1Param = [
             'oauth_consumer_key' => $accessKeyId,
             'oauth_signature_method' => self::$oauthSignatureMethod,
-            'oauth_timestamp' => self::$oauthTimestamp,
+            'oauth_timestamp' => strval(self::$oauthTimestamp),
             'oauth_nonce' => self::$oauthNonce,
             'oauth_version' => self::$oauthVersion
         ];

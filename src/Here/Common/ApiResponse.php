@@ -2,28 +2,29 @@
 
 namespace HiFolks\Milk\Here\Common;
 
-use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Exception\GuzzleException;
+use Psr\Http\Message\ResponseInterface;
 
 class ApiResponse
 {
     /**
      * @var bool
      */
-    private $isError = false;
+    protected $isError = false;
     /**
-     * @var null
+     * @var string|null
      */
-    private $error = null;
+    protected $error = null;
     /**
-     * @var null
+     * @var mixed|null
      */
-    private $content = null;
+    protected $content = null;
 
     /**
-     * @param Response $response
+     * @param ResponseInterface $response
      * @return ApiResponse
      */
-    public static function createFromHttpResponse(Response $response)
+    public static function createFromHttpResponse(ResponseInterface $response)
     {
         $r =  new self();
 
@@ -40,10 +41,10 @@ class ApiResponse
     }
 
     /**
-     * @param \Exception $e
+     * @param \Exception|GuzzleException $e
      * @return ApiResponse
      */
-    public static function createFromException(\Exception $e)
+    public static function createFromException($e)
     {
         $r =  new self();
         $r->isError = true;
