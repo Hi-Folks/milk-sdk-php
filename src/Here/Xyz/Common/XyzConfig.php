@@ -3,6 +3,7 @@
 namespace HiFolks\Milk\Here\Xyz\Common;
 
 use HiFolks\Milk\Here\Common\ApiConfig;
+use HiFolks\Milk\Utils\Environment;
 
 class XyzConfig extends ApiConfig
 {
@@ -33,7 +34,7 @@ class XyzConfig extends ApiConfig
             $this->hostname = self::HOST_STAGE;
             $retVal = true;
         } elseif ($this->environment === self::ENV_CUSTOM) {
-            $this->hostname = getenv("XYZ_API_HOSTNAME") ?: self::HOST_PROD;
+            $this->hostname = Environment::getEnv("XYZ_API_HOSTNAME", self::HOST_PROD);
             $retVal = true;
         } else {
             $this->hostname = self::HOST_NONE;
