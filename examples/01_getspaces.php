@@ -19,6 +19,7 @@ echo "GET" . PHP_EOL;
 $s = $space->get();
 if ($s->isError()) {
     echo "Error: " . $s->getErrorMessage();
+    $space->debug();
 } else {
     echo $space->getUrl();
     $space->debug();
