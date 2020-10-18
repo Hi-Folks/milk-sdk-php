@@ -2,7 +2,9 @@
 
 namespace HiFolks\Milk;
 
-class Milk
+class MilkSdkPhp
 {
-    // Build your next great package.
+    public const VERSION="0.1.0";
+    public const NAME="milk-sdk-php";
+
 }
