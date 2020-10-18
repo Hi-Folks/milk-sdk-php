@@ -11,7 +11,7 @@ class Environment
      * @param string $default
      * @return mixed|string
      */
-    public static function getEnv(string  $parameter, $default = "")
+    public static function getEnv(string $parameter, $default = "")
     {
         return $_ENV[$parameter] ?? $default;
     }
