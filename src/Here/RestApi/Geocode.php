@@ -81,7 +81,7 @@ class Geocode extends RestClient
         $this->paramLimit = -1;
         $this->paramQ = "";
         $this->paramQq = [];
-        $this->paramLang ="";
+        $this->paramLang = "";
     }
 
 
@@ -102,21 +102,21 @@ class Geocode extends RestClient
 
     public function in($countryCode): self
     {
-        if (is_array($countryCode) ) {
-            $this->paramIn = "countryCode:". implode(",",$countryCode);
+        if (is_array($countryCode)) {
+            $this->paramIn = "countryCode:" . implode(",", $countryCode);
         } else {
-            $this->paramIn = "countryCode:". $countryCode;
+            $this->paramIn = "countryCode:" . $countryCode;
         }
         return $this;
     }
 
-    public function limit($limit=20): self
+    public function limit($limit = 20): self
     {
         $this->paramLimit = $limit;
         return $this;
     }
 
-    public function q($freeTextQuery="Berlin"): self
+    public function q($freeTextQuery = "Berlin"): self
     {
         $this->paramQ = $freeTextQuery;
         return $this;
@@ -176,7 +176,7 @@ class Geocode extends RestClient
             $retString = $this->addQueryParam($retString, "in", $this->paramIn);
         }
         if (sizeof($this->paramAt) === 2) {
-            $retString = $this->addQueryParam($retString, "at", $this->paramAt[0].",".$this->paramAt[1]);
+            $retString = $this->addQueryParam($retString, "at", $this->paramAt[0] . "," . $this->paramAt[1]);
         }
         if ($this->paramLimit > 0) {
             $retString = $this->addQueryParam($retString, "limit", $this->paramLimit);
@@ -185,7 +185,7 @@ class Geocode extends RestClient
             $retString = $this->addQueryParam($retString, "q", $this->paramQ);
         }
         if (is_array($this->paramQq) && sizeof($this->paramQq) > 0) {
-            $separator="";
+            $separator = "";
             $qqString = "";
             foreach ($this->paramQq as $key => $value) {
                 $qqString = $qqString . $separator . $key . "=" . $value;
