@@ -12,7 +12,7 @@ $geocode = ReverseGeocode::instance()
     ->setApiKey($hereApiKey)
     ->at(41.88946,12.49239)
     ->limit(10)
-    ->langIta();
+    ->lang("en_US");
 
 $r = $geocode->get();
 if ($r->isError()) {
