@@ -9,11 +9,11 @@ Dotenv\Dotenv::createImmutable(__DIR__ . "/../")->load();
 $hereApiKey = Environment::getEnv('HERE_API_KEY');
 
 
-$geocode = Geocode::instance()
-    ->setApiKey($hereApiKey)
-    ->country("Italia")
-    ->q("Colosseo")
-    ->langIta();
+    $geocode = Geocode::instance()
+        ->setApiKey($hereApiKey)
+        ->country("Italia")
+        ->q("Colosseo")
+        ->langIta();
 
 
 
