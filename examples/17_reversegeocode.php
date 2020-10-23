@@ -11,7 +11,7 @@ $hereApiKey = Environment::getEnv('HERE_API_KEY');
 $geocode = ReverseGeocode::instance()
     ->setApiKey($hereApiKey)
     ->at(41.88946,12.49239)
-    ->limit(10)
+    ->limit(5)
     ->lang("en_US");
 
 $r = $geocode->get();

@@ -23,7 +23,7 @@ class XyzConfig extends ApiConfig
     }
 
 
-    public function setEnvironment($environment = self::ENV_CUSTOM): bool
+    public function setEnvironment($environment = self::ENV_CUSTOM, $hostname = ""): bool
     {
         $retVal = false;
         $this->environment = $environment;
@@ -34,7 +34,12 @@ class XyzConfig extends ApiConfig
             $this->hostname = self::HOST_STAGE;
             $retVal = true;
         } elseif ($this->environment === self::ENV_CUSTOM) {
-            $this->hostname = Environment::getEnv("XYZ_API_HOSTNAME", self::HOST_PROD);
+            if ($hostname === "") {
+                $this->hostname = Environment::getEnv("XYZ_API_HOSTNAME", self::HOST_PROD);
+            } else {
+                $this->hostname =  $hostname;
+            }
+
             $retVal = true;
         } else {
             $this->hostname = self::HOST_NONE;

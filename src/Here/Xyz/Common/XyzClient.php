@@ -7,6 +7,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Response;
 use HiFolks\Milk\Here\Common\ApiClient;
+use HiFolks\Milk\Here\Xyz\Space\XyzSpace;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -96,7 +97,7 @@ abstract class XyzClient extends ApiClient
     protected $apiType;
 
     /**
-     * Return the query string based on value setted by the user
+     * Return the query string based on value set by the user
      *
      * @return string
      */

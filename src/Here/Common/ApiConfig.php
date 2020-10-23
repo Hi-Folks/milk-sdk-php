@@ -66,7 +66,7 @@ class ApiConfig
         // Setting things:
 
         $this->hostname = $hostname;
-        $this->setEnvironment($env);
+        $this->setEnvironment($env, $hostname);
         $this->credentials = new ApiCredentials($apiToken);
     }
 
