@@ -10,24 +10,39 @@ use HiFolks\Milk\Here\Xyz\Common\XyzConfig;
  */
 class XyzSpaceFeature extends XyzSpaceFeatureBase
 {
+    /**
+     * XyzSpaceFeature constructor.
+     * @param XyzConfig|string|null $c
+     */
     public function __construct($c = null)
     {
         parent::__construct($c);
         $this->reset();
     }
 
+    /**
+     * @param string $xyzToken
+     * @return XyzSpaceFeature
+     */
     public static function instance($xyzToken = ""): self
     {
         return new XyzSpaceFeature(new XyzConfig($xyzToken));
     }
 
 
+    /**
+     *
+     */
     public function reset()
     {
         parent::reset();
     }
 
-    public function iterate($spaceId): XyzSpaceFeature
+    /**
+     * @param string $spaceId
+     * @return XyzSpaceFeature
+     */
+    public function iterate(string $spaceId): XyzSpaceFeature
     {
         $this->spaceId = $spaceId;
         $this->acceptContentType = "application/geo+json";
@@ -35,7 +50,11 @@ class XyzSpaceFeature extends XyzSpaceFeatureBase
         return $this;
     }
 
-    public function features($spaceId): XyzSpaceFeature
+    /**
+     * @param string $spaceId
+     * @return XyzSpaceFeature
+     */
+    public function features(string $spaceId): XyzSpaceFeature
     {
         $this->spaceId = $spaceId;
         $this->acceptContentType = "application/geo+json";
@@ -43,7 +62,11 @@ class XyzSpaceFeature extends XyzSpaceFeatureBase
         return $this;
     }
 
-    public function search($spaceId): XyzSpaceFeature
+    /**
+     * @param string $spaceId
+     * @return $this
+     */
+    public function search(string $spaceId): XyzSpaceFeature
     {
         $this->spaceId = $spaceId;
         $this->httpGet();
@@ -53,7 +76,14 @@ class XyzSpaceFeature extends XyzSpaceFeatureBase
         return $this;
     }
 
-    public function spatial($spaceId, $latitude = null, $longitude = null, $radius = null): XyzSpaceFeature
+    /**
+     * @param string $spaceId
+     * @param float|null $latitude
+     * @param float|null $longitude
+     * @param int|null $radius
+     * @return $this
+     */
+    public function spatial(string $spaceId, $latitude = null, $longitude = null, $radius = null): XyzSpaceFeature
     {
         $this->spaceId = $spaceId;
         if (! is_null($latitude)) {
@@ -73,7 +103,12 @@ class XyzSpaceFeature extends XyzSpaceFeatureBase
         return $this;
     }
 
-    public function feature($featureId, $spaceId = ""): XyzSpaceFeature
+    /**
+     * @param string $featureId
+     * @param string $spaceId
+     * @return $this
+     */
+    public function feature(string $featureId, $spaceId = ""): XyzSpaceFeature
     {
         if ($spaceId !== "") {
             $this->spaceId = $spaceId;

@@ -24,6 +24,10 @@ class XyzSpaceStatistics extends XyzClient
         $this->reset();
     }
 
+    /**
+     * @param string $xyzToken
+     * @return self
+     */
     public static function instance($xyzToken = ""): self
     {
         return new XyzSpaceStatistics(new XyzConfig($xyzToken));

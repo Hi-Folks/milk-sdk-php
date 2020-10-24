@@ -14,17 +14,35 @@ class XyzConfig extends ApiConfig
     private const HOST_NONE = "";
 
 
+    /**
+     * XyzConfig constructor.
+     * @param string $apiToken
+     * @param string $hostname
+     * @param string $env
+     */
     public function __construct($apiToken = "", $hostname = "", $env = self::ENV_CUSTOM)
     {
         parent::__construct($apiToken, "", "");
         $this->setEnvironmentAndHostname($env, $hostname);
     }
+
+    /**
+     * @param string $apiToken
+     * @param string $hostname
+     * @param string $env
+     * @return ApiConfig|XyzConfig|null
+     */
     public static function getInstance($apiToken = "", $hostname = "", $env = self::ENV_CUSTOM)
     {
         return new XyzConfig($apiToken, $hostname, $env);
     }
 
 
+    /**
+     * @param string $environment
+     * @param string $hostname
+     * @return bool
+     */
     public function setEnvironmentAndHostname($environment = self::ENV_CUSTOM, $hostname = ""): bool
     {
         $retVal = false;

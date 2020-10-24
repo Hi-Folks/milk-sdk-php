@@ -29,26 +29,38 @@ class XyzSpace extends XyzClient
      */
     private $paramLimit = null;
 
+    /**
+     *
+     */
     public const PARAM_OWNER_ME = "me";
     public const PARAM_OWNER_ID = "someother";
     public const PARAM_OWNER_OTHERS = "others";
     public const PARAM_OWNER_ALL = "*";
 
 
+    /**
+     * XyzSpace constructor.
+     * @param XyzConfig|string|null $c
+     */
     public function __construct($c = null)
     {
         parent::__construct($c);
         $this->reset();
     }
 
-    public static function instance($xyzToken = ""): XyzSpace
+    /**
+     * @param string $xyzToken
+     * @return XyzSpace
+     */
+    public static function instance($xyzToken = ""): self
     {
         return new XyzSpace(new XyzConfig($xyzToken));
     }
 
 
-
-
+    /**
+     *
+     */
     public function reset()
     {
         parent::reset();
@@ -61,7 +73,12 @@ class XyzSpace extends XyzClient
     }
 
 
-    public function update($spaceId, $obj)
+    /**
+     * @param string $spaceId
+     * @param mixed $obj
+     * @return XyzResponse
+     */
+    public function update(string $spaceId, $obj)
     {
         $this->httpPatch();
         $this->spaceId($spaceId);
@@ -87,7 +104,11 @@ class XyzSpace extends XyzClient
         return  $this->getResponse();
     }
 
-    public function delete($spaceId)
+    /**
+     * @param string $spaceId
+     * @return XyzResponse
+     */
+    public function delete(string $spaceId)
     {
         $this->httpDelete();
         $this->setType(self::API_TYPE_SPACEDELETE);
@@ -119,6 +140,8 @@ class XyzSpace extends XyzClient
 
     /**
      * Define the owner(s) of spaces to be shown in the response.
+     * @param string $owner (me|*|<ownerid>)
+     * @param string $ownerId
      * @return $this
      */
     public function owner($owner = self::PARAM_OWNER_ME, $ownerId = ""): XyzSpace
@@ -144,9 +167,10 @@ class XyzSpace extends XyzClient
 
     /**
      * Only for shared spaces: Explicitly only show spaces belonging to the specified user.
+     * @param string $ownerId
      * @return $this
      */
-    public function ownerSomeOther($ownerId): XyzSpace
+    public function ownerSomeOther(string $ownerId): XyzSpace
     {
         return $this->owner(self::PARAM_OWNER_ID, $ownerId);
     }
@@ -181,7 +205,9 @@ class XyzSpace extends XyzClient
     }
 
 
-
+    /**
+     * @return string
+     */
     protected function queryString(): string
     {
         $retString = "";
@@ -211,7 +237,7 @@ class XyzSpace extends XyzClient
 
     /**
      * @param int $limit
-     * @return array
+     * @return mixed[]
      */
     public function getLimited(int $limit)
     {
