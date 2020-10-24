@@ -35,30 +35,19 @@ class XyzSpace extends XyzClient
     public const PARAM_OWNER_ALL = "*";
 
 
-    public function __construct()
+    public function __construct($c = null)
     {
-        parent::__construct();
+        parent::__construct($c);
         $this->reset();
     }
 
     public static function instance($xyzToken = ""): XyzSpace
     {
-        return XyzSpace::config(XyzConfig::getInstance($xyzToken));
+        return new XyzSpace(new XyzConfig($xyzToken));
     }
 
-    public static function config(XyzConfig $c): XyzSpace
-    {
-        $space = new XyzSpace();
-        $space->c = $c;
-        return $space;
-    }
 
-    public static function setToken(string $token): XyzSpace
-    {
-        $space = XyzSpace::config(XyzConfig::getInstance());
-        $space->c->setToken($token);
-        return $space;
-    }
+
 
     public function reset()
     {
@@ -109,7 +98,7 @@ class XyzSpace extends XyzClient
      * The access rights for each space are included in the response.
      * @return $this
      */
-    public function includeRights(): XyzSpace
+    public function includeRights(): self
     {
         $this->paramIncludeRights = true;
         return $this;
@@ -119,9 +108,10 @@ class XyzSpace extends XyzClient
     /**
      * Set limit of response.
      * NOT IMPLEMENTED BY API, use getLimited instead.
+     * @param int $limit
      * @return $this
      */
-    public function limit(int $limit): XyzSpace
+    public function limit(int $limit): self
     {
         $this->paramLimit = $limit;
         return $this;

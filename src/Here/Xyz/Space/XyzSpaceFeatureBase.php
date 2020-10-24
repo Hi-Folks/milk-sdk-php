@@ -60,35 +60,16 @@ abstract class XyzSpaceFeatureBase extends XyzClient
 
     /**
      * XyzSpaceFeatureBase constructor.
+     * @param XyzConfig|string|null $c
      */
-    public function __construct()
+    public function __construct($c = null)
     {
-        parent::__construct();
+        parent::__construct($c);
         $this->reset();
     }
 
+
     abstract public static function instance($xyzToken = "");
-    /*
-    {
-        return XyzSpaceFeatureBase::config(XyzConfig::getInstance($xyzToken));
-    }
-    */
-
-    abstract public static function config(XyzConfig $c);
-/*    {
-        $features = new XyzSpaceFeatureBase();
-        $features->c = $c;
-        return $features;
-    }*/
-
-    abstract public static function setToken(string $token);
-    /*
-    {
-        $features = XyzSpaceFeatureBase::config(XyzConfig::getInstance());
-        $features->c->setToken($token);
-        return $features;
-    }
-    */
 
     public function reset()
     {

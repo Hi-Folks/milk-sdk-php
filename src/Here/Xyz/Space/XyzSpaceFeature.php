@@ -10,35 +10,15 @@ use HiFolks\Milk\Here\Xyz\Common\XyzConfig;
  */
 class XyzSpaceFeature extends XyzSpaceFeatureBase
 {
-    public function __construct()
+    public function __construct($c = null)
     {
-        parent::__construct();
+        parent::__construct($c);
         $this->reset();
     }
 
-    /**
-     * @param string $xyzToken
-     * @return XyzSpaceFeature
-     */
-
-    public static function instance($xyzToken = "")
+    public static function instance($xyzToken = ""): self
     {
-        return self::config(XyzConfig::getInstance($xyzToken));
-    }
-
-    public static function config(XyzConfig $c): self
-    {
-        $features = new XyzSpaceFeature();
-        $features->c = $c;
-        return $features;
-    }
-
-
-    public static function setToken(string $token): XyzSpaceFeature
-    {
-        $features = XyzSpaceFeature::config(XyzConfig::getInstance());
-        $features->c->setToken($token);
-        return $features;
+        return new XyzSpaceFeature(new XyzConfig($xyzToken));
     }
 
 

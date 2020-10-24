@@ -24,29 +24,15 @@ class XyzSpaceFeatureEditor extends XyzSpaceFeatureBase
     protected $paramRemoveTags = [];
 
 
-    public function __construct()
+    public function __construct($c = null)
     {
+        parent::__construct($c);
         $this->reset();
     }
 
-    public static function instance($xyzToken = ""): XyzSpaceFeatureEditor
+    public static function instance($xyzToken = ""): self
     {
-        $features = XyzSpaceFeatureEditor::config(XyzConfig::getInstance($xyzToken));
-        return $features;
-    }
-
-    public static function config(XyzConfig $c): XyzSpaceFeatureEditor
-    {
-        $features = new XyzSpaceFeatureEditor();
-        $features->c = $c;
-        return $features;
-    }
-
-    public static function setToken(string $token): XyzSpaceFeatureEditor
-    {
-        $features = XyzSpaceFeatureEditor::config(XyzConfig::getInstance());
-        $features->c->setToken($token);
-        return $features;
+        return new XyzSpaceFeatureEditor(new XyzConfig($xyzToken));
     }
 
     public function reset()

@@ -10,7 +10,7 @@ use GuzzleHttp\Exception\RequestException;
 abstract class ApiClient
 {
     /**
-     * @var ApiConfig
+     * @var ApiConfig|null
      */
     protected $c;
     /**
