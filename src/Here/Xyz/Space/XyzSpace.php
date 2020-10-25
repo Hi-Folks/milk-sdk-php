@@ -2,6 +2,8 @@
 
 namespace HiFolks\Milk\Here\Xyz\Space;
 
+use GuzzleHttp\Exception\GuzzleException;
+use HiFolks\Milk\Here\Common\ApiResponse;
 use HiFolks\Milk\Here\Xyz\Common\XyzClient;
 use HiFolks\Milk\Here\Xyz\Common\XyzConfig;
 use HiFolks\Milk\Here\Xyz\Common\XyzResponse;
@@ -101,7 +103,12 @@ class XyzSpace extends XyzClient
             'title' => $title,
             'description' => $description
         ]);
-        return  $this->getResponse();
+        try {
+            return  $this->getResponse();
+        } catch (\Exception $e) {
+            return XyzResponse::createFromException($e);
+        }
+
     }
 
     /**
