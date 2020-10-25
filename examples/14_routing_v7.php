@@ -13,7 +13,7 @@ function print_row($item, $key)
     echo $key + 1 . " " . $item->id . " " . $item->owner . " " . $item->title . "\n";
 }
 
-$r = RoutingV7::setApiKey($hereApiKey)
+$r = (new RoutingV7())->setApiKey($hereApiKey)
     ->byFoot()
     ->typeFastest()
     ->startingPoint(52.5160, 13.3779)
