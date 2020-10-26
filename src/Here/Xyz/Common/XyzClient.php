@@ -105,11 +105,35 @@ abstract class XyzClient extends ApiClient
 
     /**
      * XyzClient constructor.
+     * @param XyzConfig|string|null $c
      */
-    public function __construct()
+    public function __construct($c = null)
     {
         $this->reset();
+        if (! is_null($c)) {
+            if (is_object($c)) {
+                $this->c = $c;
+            } else {
+                $this->c = XyzConfig::getInstance($c);
+            }
+        }
         parent::__construct();
+    }
+
+    public function setConfig(XyzConfig $c): self
+    {
+        $this->c = $c;
+        return $this;
+    }
+
+    public function setToken(string $token): self
+    {
+        if (is_null($this->c)) {
+            $this->c = new XyzConfig($token);
+        } else {
+            $this->c->setToken($token);
+        }
+        return $this;
     }
 
     /**

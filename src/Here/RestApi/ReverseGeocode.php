@@ -40,30 +40,31 @@ class ReverseGeocode extends RestClient
     private const ENV_REV_GEOCODE = "ENV_REV_GEOCODE";
 
 
-    public function __construct()
+    /**
+     * ReverseGeocode constructor.
+     * @param RestConfig|string|null $c
+     */
+    public function __construct($c = null)
     {
-        parent::__construct();
+        parent::__construct($c);
         $this->reset();
     }
 
-    public static function instance($apiToken = ""): self
+    /**
+     * @param string $xyzToken
+     * @return ReverseGeocode
+     */
+    public static function instance($xyzToken = ""): self
     {
-        return self::config(RestConfig::getInstance($apiToken, self::BASE_URL, self::ENV_REV_GEOCODE));
+        return new ReverseGeocode(new RestConfig($xyzToken));
     }
 
-    public static function config(RestConfig $c): self
+    public function getHostname(): string
     {
-        $routing = new self();
-        $routing->c = $c;
-        return $routing;
+        return self::BASE_URL;
     }
 
-    public static function setToken(string $token): self
-    {
-        $routing = self::config(RestConfig::getInstance("", self::BASE_URL, self::ENV_REV_GEOCODE));
-        $routing->c->setToken($token);
-        return $routing;
-    }
+
 
     public function reset()
     {
@@ -75,12 +76,7 @@ class ReverseGeocode extends RestClient
     }
 
 
-    public static function setApiKey(string $apiKey): self
-    {
-        $space = self::config(RestConfig::getInstance("", self::BASE_URL, self::ENV_REV_GEOCODE));
-        $space->c->setApiKey($apiKey);
-        return $space;
-    }
+
 
 
 

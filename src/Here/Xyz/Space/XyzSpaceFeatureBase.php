@@ -17,7 +17,7 @@ abstract class XyzSpaceFeatureBase extends XyzClient
      */
     protected $featureId = "";
     /**
-     * @var array
+     * @var string[]
      */
     protected $paramFeatureIds = [];
     /**
@@ -25,7 +25,7 @@ abstract class XyzSpaceFeatureBase extends XyzClient
      */
     protected $paramLimit = null;
     /**
-     * @var array
+     * @var string[]
      */
     protected $paramSelection = [];
     /**
@@ -37,11 +37,11 @@ abstract class XyzSpaceFeatureBase extends XyzClient
      */
     protected $paramHandle = "";
     /**
-     * @var array
+     * @var string[]
      */
     private $paramTags = [];
     /**
-     * @var array
+     * @var mixed[]
      */
     private $paramSearchParams = [];
     /**
@@ -60,36 +60,24 @@ abstract class XyzSpaceFeatureBase extends XyzClient
 
     /**
      * XyzSpaceFeatureBase constructor.
+     * @param XyzConfig|string|null $c
      */
-    public function __construct()
+    public function __construct($c = null)
     {
-        parent::__construct();
+        parent::__construct($c);
         $this->reset();
     }
 
+
+    /**
+     * @param string $xyzToken
+     * @return mixed
+     */
     abstract public static function instance($xyzToken = "");
-    /*
-    {
-        return XyzSpaceFeatureBase::config(XyzConfig::getInstance($xyzToken));
-    }
-    */
 
-    abstract public static function config(XyzConfig $c);
-/*    {
-        $features = new XyzSpaceFeatureBase();
-        $features->c = $c;
-        return $features;
-    }*/
-
-    abstract public static function setToken(string $token);
-    /*
-    {
-        $features = XyzSpaceFeatureBase::config(XyzConfig::getInstance());
-        $features->c->setToken($token);
-        return $features;
-    }
-    */
-
+    /**
+     *
+     */
     public function reset()
     {
         parent::reset();
@@ -123,7 +111,7 @@ abstract class XyzSpaceFeatureBase extends XyzClient
     /**
     * Set the feature ids (list of ids) in the API as parameter. Useful for API where you need
     * to select multiple features
-    * @param array $featureIds
+    * @param string[] $featureIds
     * @return $this
     */
     public function featureIds(array $featureIds): XyzSpaceFeatureBase
@@ -170,7 +158,7 @@ abstract class XyzSpaceFeatureBase extends XyzClient
      * List the properties you want to include in the response.
      * If you have a property "title" and "description" you need to
      * use ["p.title", "p.description"].
-     * @param array $propertiesList
+     * @param string[] $propertiesList
      * @return $this
      */
     public function selection(array $propertiesList): XyzSpaceFeatureBase
@@ -194,7 +182,7 @@ abstract class XyzSpaceFeatureBase extends XyzClient
 
     /**
      * Set the tags for search endpoint
-     * @param array $tags
+     * @param string[] $tags
      * @return XyzSpaceFeatureBase
      */
     public function tags(array $tags): XyzSpaceFeatureBase
@@ -203,14 +191,23 @@ abstract class XyzSpaceFeatureBase extends XyzClient
         return $this;
     }
 
-    public function latlon($latitude, $longitude): XyzSpaceFeatureBase
+    /**
+     * @param float $latitude
+     * @param float $longitude
+     * @return $this
+     */
+    public function setLatLong(float $latitude, float $longitude): XyzSpaceFeatureBase
     {
         $this->paramLatitude = $latitude;
         $this->paramLongitude = $longitude;
         return $this;
     }
 
-    public function radius($radius): XyzSpaceFeatureBase
+    /**
+     * @param int $radius
+     * @return $this
+     */
+    public function radius(int $radius): XyzSpaceFeatureBase
     {
         $this->paramRadius = $radius;
         return $this;

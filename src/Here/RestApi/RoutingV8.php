@@ -51,29 +51,28 @@ class RoutingV8 extends RestClient
     private const ENV_ROUTING_V8 = "ENV_ROUTING_V8";
 
 
-    public function __construct()
+    /**
+     * RoutingV8 constructor.
+     * @param RestConfig|string|null $c
+     */
+    public function __construct($c = null)
     {
-        parent::__construct();
+        parent::__construct($c);
         $this->reset();
     }
 
-    public static function instance($apiToken = ""): self
+    /**
+     * @param string $xyzToken
+     * @return RoutingV8
+     */
+    public static function instance($xyzToken = ""): self
     {
-        return self::config(RestConfig::getInstance($apiToken, self::BASE_URL, self::ENV_ROUTING_V8));
+        return new RoutingV8(new RestConfig($xyzToken));
     }
 
-    public static function config(RestConfig $c): self
+    public function getHostname(): string
     {
-        $routing = new self();
-        $routing->c = $c;
-        return $routing;
-    }
-
-    public static function setToken(string $token): self
-    {
-        $routing = self::config(RestConfig::getInstance("", self::BASE_URL, self::ENV_ROUTING_V8));
-        $routing->c->setToken($token);
-        return $routing;
+        return self::BASE_URL;
     }
 
     public function reset()
@@ -91,13 +90,6 @@ class RoutingV8 extends RestClient
         $this->destination = null;
     }
 
-
-    public static function setApiKey(string $apiKey): self
-    {
-        $space = self::config(RestConfig::getInstance("", self::BASE_URL, self::ENV_ROUTING_V8));
-        $space->c->setApiKey($apiKey);
-        return $space;
-    }
 
 
 
@@ -226,14 +218,14 @@ class RoutingV8 extends RestClient
         return $retString;
     }
 
-    /*
-    public function getManeuverInstructions()
+    public function getDefaultActions()
     {
-        $array = [];
         $result = $this->get();
-        return $result->response->route[0]->leg[0]->maneuver;
+        if ($result->isError()) {
+            return [];
+        }
+        return $result->getData()->routes[0]->sections[0]->actions;
     }
-    */
 
     protected function getPath(): string
     {

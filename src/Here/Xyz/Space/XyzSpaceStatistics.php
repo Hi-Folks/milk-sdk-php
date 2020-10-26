@@ -18,30 +18,22 @@ class XyzSpaceStatistics extends XyzClient
 
 
 
-    public function __construct()
+    public function __construct($c = null)
     {
+        parent::__construct($c);
         $this->reset();
     }
 
-    public static function instance($xyzToken = ""): XyzSpaceStatistics
+    /**
+     * @param string $xyzToken
+     * @return self
+     */
+    public static function instance($xyzToken = ""): self
     {
-        $space = XyzSpaceStatistics::config(XyzConfig::getInstance($xyzToken));
-        return $space;
+        return new XyzSpaceStatistics(new XyzConfig($xyzToken));
     }
 
-    public static function config(XyzConfig $c): XyzSpaceStatistics
-    {
-        $space = new XyzSpaceStatistics();
-        $space->c = $c;
-        return $space;
-    }
 
-    public static function setToken(string $token): XyzSpaceStatistics
-    {
-        $space = XyzSpaceStatistics::config(XyzConfig::getInstance());
-        $space->c->setToken($token);
-        return $space;
-    }
 
     public function reset()
     {

@@ -3,6 +3,7 @@
 namespace HiFolks\Milk\Here\Xyz\Space;
 
 use HiFolks\Milk\Here\Xyz\Common\XyzConfig;
+use HiFolks\Milk\Here\Xyz\Common\XyzResponse;
 use HiFolks\Milk\Here\Xyz\Space\XyzSpaceFeatureBase;
 use HiFolks\Milk\Here\Xyz\Common\XyzClient;
 use stdClass;
@@ -14,41 +15,38 @@ use stdClass;
 class XyzSpaceFeatureEditor extends XyzSpaceFeatureBase
 {
     /**
-     * @var array
+     * @var string[]
      */
     protected $paramAddTags = [];
 
     /**
-     * @var array
+     * @var string[]
      */
     protected $paramRemoveTags = [];
 
 
-    public function __construct()
+    /**
+     * XyzSpaceFeatureEditor constructor.
+     * @param XyzConfig|string|null $c
+     */
+    public function __construct($c = null)
     {
+        parent::__construct($c);
         $this->reset();
     }
 
-    public static function instance($xyzToken = ""): XyzSpaceFeatureEditor
+    /**
+     * @param string $xyzToken
+     * @return XyzSpaceFeatureEditor
+     */
+    public static function instance($xyzToken = ""): self
     {
-        $features = XyzSpaceFeatureEditor::config(XyzConfig::getInstance($xyzToken));
-        return $features;
+        return new XyzSpaceFeatureEditor(new XyzConfig($xyzToken));
     }
 
-    public static function config(XyzConfig $c): XyzSpaceFeatureEditor
-    {
-        $features = new XyzSpaceFeatureEditor();
-        $features->c = $c;
-        return $features;
-    }
-
-    public static function setToken(string $token): XyzSpaceFeatureEditor
-    {
-        $features = XyzSpaceFeatureEditor::config(XyzConfig::getInstance());
-        $features->c->setToken($token);
-        return $features;
-    }
-
+    /**
+     *
+     */
     public function reset()
     {
         parent::reset();
@@ -56,32 +54,47 @@ class XyzSpaceFeatureEditor extends XyzSpaceFeatureBase
         $this->paramRemoveTags = [];
     }
 
-    public function create($spaceId, $geojson = null)
+    /**
+     * @param string $spaceId
+     * @param mixed|null $geoJson
+     * @return XyzResponse
+     */
+    public function create(string $spaceId, $geoJson = null)
     {
         $this->httpPut();
         $this->spaceId = $spaceId;
         $this->acceptContentType = "application/geo+json";
         $this->contentType = "application/geo+json";
         $this->setType(self::API_TYPE_FEATURE_CREATE);
-        if (! is_null($geojson)) {
-            $this->requestBody = $geojson;
+        if (! is_null($geoJson)) {
+            $this->requestBody = $geoJson;
         }
         return $this->getResponse();
     }
 
 
-    public function edit($spaceId, $geojson)
+    /**
+     * @param string $spaceId
+     * @param string $geoJson
+     * @return XyzResponse
+     */
+    public function edit(string $spaceId, string $geoJson)
     {
         $this->httpPost();
         $this->spaceId = $spaceId;
         $this->acceptContentType = "application/geo+json";
         $this->contentType = "application/geo+json";
         $this->setType(self::API_TYPE_FEATURE_EDIT);
-        $this->requestBody = $geojson;
+        $this->requestBody = $geoJson;
         return $this->getResponse();
     }
 
-    public function delete($spaceId, array $featuresIds)
+    /**
+     * @param string $spaceId
+     * @param string[] $featuresIds
+     * @return XyzResponse
+     */
+    public function delete(string $spaceId, array $featuresIds)
     {
         $this->httpDelete();
         $this->spaceId = $spaceId;
@@ -94,7 +107,12 @@ class XyzSpaceFeatureEditor extends XyzSpaceFeatureBase
     }
 
 
-    public function deleteOne($spaceId, $featureId)
+    /**
+     * @param string $spaceId
+     * @param string $featureId
+     * @return XyzResponse
+     */
+    public function deleteOne(string $spaceId, string $featureId)
     {
         $this->httpDelete();
         $this->spaceId = $spaceId;
@@ -110,8 +128,11 @@ class XyzSpaceFeatureEditor extends XyzSpaceFeatureBase
     /**
      * Edit / patch a feature
      * https://xyz.api.here.com/hub/static/swagger/#/Edit%20Features/patchFeature
+     * @param string $spaceId
+     * @param string $featureId
+     * @return XyzResponse
      */
-    public function editOne($spaceId, $featureId)
+    public function editOne(string $spaceId, string $featureId)
     {
         $this->httpPatch();
         $this->spaceId = $spaceId;
@@ -126,8 +147,11 @@ class XyzSpaceFeatureEditor extends XyzSpaceFeatureBase
     /**
      * Create or Edit a feature
      * https://xyz.api.here.com/hub/static/swagger/#/Edit%20Features/putFeature
+     * @param string $spaceId
+     * @param string $featureId
+     * @return XyzResponse
      */
-    public function saveOne($spaceId, $featureId)
+    public function saveOne(string $spaceId, string $featureId)
     {
         $this->httpPut();
         $this->spaceId = $spaceId;
@@ -140,7 +164,7 @@ class XyzSpaceFeatureEditor extends XyzSpaceFeatureBase
 
     /**
      * Set the tags for feature creation
-     * @param array $tags
+     * @param string[] $tags
      * @return $this
      */
     public function addTags(array $tags): XyzSpaceFeatureEditor
@@ -151,7 +175,7 @@ class XyzSpaceFeatureEditor extends XyzSpaceFeatureBase
 
     /**
      * Set the removing tags for feature editing
-     * @param array $tags
+     * @param string[] $tags
      * @return $this
      */
     public function removeTags(array $tags): XyzSpaceFeatureEditor
@@ -160,12 +184,20 @@ class XyzSpaceFeatureEditor extends XyzSpaceFeatureBase
         return $this;
     }
 
+    /**
+     * @param string $body
+     * @return $this
+     */
     public function feature(string $body): XyzSpaceFeatureEditor
     {
         $this->requestBody = $body;
         return $this;
     }
 
+    /**
+     * @param string $file
+     * @return $this
+     */
     public function geojson(string $file): XyzSpaceFeatureEditor
     {
         $this->geojsonFile = $file;
@@ -173,6 +205,9 @@ class XyzSpaceFeatureEditor extends XyzSpaceFeatureBase
     }
 
 
+    /**
+     * @return string
+     */
     protected function queryString(): string
     {
         $retString = "";

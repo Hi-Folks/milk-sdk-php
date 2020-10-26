@@ -9,19 +9,20 @@ Dotenv\Dotenv::createImmutable(__DIR__ . "/../")->load();
 $hereApiKey = Environment::getEnv('HERE_API_KEY');
 
 
-    $geocode = Geocode::instance()
-        ->setApiKey($hereApiKey)
-        ->country("Italia")
-        ->q("Colosseo")
-        ->langIta();
+$geocode = Geocode::instance()
+    ->setApiKey($hereApiKey)
+    ->country("Italia")
+    ->q("Colosseo")
+    ->langIta()
+    ->get();
 
 
 
-$r = $geocode->get();
-if ($r->isError()) {
-    echo "Error: ". $r->getErrorMessage();
+
+if ($geocode->isError()) {
+    echo "Error: ". $geocode->getErrorMessage();
 } else {
-    $items = $r->getData()->items;
+    $items = $geocode->getData()->items;
     foreach ($items as $key => $item) {
         echo " - " .$item->title. " : ".$item->position->lat . "," . $item->position->lng . PHP_EOL;
     }

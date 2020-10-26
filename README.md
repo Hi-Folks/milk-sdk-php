@@ -4,21 +4,22 @@
 [![GitHub license](https://img.shields.io/github/license/hi-folks/milk-sdk-php)](https://github.com/hi-folks/milk-sdk-php/blob/master/LICENSE.md)
 
 Milk SDK PHP is a (fluent) open-source PHP library that makes it easy to integrate your PHP application with location services like:
-- XYZ Hub API;
-- **Routing** API;
-- **Weather** Destination API;
-- Geocoder API;
-- ...
+- HERE **Data Hub** API (was XYZ Api);
+- HERE **Routing** API (**V8** and **V7**);
+- HERE **Weather** Destination API;
+- HERE **Geocoding** API;
+- HERE **Reverse Geocoding** API;
 
 ## Getting Started
 
 ### Install the SDK
 
-In your PHP project install package via composer:
+In your PHP project install package via Composer:
 
 ```sh
 composer require hi-folks/milk-sdk-php
 ```
+
 ### Configuring XYZ HUB
 
 With this SDK you can consume XYZ API.
@@ -71,15 +72,13 @@ In order to use the Milk SDK, you need to:
 // include the autoload.php file
 require "./vendor/autoload.php";
 // declare all imports via "use"
-use HiFolks\Milk\Xyz\Space\XyzSpace;
-// load environment configuration (via Dotenv)
-Dotenv\Dotenv::createImmutable(__DIR__)->load();
-// get your Token
-$xyzToken = $_ENV["XYZ_ACCESS_TOKEN"];
+use HiFolks\Milk\Here\Xyz\Space\XyzSpace;
+// set your token
+$xyzToken = "your xyz space token";
 // Get your XYZ Spaces (XyzResponse class)
 $s = XyzSpace::instance($xyzToken)->get();
 // display your result
-var_dump($s);
+var_dump($s->getData());
 ```
 
 ### Retrieve your XYZ Spaces
@@ -205,45 +204,138 @@ $result = XyzSpaceFeature::instance($xyzToken)->spatial($spaceId,  41.890251, 12
 To retrieve weather forecasts in Berlin:
 
 ```php
-$jsonWeather = ApiWeather::instance($hereApiKey)
+$jsonWeather = Weather::instance()
+    ->setAppIdAppCode($hereAppId, $hereAppCode)
     ->productForecast7days()
     ->name("Berlin")
-    ->getJson();
-var_dump($jsonWeather);
+    ->get();
+var_dump($jsonWeather->getData());
+var_dump($jsonWeather->isError());
+var_dump($jsonWeather->getErrorMessage());
+var_dump($jsonWeather->getDataAsJsonString());
 ```
 
 ## Routing API (v7)
 To retrieve the fastest route by foot
 
 ```php
-$r =RoutingV7::instance($hereApiKey)
-  ->byFoot()
-  ->typeFastest()
-  ->startingPoint(52.5160,13.3779)
-  ->destination(52.5185,13.4283)
-  ->getManeuverInstructions();
+$r = (new RoutingV7())
+    ->setApiKey($hereApiKey)
+    ->byFoot()
+    ->typeFastest()
+    ->startingPoint(52.5160, 13.3779)
+    ->destination(52.5185, 13.4283)
+    ->get();
+var_dump($r->getData());
+var_dump($r->isError());
+var_dump($r->getErrorMessage());
+var_dump($r->getDataAsJsonString());
+```
+
+Instead of using get(), you could use _getManeuverInstructions()_ method:
+
+```php
+$r = (new RoutingV7())
+    ->setApiKey($hereApiKey)
+    ->byFoot()
+    ->typeFastest()
+    ->startingPoint(52.5160, 13.3779)
+    ->destination(52.5185, 13.4283)
+    ->getManeuverInstructions();
+
+var_dump($r);
 ```
 
 ## Routing API (v8)
-To retrive the fastest route by car
+To retrieve the fastest route by car
 
 ```php
-$routing = RoutingV8::instance($hereApiKey)
+$routingActions = RoutingV8::instance()
+    ->setApiKey($hereApiKey)
     ->byCar()
     ->routingModeFast()
     ->startingPoint(52.5160, 13.3779)
     ->destination(52.5185, 13.4283)
     ->returnInstructions()
     ->langIta()
+    ->getDefaultActions();
+
+foreach ($routingActions as $key => $action) {
+    echo " - ".$action->instruction . PHP_EOL;
+}
+```
+
+## Geocoding API
+In order to retrieve geo-coordinates (latitude, longitude) of a known address or place.
+
+```php
+use HiFolks\Milk\Here\RestApi\Geocode;
+$hereApiKey = "Your API KEY";
+$r = Geocode::instance()
+    ->setApiKey($hereApiKey)
+    ->country("Italia")
+    ->q("Colosseo")
+    ->langIta()
     ->get();
+var_dump($r->getData());
+var_dump($r->isError());
+var_dump($r->getErrorMessage());
+var_dump($r->getDataAsJsonString());
+```
+
+## Reverse Geocoding API
+In order to find the nearest address to specific geo-coordinates:
+
+```php
+use HiFolks\Milk\Here\RestApi\ReverseGeocode;
+$hereApiKey = "Your API KEY";
+$r = ReverseGeocode::instance()
+    ->setApiKey($hereApiKey)
+    ->at(41.88946,12.49239)
+    ->limit(5)
+    ->lang("en_US")
+    ->get();
+var_dump($r->getData());
+var_dump($r->isError());
+var_dump($r->getErrorMessage());
+var_dump($r->getDataAsJsonString());
+
+if ($r->isError()) {
+    echo "Error: ". $r->getErrorMessage();
+} else {
+    $items = $r->getData()->items;
+    foreach ($items as $key => $item) {
+        echo " - " .$item->title.
+            " : ( ".$item->position->lat . "," . $item->position->lng .
+            " ) , distance:" . $item->distance . " , type: " . $item->resultType . PHP_EOL;
+    }
+}
 ```
 
 
 
 ## Useful reference
 
-ReDoc API documentation:
-https://xyz.api.here.com/hub/static/redoc/
+### Data Hub API
 
-Open API documentation:
-https://xyz.api.here.com/hub/static/swagger/
+- ReDoc API documentation: https://xyz.api.here.com/hub/static/redoc/
+- Open API documentation: https://xyz.api.here.com/hub/static/swagger/
+
+### HERE Destination Weather API
+
+- Overview: https://developer.here.com/documentation/destination-weather/dev_guide/topics/overview.html
+- API Reference: https://developer.here.com/documentation/destination-weather/dev_guide/topics/api-reference.html
+
+### HERE Rest Routing V8 API
+
+- Overview: https://developer.here.com/documentation/routing-api/8.9.1/dev_guide/topics/use-cases/calculate-route.html
+- API Reference: https://developer.here.com/documentation/routing-api/8.9.1/api-reference-swagger.html
+
+### HERE Rest Geocoding API
+
+- Overview: https://developer.here.com/documentation/geocoding-search-api/dev_guide/topics/endpoint-geocode-brief.html
+
+### HERE Rest Reverse Geocoding API
+
+- Overview: https://developer.here.com/documentation/geocoding-search-api/dev_guide/topics/endpoint-reverse-geocode-brief.html
+

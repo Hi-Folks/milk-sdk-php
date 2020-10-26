@@ -20,10 +20,68 @@ abstract class RestClient extends ApiClient
      */
     abstract protected function queryString(): string;
 
-    public function __construct()
+    abstract protected  function getHostname(): string;
+
+    /**
+     * XyzClient constructor.
+     * @param RestConfig|string|null $c
+     */
+    public function __construct($c = null)
     {
-        parent::__construct();
         $this->reset();
+        if (! is_null($c)) {
+            if (is_object($c)) {
+
+                $c->setHostname($this->getHostname());
+                $this->c = $c;
+
+            } else {
+                $this->c = RestConfig::getInstance($c, $this->getHostname());
+
+            }
+        } else {
+            $this->c = RestConfig::getInstance("", $this->getHostname());
+        }
+
+        parent::__construct();
+    }
+
+    public function setConfig(RestConfig $c): self
+    {
+        $this->c = $c;
+        return $this;
+    }
+
+    public function setToken(string $token): self
+    {
+        if (is_null($this->c)) {
+            $this->c = new RestConfig($token);
+        } else {
+            $this->c->setToken($token);
+        }
+        return $this;
+    }
+
+    public function setApiKey(string $apiKey): self
+    {
+        if (is_null($this->c)) {
+            $this->c = new RestConfig();
+            $this->c->setApiKey($apiKey);
+        } else {
+            $this->c->setApiKey($apiKey);
+        }
+        return $this;
+    }
+
+    public function setAppIdAppCode(string $appId, string $appCode): self
+    {
+        if (is_null($this->c)) {
+            $this->c = new RestConfig();
+            $this->c->setAppIdAppCode($appId, $appCode);
+        } else {
+            $this->c->setAppIdAppCode($appId, $appCode);
+        }
+        return $this;
     }
 
 

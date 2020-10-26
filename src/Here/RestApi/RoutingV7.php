@@ -45,37 +45,28 @@ class RoutingV7 extends RestClient
 
     private const ENV_WEATHER = "ENV_WEATHER_PROD";
 
-
-    public function __construct()
+    /**
+     * RoutingV7 constructor.
+     * @param RestConfig|string|null $c
+     */
+    public function __construct($c = null)
     {
+        parent::__construct($c);
         $this->reset();
-        parent::__construct();
     }
 
-    public static function instance($apiToken = ""): self
+    /**
+     * @param string $xyzToken
+     * @return RoutingV7
+     */
+    public static function instance($xyzToken = ""): self
     {
-        return self::config(RestConfig::getInstance($apiToken, self::BASE_URL, self::ENV_WEATHER));
+        return new RoutingV7(new RestConfig($xyzToken));
     }
 
-    public static function config(RestConfig $c): self
+    public function getHostname(): string
     {
-        $routing = new self();
-        $routing->c = $c;
-        return $routing;
-    }
-
-    public static function setToken(string $token): self
-    {
-        $routing = self::config(RestConfig::getInstance("", self::BASE_URL, self::ENV_WEATHER));
-        $routing->c->setToken($token);
-        return $routing;
-    }
-
-    public static function setApiKey(string $apiKey): self
-    {
-        $space = self::config(RestConfig::getInstance("", self::BASE_URL, self::ENV_WEATHER));
-        $space->c->setApiKey($apiKey);
-        return $space;
+        return self::BASE_URL;
     }
 
     public function reset()
@@ -161,12 +152,9 @@ class RoutingV7 extends RestClient
     public function getManeuverInstructions()
     {
         $result = $this->get();
-
         if ($result->isError()) {
-            echo "Error:" . $result->getErrorMessage();
             return [];
         }
-
         return $result->getData()->response->route[0]->leg[0]->maneuver;
     }
 

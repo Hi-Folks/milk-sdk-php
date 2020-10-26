@@ -9,8 +9,10 @@ use GuzzleHttp\Exception\RequestException;
 
 abstract class ApiClient
 {
+
+    protected $handler= null;
     /**
-     * @var ApiConfig
+     * @var ApiConfig|null
      */
     protected $c;
     /**
@@ -101,6 +103,12 @@ abstract class ApiClient
         $this->cacheResponse = false;
         $this->requestBody = null;
         $this->geojsonFile = null;
+    }
+
+
+    public function setHandler($handler)
+    {
+        $this->handler = $handler;
     }
 
 
@@ -281,7 +289,11 @@ abstract class ApiClient
         $body = null,
         $contentType = "application/json"
     ) {
-        $client = new Client();
+        $configClient = [];
+        if (! is_null($this->handler)) {
+            $configClient["handler"] = $this->handler;
+        }
+        $client = new Client($configClient);
 
         $headers = [
             'User-Agent' => 'milk-sdk-php/0.1.0'

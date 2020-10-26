@@ -1,6 +1,7 @@
 <?php
 require __DIR__ . "/../vendor/autoload.php";
 
+use HiFolks\Milk\Here\Xyz\Common\XyzConfig;
 use HiFolks\Milk\Here\Xyz\Space\XyzSpace;
 
 function print_row($item, $key)
@@ -11,28 +12,24 @@ function print_row($item, $key)
 
 Dotenv\Dotenv::createImmutable(__DIR__ . "/../")->load();
 $xyzToken = $_ENV['XYZ_ACCESS_TOKEN'];
+$xyzHost = "http://localhost:8080";
+$config= XyzConfig::getInstance($xyzToken, $xyzHost);
 
-
-$space = XyzSpace::instance($xyzToken);
+$space = new XyzSpace($config);
 echo "GET" . PHP_EOL;
-/** @var $s HiFolks\Milk\Here\Xyz\Common\XyzResponse */
+
 $s = $space->get();
+
 if ($s->isError()) {
-    echo "Error: " . $s->getErrorMessage();
+    echo "Error: " . $s->getErrorMessage(). PHP_EOL;
     $space->debug();
+    die();
 } else {
-    echo $space->getUrl();
+    echo $space->getUrl(). PHP_EOL;
     $space->debug();
     $a = $s->getData();
     array_walk($a, 'print_row');
-    //$string = $s->getDataAsJsonString();
-    //var_dump($string);
 }
-
-die();
-
-
-
 
 echo "GET OWNER ALL" . PHP_EOL;
 $space->reset();
@@ -58,8 +55,8 @@ $time_start = microtime(true);
 $space->get();
 echo 'Total execution time in seconds: ' . (microtime(true) - $time_start);
 $time_start = microtime(true);
-$space->cacheResponse()->get();
+$space->cacheResponse(true)->get();
 echo 'Total execution time in seconds: ' . (microtime(true) - $time_start);
 $time_start = microtime(true);
-$space->cacheResponse()->get();
+$space->cacheResponse(true)->get();
 echo 'Total execution time in seconds: ' . (microtime(true) - $time_start);
