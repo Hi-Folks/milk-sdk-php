@@ -152,12 +152,9 @@ class RoutingV7 extends RestClient
     public function getManeuverInstructions()
     {
         $result = $this->get();
-
         if ($result->isError()) {
-            echo "Error:" . $result->getErrorMessage();
             return [];
         }
-
         return $result->getData()->response->route[0]->leg[0]->maneuver;
     }
 

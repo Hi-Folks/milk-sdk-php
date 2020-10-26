@@ -29,4 +29,7 @@ $jsonWeather = $w
 
 $w->debug();
 
-var_dump($jsonWeather);
+var_dump($jsonWeather->getData());
+var_dump($jsonWeather->isError());
+var_dump($jsonWeather->getErrorMessage());
+var_dump($jsonWeather->getDataAsJsonString());

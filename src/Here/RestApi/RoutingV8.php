@@ -218,14 +218,14 @@ class RoutingV8 extends RestClient
         return $retString;
     }
 
-    /*
-    public function getManeuverInstructions()
+    public function getDefaultActions()
     {
-        $array = [];
         $result = $this->get();
-        return $result->response->route[0]->leg[0]->maneuver;
+        if ($result->isError()) {
+            return [];
+        }
+        return $result->getData()->routes[0]->sections[0]->actions;
     }
-    */
 
     protected function getPath(): string
     {
