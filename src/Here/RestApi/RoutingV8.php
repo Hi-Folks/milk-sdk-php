@@ -52,7 +52,7 @@ class RoutingV8 extends RestClient
 
 
     /**
-     * XyzSpace constructor.
+     * RoutingV8 constructor.
      * @param RestConfig|string|null $c
      */
     public function __construct($c = null)

@@ -47,30 +47,31 @@ class Geocode extends RestClient
     private const ENV_GEOCODE = "ENV_GEOCODE";
 
 
-    public function __construct()
+    /**
+     * Geocode constructor.
+     * @param RestConfig|string|null $c
+     */
+    public function __construct($c = null)
     {
-        parent::__construct();
+        parent::__construct($c);
         $this->reset();
     }
 
-    public static function instance($apiToken = ""): self
+    /**
+     * @param string $xyzToken
+     * @return Geocode
+     */
+    public static function instance($xyzToken = ""): self
     {
-        return self::config(RestConfig::getInstance($apiToken, self::BASE_URL, self::ENV_GEOCODE));
+        return new Geocode(new RestConfig($xyzToken));
     }
 
-    public static function config(RestConfig $c): self
+    public function getHostname(): string
     {
-        $routing = new self();
-        $routing->c = $c;
-        return $routing;
+        return self::BASE_URL;
     }
 
-    public static function setToken(string $token): self
-    {
-        $routing = self::config(RestConfig::getInstance("", self::BASE_URL, self::ENV_GEOCODE));
-        $routing->c->setToken($token);
-        return $routing;
-    }
+
 
     public function reset()
     {
@@ -85,12 +86,7 @@ class Geocode extends RestClient
     }
 
 
-    public static function setApiKey(string $apiKey): self
-    {
-        $space = self::config(RestConfig::getInstance("", self::BASE_URL, self::ENV_GEOCODE));
-        $space->c->setApiKey($apiKey);
-        return $space;
-    }
+
 
 
 

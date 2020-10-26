@@ -77,46 +77,30 @@ class Weather extends RestClient
 
 
 
-    public function __construct()
+    /**
+     * Weather constructor.
+     * @param RestConfig|string|null $c
+     */
+    public function __construct($c = null)
     {
-        parent::__construct();
+        parent::__construct($c);
         $this->reset();
     }
 
-    public static function instance($apiToken = ""): self
+    /**
+     * @param string $xyzToken
+     * @return Weather
+     */
+    public static function instance($xyzToken = ""): self
     {
-
-        $weather = Weather::config(RestConfig::getInstance($apiToken, self::BASE_URL, self::ENV_WEATHER));
-        return $weather;
+        return new Weather(new RestConfig($xyzToken));
     }
 
-    public static function config(RestConfig $c): self
+    public function getHostname(): string
     {
-        $weather = new Weather();
-        $weather->c = $c;
-        return $weather;
+        return self::BASE_URL;
     }
 
-    public static function setToken(string $token): self
-    {
-        $weather = self::config(RestConfig::getInstance($token, self::BASE_URL, self::ENV_WEATHER));
-        $weather->c->setToken($token);
-        return $weather;
-    }
-
-    public function setAppIdAppCode(string $appId, string $appCode): self
-    {
-        $weather = self::config(RestConfig::getInstance("", self::BASE_URL, self::ENV_WEATHER));
-        $weather->c->setAppIdAppCode($appId, $appCode);
-        return $weather;
-    }
-
-    public function setApiKey(string $apiKey): self
-    {
-        $weather = self::config(RestConfig::getInstance("", self::BASE_URL, self::ENV_WEATHER));
-        $weather->c->setApiKey($apiKey);
-        return $weather;
-    }
 
     public function reset()
     {

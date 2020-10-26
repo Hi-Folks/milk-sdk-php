@@ -46,7 +46,7 @@ class RoutingV7 extends RestClient
     private const ENV_WEATHER = "ENV_WEATHER_PROD";
 
     /**
-     * XyzSpace constructor.
+     * RoutingV7 constructor.
      * @param RestConfig|string|null $c
      */
     public function __construct($c = null)

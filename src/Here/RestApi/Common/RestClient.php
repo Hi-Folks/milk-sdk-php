@@ -73,6 +73,17 @@ abstract class RestClient extends ApiClient
         return $this;
     }
 
+    public function setAppIdAppCode(string $appId, string $appCode): self
+    {
+        if (is_null($this->c)) {
+            $this->c = new RestConfig();
+            $this->c->setAppIdAppCode($appId, $appCode);
+        } else {
+            $this->c->setAppIdAppCode($appId, $appCode);
+        }
+        return $this;
+    }
+
 
 
     /**
