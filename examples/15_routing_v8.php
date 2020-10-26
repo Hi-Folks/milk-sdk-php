@@ -13,7 +13,7 @@ function print_row($item, $key)
 
 $routingActions = RoutingV8::instance()
     ->setApiKey($hereApiKey)
-    ->byCar()
+    ->byBicycle()
     ->routingModeFast()
     ->startingPoint(52.5160, 13.3779)
     ->destination(52.5185, 13.4283)
