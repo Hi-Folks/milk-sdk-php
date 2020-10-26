@@ -22,7 +22,7 @@ class RoutingV8 extends RestClient
     /**
      *
      * Mode of transport to be used for the calculation of the route.
-     * Enum [car | pedestrian | truck ]
+     * Enum [car | pedestrian | truck | bicycle | scooter ]
      */
     private $paramTransportMode;
 
@@ -128,10 +128,19 @@ class RoutingV8 extends RestClient
     {
         return $this->transportMode("car");
     }
-    public function byTrack(): self
+    public function byTruck(): self
     {
         return $this->transportMode("truck");
     }
+    public function byBicycle(): self
+    {
+        return $this->transportMode("bicycle");
+    }
+    public function byScooter(): self
+    {
+        return $this->transportMode("scooter");
+    }
+
 
 
     public function returnInstructions(): self
