@@ -39,6 +39,12 @@ class RoutingV8Test extends TestCase
         $url = "https://router.hereapi.com/v8/routes?routingMode=fast&transportMode=bicycle&lang=it-IT";
         $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET bicycle, ita lang");
 
+
+        $routing = RoutingV8::instance()
+            ->byBicycle()->alternatives(3)->langIta();
+        $url = "https://router.hereapi.com/v8/routes?routingMode=fast&transportMode=bicycle&lang=it-IT&alternatives=3";
+        $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET bicycle, ita lang, 3 alternatives");
+
     }
 
 
