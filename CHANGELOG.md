@@ -5,6 +5,7 @@
 ### Add
 - Routing V8: add new transport mode "bicycle" and "scooter";
 - Routing V8: add alternatives parameter;
+- Routing V8: add units (metrics/imperial);
 - Adding test suite
 
 ### Change

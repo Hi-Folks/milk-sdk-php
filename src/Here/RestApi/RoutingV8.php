@@ -44,6 +44,14 @@ class RoutingV8 extends RestClient
      */
     private $paramAlternatives;
 
+    /**
+     * @var string
+     * Units of measurement used in guidance instructions. The default is metric.
+     * Enum: "metric" "imperial"
+     */
+    private $paramUnits;
+
+
 
     /**
      * @var LatLong|null
@@ -88,11 +96,12 @@ class RoutingV8 extends RestClient
 
         $this->contentType = "";
         $this->acceptContentType = "";
-        $this->paramTransportMode = "car";
-        $this->paramRoutingMode = "fast";
+        $this->paramTransportMode = "";
+        $this->paramRoutingMode = "";
         $this->paramReturn = [];
         $this->paramLang = "";
         $this->paramAlternatives = -1;
+        $this->paramUnits = "";
 
         $this->origin = null;
         $this->destination = null;
@@ -174,6 +183,25 @@ class RoutingV8 extends RestClient
         return $this;
     }
 
+    /**
+     * @param string $units
+     * @return $this
+     */
+    public function units(string $units): self
+    {
+        $this->paramUnits = $units;
+        return $this;
+    }
+    public function unitsMetric(): self
+    {
+        return $this->units("metric");
+    }
+    public function unitsImperial(): self
+    {
+        return $this->units("imperial");
+    }
+
+
 
     public function langIta(): self
     {
@@ -227,7 +255,9 @@ class RoutingV8 extends RestClient
         if ($this->paramAlternatives >= 0) {
             $retString = $this->addQueryParam($retString, "alternatives", $this->paramAlternatives);
         }
-
+        if ($this->paramUnits !== "") {
+            $retString = $this->addQueryParam($retString, "units", $this->paramUnits);
+        }
         if ($this->origin) {
             $retString = $this->addQueryParam($retString, "origin", $this->origin->getString(), false);
         }
