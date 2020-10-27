@@ -37,6 +37,13 @@ class RoutingV8 extends RestClient
      */
     private $paramLang;
 
+    /**
+     * @var int
+     * Number of alternative routes to return aside from the optimal route.
+     *
+     */
+    private $paramAlternatives;
+
 
     /**
      * @var LatLong|null
@@ -85,6 +92,7 @@ class RoutingV8 extends RestClient
         $this->paramRoutingMode = "fast";
         $this->paramReturn = [];
         $this->paramLang = "";
+        $this->paramAlternatives = -1;
 
         $this->origin = null;
         $this->destination = null;
@@ -155,6 +163,18 @@ class RoutingV8 extends RestClient
         $this->paramLang = $lang;
         return $this;
     }
+
+    /**
+     * @param int $alternatives
+     * @return $this
+     */
+    public function alternatives(int $alternatives): self
+    {
+        $this->paramAlternatives = $alternatives;
+        return $this;
+    }
+
+
     public function langIta(): self
     {
         return $this->lang("it-IT");
@@ -204,7 +224,9 @@ class RoutingV8 extends RestClient
         if ($this->paramLang !== "") {
             $retString = $this->addQueryParam($retString, "lang", $this->paramLang);
         }
-
+        if ($this->paramAlternatives >= 0) {
+            $retString = $this->addQueryParam($retString, "alternatives", $this->paramAlternatives);
+        }
 
         if ($this->origin) {
             $retString = $this->addQueryParam($retString, "origin", $this->origin->getString(), false);
@@ -238,8 +260,6 @@ class RoutingV8 extends RestClient
 
     protected function getPath(): string
     {
-        $retPath = "";
-        $retPath = "/v8/routes";
-        return $retPath;
+        return "/v8/routes";
     }
 }

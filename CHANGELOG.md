@@ -1,6 +1,15 @@
 # Changelog
 
-All notable changes to `milk-sdk-php` will be documented in this file
+## 0.1.1 - WIP
+
+### Add
+- Routing V8: add new transport mode "bicycle" and "scooter";
+- Routing V8: add alternatives parameter;
+- Adding test suite
+
+### Change
+- Refactoring base classes avoiding Singleton design pattern, and introducing DI;
+- update examples/* and Readme file
 
 ## 0.1.0 - 2020-10-21
 
