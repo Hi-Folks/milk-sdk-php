@@ -159,6 +159,18 @@ class RoutingV8 extends RestClient
     }
 
 
+    public function return($returnString): self
+    {
+        $this->paramReturn = [];
+        $this->paramReturn[] = $returnString;
+        return $this;
+    }
+    public function returnAppend($returnString): self
+    {
+        $this->paramReturn[] = $returnString;
+        return $this;
+    }
+
 
     public function returnInstructions(): self
     {
