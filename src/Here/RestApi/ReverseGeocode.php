@@ -23,7 +23,7 @@ class ReverseGeocode extends RestClient
      * Format: {latitude},{longitude}
      * Type: {decimal},{decimal}
      * Example: -13.163068,-72.545128 (Machu Picchu Mountain, Peru)
-     * @var array
+     * @var array<float>
      */
     private $paramAt;
 
@@ -35,6 +35,9 @@ class ReverseGeocode extends RestClient
      */
     private $paramLimit;
 
+    /**
+     * @var string
+     */
     private $paramLang;
 
     private const ENV_REV_GEOCODE = "ENV_REV_GEOCODE";
@@ -79,26 +82,40 @@ class ReverseGeocode extends RestClient
 
 
 
-
+    /**
+     * @param float $latitude
+     * @param float $longitude
+     * @return self
+     */
     public function at($latitude, $longitude): self
     {
         $this->paramAt = [$latitude, $longitude];
         return $this;
     }
 
-
+    /**
+     * @param int $limit
+     * @return self
+     */
     public function limit($limit = 1): self
     {
         $this->paramLimit = $limit;
         return $this;
     }
 
+    /**
+     * @param string $lang
+     * @return self
+     */
     public function lang($lang): self
     {
         $this->paramLang = $lang;
         return $this;
     }
 
+    /**
+     * @return self
+     */
     public function langIta(): self
     {
         return $this->lang("it-IT");

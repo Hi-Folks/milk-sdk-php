@@ -30,9 +30,9 @@ class XyzConfig extends ApiConfig
      * @param string $apiToken
      * @param string $hostname
      * @param string $env
-     * @return ApiConfig|XyzConfig|null
+     * @return self
      */
-    public static function getInstance($apiToken = "", $hostname = "", $env = self::ENV_CUSTOM)
+    public static function getInstance($apiToken = "", $hostname = "", $env = self::ENV_CUSTOM): self
     {
         return new XyzConfig($apiToken, $hostname, $env);
     }

@@ -20,7 +20,7 @@ class Geocode extends RestClient
      * Format: {latitude},{longitude}
      * Type: {decimal},{decimal}
      * Example: -13.163068,-72.545128 (Machu Picchu Mountain, Peru)
-     * @var array
+     * @var array<float>
      */
     private $paramAt;
 
@@ -38,10 +38,19 @@ class Geocode extends RestClient
      */
     private $paramLimit;
 
+    /**
+     * @var string
+     */
     private $paramQ;
 
+    /**
+     * @var array<string>
+     */
     private $paramQq;
 
+    /**
+     * @var string
+     */
     private $paramLang;
 
     private const ENV_GEOCODE = "ENV_GEOCODE";
@@ -89,13 +98,21 @@ class Geocode extends RestClient
 
 
 
-
-    public function at($latitude, $longitude): self
+    /**
+     * @param float $latitude
+     * @param float $longitude
+     * @return self
+     */
+    public function at(float $latitude, float $longitude): self
     {
         $this->paramAt = [$latitude, $longitude];
         return $this;
     }
 
+    /**
+     * @param string|array<string> $countryCode
+     * @return self
+     */
     public function in($countryCode): self
     {
         if (is_array($countryCode)) {
@@ -106,58 +123,109 @@ class Geocode extends RestClient
         return $this;
     }
 
+    /**
+     * @param int $limit
+     * @return self
+     */
     public function limit($limit = 20): self
     {
         $this->paramLimit = $limit;
         return $this;
     }
 
+    /**
+     * @param string $freeTextQuery
+     * @return self
+     */
     public function q($freeTextQuery = "Berlin"): self
     {
         $this->paramQ = $freeTextQuery;
         return $this;
     }
 
-    public function country($country): self
+    /**
+     * @param string $country
+     * @return self
+     */
+    public function country(string $country): self
     {
         $this->paramQq["country"] = $country;
         return $this;
     }
-    public function state($state): self
+
+    /**
+     * @param string $state
+     * @return self
+     */
+    public function state(string $state): self
     {
         $this->paramQq["state"] = $state;
         return $this;
     }
-    public function city($city): self
+
+    /**
+     * @param string $city
+     * @return self
+     */
+    public function city(string $city): self
     {
         $this->paramQq["city"] = $city;
         return $this;
     }
-    public function district($district): self
+
+    /**
+     * @param string $district
+     * @return self
+     */
+    public function district(string $district): self
     {
         $this->paramQq["district"] = $district;
         return $this;
     }
-    public function street($street): self
+
+    /**
+     * @param string $street
+     * @return self
+     */
+    public function street(string $street): self
     {
         $this->paramQq["street"] = $street;
         return $this;
     }
-    public function houseNumber($houseNumber): self
+
+    /**
+     * @param string $houseNumber
+     * @return self
+     */
+    public function houseNumber(string $houseNumber): self
     {
         $this->paramQq["houseNumber"] = $houseNumber;
         return $this;
     }
-    public function postalCode($postalCode): self
+
+    /**
+     * @param string $postalCode
+     * @return self
+     */
+    public function postalCode(string $postalCode): self
     {
         $this->paramQq["postalCode"] = $postalCode;
         return $this;
     }
-    public function lang($lang): self
+
+    /**
+     * @param string $lang
+     * @return self
+     */
+    public function lang(string $lang): self
     {
         $this->paramLang = $lang;
         return $this;
     }
+
+    /**
+     * @return self
+     */
     public function langIta(): self
     {
         return $this->lang("it-IT");

@@ -6,13 +6,23 @@ use HiFolks\Milk\Here\Common\ApiConfig;
 
 class RestConfig extends ApiConfig
 {
-
+    /**
+     * @param string $apiToken
+     * @param string $hostname
+     * @param string $env
+     */
     public function __construct($apiToken = "", $hostname = "", $env = self::ENV_CUSTOM)
     {
         parent::__construct($apiToken, $hostname, $env);
     }
 
-    public static function getInstance($apiToken = "", $hostname = "", $env = self::ENV_CUSTOM)
+    /**
+     * @param string $apiToken
+     * @param string $hostname
+     * @param string $env
+     * @return self
+     */
+    public static function getInstance($apiToken = "", $hostname = "", $env = self::ENV_CUSTOM): self
     {
         return new RestConfig($apiToken, $hostname, $env);
     }

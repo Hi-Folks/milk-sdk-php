@@ -71,7 +71,7 @@ class ApiResponse
     }
 
     /**
-     * @return array|object|null
+     * @return array<mixed>|object|null
      */
     public function getData()
     {

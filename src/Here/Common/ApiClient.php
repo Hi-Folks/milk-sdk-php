@@ -6,11 +6,15 @@ use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\HandlerStack;
+use Psr\Http\Message\ResponseInterface;
 
 abstract class ApiClient
 {
-
-    protected $handler= null;
+    /**
+     * @var \GuzzleHttp\HandlerStack|null;
+     */
+    protected $handler = null;
     /**
      * @var ApiConfig|null
      */
@@ -106,7 +110,11 @@ abstract class ApiClient
     }
 
 
-    public function setHandler($handler)
+    /**
+     * @param \GuzzleHttp\HandlerStack $handler
+     * @return void
+     */
+    public function setHandler(HandlerStack $handler): void
     {
         $this->handler = $handler;
     }
@@ -281,6 +289,7 @@ abstract class ApiClient
      * @param string $method
      * @param null $body
      * @param string $contentType
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function call(
         string $uri,
@@ -288,7 +297,7 @@ abstract class ApiClient
         $method = "GET",
         $body = null,
         $contentType = "application/json"
-    ) {
+    ): ResponseInterface {
         $configClient = [];
         if (! is_null($this->handler)) {
             $configClient["handler"] = $this->handler;

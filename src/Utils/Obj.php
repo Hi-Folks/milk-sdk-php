@@ -4,7 +4,11 @@ namespace HiFolks\Milk\Utils;
 
 class Obj
 {
-    public static function echo($object)
+    /**
+     * @param mixed $object
+     * @return void
+     */
+    public static function echo($object): void
     {
         foreach ($object as $key => $value) {
             if (gettype($value) == "string" || gettype($value) == "integer" || gettype($value) == "boolean") {
