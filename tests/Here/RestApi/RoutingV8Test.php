@@ -111,7 +111,23 @@ class RoutingV8Test extends TestCase
         $url = "https://router.hereapi.com/v8/routes?return=polyline%2Cactions%2Cinstructions&origin=52.516,13.3779&destination=52.5185,13.4283";
         $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing return instructions");
 
-        
+        $routing = RoutingV8::instance()
+            ->setAppIdAppCode("aa", "bb")
+            ->startingPoint(52.5160, 13.3779)
+            ->destination(52.5185, 13.4283)
+            ->returnInstructions();
+        $url = "https://router.hereapi.com/v8/routes?return=polyline%2Cactions%2Cinstructions&origin=52.516,13.3779&destination=52.5185,13.4283&app_id=aa&app_code=bb";
+        $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing with app_id and app_code");
+
+        $routing = RoutingV8::instance()
+            ->setApiKey("xxx")
+            ->startingPoint(52.5160, 13.3779)
+            ->destination(52.5185, 13.4283)
+            ->returnInstructions();
+        $url = "https://router.hereapi.com/v8/routes?return=polyline%2Cactions%2Cinstructions&origin=52.516,13.3779&destination=52.5185,13.4283&apiKey=xxx";
+        $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing with apiKey");
+
+
     }
 
 
