@@ -44,7 +44,7 @@ class ApiResponse
      * @param \Exception|GuzzleException $e
      * @return ApiResponse
      */
-    public static function  createFromException($e)
+    public static function createFromException($e)
     {
         $r =  new self();
         $r->isError = true;

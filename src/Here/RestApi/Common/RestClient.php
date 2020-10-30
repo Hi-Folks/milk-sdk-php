@@ -20,7 +20,7 @@ abstract class RestClient extends ApiClient
      */
     abstract protected function queryString(): string;
 
-    abstract protected  function getHostname(): string;
+    abstract protected function getHostname(): string;
 
     /**
      * XyzClient constructor.
@@ -31,13 +31,10 @@ abstract class RestClient extends ApiClient
         $this->reset();
         if (! is_null($c)) {
             if (is_object($c)) {
-
                 $c->setHostname($this->getHostname());
                 $this->c = $c;
-
             } else {
                 $this->c = RestConfig::getInstance($c, $this->getHostname());
-
             }
         } else {
             $this->c = RestConfig::getInstance("", $this->getHostname());
