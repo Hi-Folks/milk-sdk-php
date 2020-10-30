@@ -20,8 +20,8 @@ class XyzResponse extends ApiResponse
      * @param \Exception|GuzzleException $e
      * @return XyzResponse
      */
-    public static function  createFromException($e)
+    public static function createFromException($e)
     {
-        return new self( ApiResponse::createFromException($e));
+        return new self(ApiResponse::createFromException($e));
     }
 }

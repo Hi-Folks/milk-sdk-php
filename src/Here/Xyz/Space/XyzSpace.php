@@ -108,7 +108,6 @@ class XyzSpace extends XyzClient
         } catch (\Exception $e) {
             return XyzResponse::createFromException($e);
         }
-
     }
 
     /**
