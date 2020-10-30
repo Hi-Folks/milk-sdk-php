@@ -1,13 +1,20 @@
 .PHONY: help phpstan test coverage phpcs allcheck
 
-help:           ## Show this help.
-	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
+.DEFAULT_GOAL := help
 
-phpunit:
+help:	## Show this help (default).
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+coverage: ## Execute phpunit showing coverage
 	vendor/bin/phpunit --coverage-text
 
-phpstan:
+test: ## Execute phpunit
+	vendor/bin/phpunit --testdox
+
+phpstan: ## Execute phpstan from phpstan.neon
 	vendor/bin/phpstan analyse -c phpstan.neon
 
-phpcs:
+phpcs: ## Execute PhpCS with PSR12 standard on src directory
 	vendor/bin/phpcs --standard=PSR12 src
+
+allcheck: phpcs phpstan test ## Perform all check: phpcs, phpstan and test
