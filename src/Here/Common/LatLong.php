@@ -49,4 +49,8 @@ class LatLong
     {
         return $this->latitude . "," . $this->longitude;
     }
+    
+    public function __toString() {
+        return $this->getString();
+    }
 }
