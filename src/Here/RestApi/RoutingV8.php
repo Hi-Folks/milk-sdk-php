@@ -17,18 +17,20 @@ class RoutingV8 extends RestClient
     /**
      *  @property string $routingMode Specifies which optimization is applied during route calculation.
      * Enum [ fast | short ]
+     * @var string
      */
     private $paramRoutingMode;
     /**
      *
      * Mode of transport to be used for the calculation of the route.
      * Enum [car | pedestrian | truck | bicycle | scooter ]
+     * @var string
      */
     private $paramTransportMode;
 
 
     /**
-     * @var array
+     * @var array<string>
      */
     private $paramReturn;
 
@@ -109,8 +111,11 @@ class RoutingV8 extends RestClient
 
 
 
-
-    private function routingMode($mode): self
+    /**
+     * @param string $mode
+     * @return self
+     */
+    private function routingMode(string $mode): self
     {
         $this->paramRoutingMode = $mode;
         return $this;
@@ -131,46 +136,61 @@ class RoutingV8 extends RestClient
         return $this->routingMode("short");
     }
 
-
-    private function transportMode($mode): self
+    /**
+     * @param string $mode
+     * @return self
+     */
+    private function transportMode(string $mode): self
     {
         $this->paramTransportMode = $mode;
         return $this;
     }
+
     public function byFoot(): self
     {
         return $this->transportMode("pedestrian");
     }
+
     public function byCar(): self
     {
         return $this->transportMode("car");
     }
+
     public function byTruck(): self
     {
         return $this->transportMode("truck");
     }
+
     public function byBicycle(): self
     {
         return $this->transportMode("bicycle");
     }
+
     public function byScooter(): self
     {
         return $this->transportMode("scooter");
     }
 
-
-    public function return($returnString): self
+    /**
+     * @param string $returnString
+     * @return self
+     */
+    public function return(string $returnString): self
     {
         $this->paramReturn = [];
         $this->paramReturn[] = $returnString;
         return $this;
     }
-    public function returnAppend($returnString): self
+
+    /**
+     * @param string $returnString
+     * @return self
+     */
+    public function returnAppend(string $returnString): self
     {
         $this->paramReturn[] = $returnString;
         return $this;
     }
-
 
     public function returnInstructions(): self
     {
@@ -179,7 +199,12 @@ class RoutingV8 extends RestClient
         $this->paramReturn[] = "instructions";
         return $this;
     }
-    public function lang($lang): self
+
+    /**
+     * @param string $lang
+     * @return self
+     */
+    public function lang(string $lang): self
     {
         $this->paramLang = $lang;
         return $this;
@@ -291,6 +316,9 @@ class RoutingV8 extends RestClient
         return $retString;
     }
 
+    /**
+     * @return mixed
+     */
     public function getDefaultActions()
     {
         $result = $this->get();

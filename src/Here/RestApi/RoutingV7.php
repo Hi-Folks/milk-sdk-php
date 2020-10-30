@@ -149,6 +149,9 @@ class RoutingV7 extends RestClient
         return $retString;
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     public function getManeuverInstructions()
     {
         $result = $this->get();

@@ -47,11 +47,19 @@ class ApiConfig
         return $this->hostname;
     }
 
-    public function setHostname($hostname)
+    /**
+     * @param string $hostname
+     * @return void
+     */
+    public function setHostname(string $hostname): void
     {
         $this->hostname = $hostname;
     }
 
+    /**
+     * @param string $environment
+     * @return bool
+     */
     public function setEnvironment($environment = self::ENV_CUSTOM): bool
     {
         $this->environment = $environment;
@@ -66,6 +74,11 @@ class ApiConfig
         return $this->credentials;
     }
 
+    /**
+     * @param string $apiToken
+     * @param string $hostname
+     * @param string $env
+     */
     public function __construct($apiToken = "", $hostname = "", $env = self::ENV_CUSTOM)
     {
         // Setting things:
@@ -75,7 +88,13 @@ class ApiConfig
         $this->credentials = new ApiCredentials($apiToken);
     }
 
-    public static function getInstance($apiToken = "", $hostname = "", $env = self::ENV_CUSTOM)
+    /**
+     * @param string $apiToken
+     * @param string $hostname
+     * @param string $env
+     * @return self
+     */
+    public static function getInstance($apiToken = "", $hostname = "", $env = self::ENV_CUSTOM): self
     {
         if (self::$instance == null) {
             self::$instance = new self($apiToken, $hostname, $env);

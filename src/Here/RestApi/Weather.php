@@ -168,7 +168,12 @@ class Weather extends RestClient
         return $this->product(self::PRODUCT_NWS_ALERTS);
     }
 
-    public function __call($method, $parameters): self
+    /**
+     * @param string $method
+     * @param mixed $parameters
+     * @return self
+     */
+    public function __call(string $method, $parameters): self
     {
         echo "METHOD:" . $method;
         return $this;

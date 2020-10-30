@@ -16,7 +16,11 @@ class ApiCredentials
     public const CREDENTIAL_TYPE_OAUTH2TOKEN = "OAUTH2TOKEN";
     public const CREDENTIAL_TYPE_APPCODE = "APPCODE";
 
+    /**
+     * @var string
+     */
     private $credentialTypeSelected = self::CREDENTIAL_TYPE_API_KEY;
+
     /**
      * @var string
      * https://developer.here.com/documentation/authentication/dev_guide/topics/token.html
@@ -65,37 +69,59 @@ class ApiCredentials
     }
 
 
-    public function setAppIdAppCode($appId, $appCode)
+    /**
+     * @param string $appId
+     * @param string $appCode
+     * @return void
+     */
+    public function setAppIdAppCode(string $appId, string $appCode): void
     {
         $this->appId = $appId;
         $this->appCode = $appCode;
         $this->credentialTypeSelected = self::CREDENTIAL_TYPE_APPCODE;
     }
 
-    public function getAppId()
+    /**
+     * @return string
+     */
+    public function getAppId(): string
     {
         return $this->appId;
     }
 
-    public function getAppCode()
+    /**
+     * @return string
+     */
+    public function getAppCode(): string
     {
         return $this->appCode;
     }
 
 
-
-    public static function __set_state(array $state)
+    /**
+     * @param array<string,string> $state
+     * @return self
+     */
+    public static function __set_state(array $state): self
     {
         return new self(
             $state['token']
         );
     }
-    public function getAccessToken()
+
+    /**
+     * @return string
+     */
+    public function getAccessToken(): string
     {
         return $this->accessToken;
     }
 
-    public function setAccessToken(string $accessToken)
+    /**
+     * @param string $accessToken
+     * @return void
+     */
+    public function setAccessToken(string $accessToken): void
     {
         $this->accessToken = $accessToken;
         $this->credentialTypeSelected = self::CREDENTIAL_TYPE_OAUTH2TOKEN;
@@ -121,24 +147,31 @@ class ApiCredentials
     /**
      * Return the Array representation of this object
      *
-     * @return array
+     * @return array<string,string>
      */
     public function toArray(): array
     {
         return [
-            'accessToken'     => $this->accessToken,
+            'accessToken' => $this->accessToken,
             'appId' => $this->appId,
             'appCode' => $this->appCode,
             'apiKey' =>  $this->apiKey
         ];
     }
 
-    public function serialize()
+    /**
+     * @return string
+     */
+    public function serialize(): string
     {
         return json_encode($this->toArray());
     }
 
-    public function unserialize($serialized)
+    /**
+     * @param string $serialized
+     * @return void
+     */
+    public function unserialize(string $serialized): void
     {
         $data = json_decode($serialized, true);
         $this->accessToken = $data['accessToken'];
@@ -147,13 +180,19 @@ class ApiCredentials
         $this->apiKey = $data['apiKey'];
     }
 
-    public function isBearer()
+    /**
+     * @return bool
+     */
+    public function isBearer(): bool
     {
 
         return $this->credentialTypeSelected === self::CREDENTIAL_TYPE_OAUTH2TOKEN;
     }
 
-    public function getHeaderAuthorization()
+    /**
+     * @return string
+     */
+    public function getHeaderAuthorization(): string
     {
         return "Bearer {$this->getAccessToken()}";
     }

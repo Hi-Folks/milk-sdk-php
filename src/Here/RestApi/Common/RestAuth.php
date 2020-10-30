@@ -48,7 +48,10 @@ class RestAuth
      */
     private static $oauthVersion;
 
-    private static function initOauth()
+    /**
+     * @return void
+     */
+    private static function initOauth(): void
     {
         self::$oauthNonce = strval(mt_rand());
         self::$oauthTimestamp = time();
@@ -56,7 +59,12 @@ class RestAuth
         self::$oauthVersion = "1.0";
     }
 
-    public static function createSignature($accessKeyId, $accessKeySecret)
+    /**
+     * @param string $accessKeyId
+     * @param string $accessKeySecret
+     * @return \Psr\Http\Message\StreamInterface|string
+     */
+    public static function createSignature(string $accessKeyId, string $accessKeySecret)
     {
         self::initOauth();
 
@@ -115,8 +123,12 @@ class RestAuth
         }
     }
 
-
-    public static function getAccessToken($accessKeyId, $accessKeySecret)
+    /**
+     * @param string $accessKeyId
+     * @param string $accessKeySecret
+     * @return string
+     */
+    public static function getAccessToken(string $accessKeyId, string $accessKeySecret): string
     {
         $stringJson = self::createSignature($accessKeyId, $accessKeySecret);
         $myToken = json_decode($stringJson)->access_token;
