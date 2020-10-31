@@ -116,6 +116,8 @@ class RoutingV8 extends RestClient
         $this->paramUnits = "";
         $this->paramVia = [];
 
+        $this->departureTime = "";
+        
         $this->origin = null;
         $this->destination = null;
     }
