@@ -47,7 +47,7 @@ class RoutingV8 extends RestClient
     private $paramAlternatives;
 
     /**
-     * Departure Time in RFC3336 Section 5.6 standards
+     * Departure Time in RFC3339 Section 5.6 standards
      *
      * @var string
      */
@@ -251,7 +251,7 @@ class RoutingV8 extends RestClient
 
     /**
      * Set departure time
-     * Format should be in RFC3336 Standard (Ex: 2019-06-24T01:23:45Z)
+     * Format should be in RFC3339 Standard (Ex: 2019-06-24T01:23:45Z)
      * 
      * @param string $time
      * @return $this
