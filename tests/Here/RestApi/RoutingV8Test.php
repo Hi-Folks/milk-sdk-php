@@ -100,7 +100,6 @@ class RoutingV8Test extends TestCase
         $url = "https://router.hereapi.com/v8/routes?routingMode=short&origin=52.516,13.3779&destination=52.5185,13.4283";
         $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing mode short");
 
-        $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing return summary+actions (append)");
         $routing = RoutingV8::instance()
             ->startingPoint(52.5160, 13.3779)
             ->destination(52.5185, 13.4283)
@@ -114,6 +113,7 @@ class RoutingV8Test extends TestCase
             ->returnAppend("summary")
             ->returnAppend("actions");
         $url = "https://router.hereapi.com/v8/routes?return=summary%2Cactions&origin=52.516,13.3779&destination=52.5185,13.4283";
+        $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing return summary+actions (append)");
         
         $routing = RoutingV8::instance()
             ->startingPoint(52.5160, 13.3779)
