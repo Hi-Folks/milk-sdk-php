@@ -250,13 +250,13 @@ class RoutingV8 extends RestClient
     public function via(float $latitude, float $longitude): self
     {
         $this->paramVia = [];
-        $this->paramVia[] = new LatLong($long, $lat);
+        $this->paramVia[] = new LatLong($latitude, $longitude);
         
         return $this;
     }    
     public function viaAppend(float $latitude, float $longitude): self
     {
-        $this->paramVia[] = new LatLong($long, $lat);
+        $this->paramVia[] = new LatLong($latitude, $longitude);
         
         return $this;
     }
@@ -326,7 +326,7 @@ class RoutingV8 extends RestClient
         }
         
         if (count($this->paramVia) > 0) {
-            $retString = $this->addQueryParam($retString, "via", implode("&via=", $this->paramVia));
+            $retString = $this->addQueryParam($retString, "via", implode("&via=", $this->paramVia), false);
         }
 
         $cred = $this->c->getCredentials();
