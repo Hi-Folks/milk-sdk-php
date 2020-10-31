@@ -347,7 +347,7 @@ class RoutingV8 extends RestClient
             $retString = $this->addQueryParam($retString, "destination", $this->destination->getString(), false);
         }
         if ($this->paramDepartureTime) {
-            $retString = $this->addQueryParam($retString, "departureTime", $this->paramDepartureTime);
+            $retString = $this->addQueryParam($retString, "departureTime", $this->paramDepartureTime, false);
         }
         if (count($this->paramVia) > 0) {
             $retString = $this->addQueryParam($retString, "via", implode("&via=", $this->paramVia), false);
