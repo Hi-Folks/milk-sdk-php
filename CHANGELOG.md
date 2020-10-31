@@ -1,17 +1,21 @@
 # Changelog
 
-## 0.1.1 - WIP
+## 0.1.1 - 2020-10-31
 
 ### Add
 - Routing V8: add new transport mode "bicycle" and "scooter";
 - Routing V8: add alternatives parameter;
 - Routing V8: add units (metrics/imperial);
-- Routing V8: add via parameter;
-- Adding test suite
+- Routing V8: add via parameter (thanks to @cgarde89);
+- Isoline: add Isoline integration;
+- Adding test suite;
+- LatLong added magic method toString() (thanks to @cgarde89);
 
 ### Change
+- Fix Phpstan warnings (level 6) (thanks to @creativenull)
 - Refactoring base classes avoiding Singleton design pattern, and introducing DI;
 - update examples/* and Readme file
+
 
 ## 0.1.0 - 2020-10-21
 
