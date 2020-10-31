@@ -385,7 +385,12 @@ class RoutingV8 extends RestClient
         if ($this->destination) {
             $retString = $this->addQueryParam($retString, "destination", $this->destination->getString(), false);
         }
-        
+        if ($this->paramAvoidFeatures) {
+            $retString = $this->addQueryParam($retString, "avoid[features]", $this->destination->paramAvoidFeatures);
+        }
+        if ($this->paramAvoidAreas) {
+            $retString = $this->addQueryParam($retString, "avoid[areas]", $this->destination->paramAvoidAreas);
+        }
         if (count($this->paramVia) > 0) {
             $retString = $this->addQueryParam($retString, "via", implode("&via=", $this->paramVia), false);
         }
