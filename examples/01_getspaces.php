@@ -3,6 +3,7 @@ require __DIR__ . "/../vendor/autoload.php";
 
 use HiFolks\Milk\Here\Xyz\Common\XyzConfig;
 use HiFolks\Milk\Here\Xyz\Space\XyzSpace;
+use HiFolks\Milk\Utils\Environment;
 
 function print_row($item, $key)
 {
@@ -11,8 +12,9 @@ function print_row($item, $key)
 
 
 Dotenv\Dotenv::createImmutable(__DIR__ . "/../")->load();
-$xyzToken = $_ENV['XYZ_ACCESS_TOKEN'];
-$xyzHost = "http://localhost:8080";
+$xyzToken = Environment::getEnv( 'XYZ_ACCESS_TOKEN');
+
+$xyzHost = Environment::getEnv( 'XYZ_API_HOSTNAME');
 $config= XyzConfig::getInstance($xyzToken, $xyzHost);
 
 $space = new XyzSpace($config);
