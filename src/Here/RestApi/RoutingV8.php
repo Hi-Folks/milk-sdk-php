@@ -52,8 +52,11 @@ class RoutingV8 extends RestClient
      * Enum: "metric" "imperial"
      */
     private $paramUnits;
-
-
+    
+    /**
+     * @var array<LatLong>
+     */
+    private $paramVia;
 
     /**
      * @var LatLong|null
@@ -104,6 +107,7 @@ class RoutingV8 extends RestClient
         $this->paramLang = "";
         $this->paramAlternatives = -1;
         $this->paramUnits = "";
+        $this->paramVia = [];
 
         $this->origin = null;
         $this->destination = null;
@@ -237,6 +241,25 @@ class RoutingV8 extends RestClient
     {
         return $this->units("imperial");
     }
+    
+    /**
+     * @param float $latitude
+     * @param float $longitude
+     * @return $this
+     */
+    public function via(float $latitude, float $longitude): self
+    {
+        $this->paramVia = [];
+        $this->paramVia[] = new LatLong($latitude, $longitude);
+        
+        return $this;
+    }    
+    public function viaAppend(float $latitude, float $longitude): self
+    {
+        $this->paramVia[] = new LatLong($latitude, $longitude);
+        
+        return $this;
+    }
 
 
 
@@ -300,6 +323,10 @@ class RoutingV8 extends RestClient
         }
         if ($this->destination) {
             $retString = $this->addQueryParam($retString, "destination", $this->destination->getString(), false);
+        }
+        
+        if (count($this->paramVia) > 0) {
+            $retString = $this->addQueryParam($retString, "via", implode("&via=", $this->paramVia), false);
         }
 
         $cred = $this->c->getCredentials();

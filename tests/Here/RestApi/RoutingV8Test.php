@@ -103,18 +103,25 @@ class RoutingV8Test extends TestCase
         $routing = RoutingV8::instance()
             ->startingPoint(52.5160, 13.3779)
             ->destination(52.5185, 13.4283)
+            ->viaAppend(52.5213, 13.4051);
+        $url = "https://router.hereapi.com/v8/routes?origin=52.516,13.3779&destination=52.5185,13.4283&via=52.5213,13.4051";
+        $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing via");
+        
+        $routing = RoutingV8::instance()
+            ->startingPoint(52.5160, 13.3779)
+            ->destination(52.5185, 13.4283)
             ->returnAppend("summary")
             ->returnAppend("actions");
         $url = "https://router.hereapi.com/v8/routes?return=summary%2Cactions&origin=52.516,13.3779&destination=52.5185,13.4283";
         $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing return summary+actions (append)");
-
+        
         $routing = RoutingV8::instance()
             ->startingPoint(52.5160, 13.3779)
             ->destination(52.5185, 13.4283)
             ->returnInstructions();
         $url = "https://router.hereapi.com/v8/routes?return=polyline%2Cactions%2Cinstructions&origin=52.516,13.3779&destination=52.5185,13.4283";
         $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing return instructions");
-
+        
         $routing = RoutingV8::instance()
             ->setAppIdAppCode("aa", "bb")
             ->startingPoint(52.5160, 13.3779)
