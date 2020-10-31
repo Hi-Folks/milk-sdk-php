@@ -28,6 +28,26 @@ class RoutingV8 extends RestClient
      */
     private $paramTransportMode;
 
+    /**
+     * A comma separated list of features that routes will avoid.
+     * Enum [ seasonalClosure | tollRoad | controlledAccessHighway | ferry | carShuttleTrain | tunnel | dirtRoad | difficultTurns ]
+     * @var string
+     */
+    private $paramAvoidFeatures;
+
+    /**
+     * A pipe separated list of user defined areas that routes will avoid to go through.
+     *
+     * @var string
+     */
+    private $paramAvoidAreas;
+
+    /**
+     * Temporary values of avoid parameter
+     *
+     * @var array<string>
+     */
+    private $paramAvoid = [];
 
     /**
      * @var array<string>
@@ -108,6 +128,9 @@ class RoutingV8 extends RestClient
         $this->paramAlternatives = -1;
         $this->paramUnits = "";
         $this->paramVia = [];
+        $this->paramAvoid = [];
+        $this->paramAvoidFeatures = "";
+        $this->paramAvoidAreas = "";
 
         $this->origin = null;
         $this->destination = null;
@@ -260,7 +283,45 @@ class RoutingV8 extends RestClient
         
         return $this;
     }
+    
+    /**
+     * A feature or list of features for route to avoid
+     *
+     * @param string|array $feature feature or features to avoid
+     * @return $this
+     */
+    public function avoidFeature($feature)
+    {
+        if (!isset($this->paramAvoid['features'])) {
+            $this->paramAvoid['features'] = [];
+        }
 
+        if (is_string($feature)) {
+            $feature = [$feature];
+        }
+
+        $this->paramAvoid['features'] = array_merge($this->paramAvoid['features'], $feature);
+        $this->paramAvoidFeatures = implode(',', $this->paramAvoid['features']);
+
+        return $this;
+    }
+
+    /**
+     * A rectangular area on earth to avoid
+     *
+     * @param float $west Longitude value of the westernmost point of the area.
+     * @param float $south Latitude value of the southernmost point of the area.
+     * @param float $east Longitude value of the easternmost point of the area.
+     * @param float $north Latitude value of the northernmost point of the area.
+     * @return $this
+     */
+    public function avoidArea($west, $south, $east, $north)
+    {
+        $this->paramAvoid['areas'][] = "$west,$south,$east,$north";
+        $this->paramAvoidAreas = implode('|', $this->paramAvoid['areas']);
+        
+        return $this;
+    }
 
 
     public function langIta(): self
