@@ -47,6 +47,13 @@ class RoutingV8 extends RestClient
     private $paramAlternatives;
 
     /**
+     * Departure Time in RFC3336 Section 5.6 standards
+     *
+     * @var string
+     */
+    private $paramDepartureTime;
+
+    /**
      * @var string
      * Units of measurement used in guidance instructions. The default is metric.
      * Enum: "metric" "imperial"
@@ -240,6 +247,19 @@ class RoutingV8 extends RestClient
     public function unitsImperial(): self
     {
         return $this->units("imperial");
+    }
+
+    /**
+     * Set departure time
+     * Format should be in RFC3336 Standard (Ex: 2019-06-24T01:23:45Z)
+     * 
+     * @param string $time
+     * @return $this
+     */
+    public function departureTime(string $time) {
+        if (\DateTime::createFromFormat(\DateTime::RFC3339, $time) !== FALSE) {
+            $this->departureTime = $time;
+        }
     }
     
     /**
