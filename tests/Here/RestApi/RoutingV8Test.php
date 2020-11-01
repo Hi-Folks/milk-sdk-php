@@ -180,6 +180,25 @@ class RoutingV8Test extends TestCase
             ->avoidTollRoad()
             ->byCar();
         $this->assertSame($routing2->getUrl(), $routing->getUrl(), "Routing: Basic GET routing avoid Toll  comparing 2 ways");
+
+
+        $routing = RoutingV8::instance()
+            ->setApiKey("xxx")
+            ->startingPoint(47.257410,11.351458)
+            ->destination(47.168076,11.861380)
+            ->avoidTollRoad()
+            ->avoidCarShuttleTrain()
+            ->avoidControlledAccessHighway()
+            ->avoidDifficultTurns()
+            ->avoidDirtRoad()
+            ->avoidFerry()
+            ->avoidSeasonalClosure()
+            ->avoidTunnel()
+            ->byCar();
+
+        $url = "https://router.hereapi.com/v8/routes?transportMode=car&origin=47.25741,11.351458&destination=47.168076,11.86138&avoid%5Bfeatures%5D=tollRoad,carShuttleTrain,controlledAccessHighway,difficultTurns,dirtRoad,ferry,seasonalClosure,tunnel&apiKey=xxx";
+        $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing avoid Toll");
+
     }
 
     public function testBasicRoutingWithMock()

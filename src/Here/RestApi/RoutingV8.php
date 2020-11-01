@@ -307,7 +307,7 @@ class RoutingV8 extends RestClient
      */
     public function avoidFeatures($feature)
     {
-        $this->paramAvoidFeatures = [];
+        //$this->paramAvoidFeatures = [];
 
         if (is_string($feature)) {
             $feature = [$feature];
@@ -318,6 +318,29 @@ class RoutingV8 extends RestClient
     public function avoidTollRoad() {
         return $this->avoidFeatures("tollRoad");
     }
+    public function avoidFerry() {
+        return $this->avoidFeatures("ferry");
+    }
+    public function avoidSeasonalClosure() {
+        return $this->avoidFeatures("seasonalClosure");
+    }
+    public function avoidControlledAccessHighway() {
+        return $this->avoidFeatures("controlledAccessHighway");
+    }
+    public function avoidCarShuttleTrain() {
+        return $this->avoidFeatures("carShuttleTrain");
+    }
+    public function avoidTunnel() {
+        return $this->avoidFeatures("tunnel");
+    }
+    public function avoidDirtRoad() {
+        return $this->avoidFeatures("dirtRoad");
+    }
+    public function avoidDifficultTurns() {
+        return $this->avoidFeatures("difficultTurns");
+    }
+
+
 
     /**
      * A rectangular area on earth to avoid
