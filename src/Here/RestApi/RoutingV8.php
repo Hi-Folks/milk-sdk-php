@@ -29,26 +29,18 @@ class RoutingV8 extends RestClient
     private $paramTransportMode;
 
     /**
-     * A comma separated list of features that routes will avoid.
-     * Enum [ seasonalClosure | tollRoad | controlledAccessHighway | ferry |
+     * Array of features that routes will avoid.
+     * Values: [ seasonalClosure | tollRoad | controlledAccessHighway | ferry |
      *      carShuttleTrain | tunnel | dirtRoad | difficultTurns ]
-     * @var string
+     * @var array<string>
      */
     private $paramAvoidFeatures;
 
     /**
-     * A pipe separated list of user defined areas that routes will avoid to go through.
-     *
-     * @var string
+     * Array of user defined areas that routes will avoid to go through
+     * @var array<mixed>
      */
     private $paramAvoidAreas;
-
-    /**
-     * Temporary values of avoid parameter
-     *
-     * @var array<string>
-     */
-    private $paramAvoid = [];
 
     /**
      * @var array<string>
@@ -136,9 +128,8 @@ class RoutingV8 extends RestClient
         $this->paramAlternatives = -1;
         $this->paramUnits = "";
         $this->paramVia = [];
-        $this->paramAvoid = [];
-        $this->paramAvoidFeatures = "";
-        $this->paramAvoidAreas = "";
+        $this->paramAvoidFeatures = [];
+        $this->paramAvoidAreas = [];
 
         $this->departureTime = "";
 
@@ -314,20 +305,18 @@ class RoutingV8 extends RestClient
      * @param string|array $feature feature or features to avoid
      * @return $this
      */
-    public function avoidFeature($feature)
+    public function avoidFeatures($feature)
     {
-        if (!isset($this->paramAvoid['features'])) {
-            $this->paramAvoid['features'] = [];
-        }
+        $this->paramAvoidFeatures = [];
 
         if (is_string($feature)) {
             $feature = [$feature];
         }
-
-        $this->paramAvoid['features'] = array_merge($this->paramAvoid['features'], $feature);
-        $this->paramAvoidFeatures = implode(',', $this->paramAvoid['features']);
-
+        $this->paramAvoidFeatures = array_merge($this->paramAvoidFeatures, $feature);
         return $this;
+    }
+    public function avoidTollRoad() {
+        return $this->avoidFeatures("tollRoad");
     }
 
     /**
@@ -412,9 +401,10 @@ class RoutingV8 extends RestClient
         if ($this->paramDepartureTime) {
             $retString = $this->addQueryParam($retString, "departureTime", $this->paramDepartureTime, false);
         }
-        if ($this->paramAvoidFeatures) {
-            $retString = $this->addQueryParam($retString, "avoid[features]", $this->paramAvoidFeatures, false);
+        if (is_array($this->paramAvoidFeatures) && count($this->paramAvoidFeatures)> 0) {
+            $retString = $this->addQueryParam($retString, "avoid[features]", implode(",",$this->paramAvoidFeatures), false);
         }
+
         if ($this->paramAvoidAreas) {
             $retString = $this->addQueryParam($retString, "avoid[areas]", $this->paramAvoidAreas, false);
         }

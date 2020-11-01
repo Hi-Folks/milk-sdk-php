@@ -150,7 +150,36 @@ class RoutingV8Test extends TestCase
         $url = "https://router.hereapi.com/v8/routes?transportMode=car&return=polyline,summary&origin=52.51375,13.42462&destination=52.52332,13.428&via=52.52426,13.43&apiKey=xxx";
         $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing with via");
 
+        $routing = RoutingV8::instance()
+            ->setApiKey("xxx")
+            ->startingPoint(52.51375, 13.42462)
+            ->destination(52.52332, 13.42800)
+            ->via(52.52426,13.43000)
+            ->viaAppend(52.53,13.44)
+            ->byCar()
+            ->return("polyline")
+            ->returnAppend("summary");
 
+        $url = "https://router.hereapi.com/v8/routes?transportMode=car&return=polyline,summary&origin=52.51375,13.42462&destination=52.52332,13.428&via=52.52426,13.43&via=52.53,13.44&apiKey=xxx";
+        $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing with multiple via");
+
+        $routing = RoutingV8::instance()
+            ->setApiKey("xxx")
+            ->startingPoint(47.257410,11.351458)
+            ->destination(47.168076,11.861380)
+            ->avoidFeatures("tollRoad")
+            ->byCar();
+
+        $url = "https://router.hereapi.com/v8/routes?transportMode=car&origin=47.25741,11.351458&destination=47.168076,11.86138&avoid%5Bfeatures%5D=tollRoad&apiKey=xxx";
+        $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing avoid Toll");
+
+        $routing2 = RoutingV8::instance()
+            ->setApiKey("xxx")
+            ->startingPoint(47.257410,11.351458)
+            ->destination(47.168076,11.861380)
+            ->avoidTollRoad()
+            ->byCar();
+        $this->assertSame($routing2->getUrl(), $routing->getUrl(), "Routing: Basic GET routing avoid Toll  comparing 2 ways");
     }
 
     public function testBasicRoutingWithMock()
