@@ -84,7 +84,7 @@ class RoutingV8Test extends TestCase
             ->destination(52.5185, 13.4283)
             ->return("summary");
         $url = "https://router.hereapi.com/v8/routes?return=summary&origin=52.516,13.3779&destination=52.5185,13.4283";
-        $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET return summery");
+        $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET return summary");
 
         $routing = RoutingV8::instance()
             ->startingPoint(52.5160, 13.3779)
@@ -106,28 +106,28 @@ class RoutingV8Test extends TestCase
             ->viaAppend(52.5213, 13.4051);
         $url = "https://router.hereapi.com/v8/routes?origin=52.516,13.3779&destination=52.5185,13.4283&via=52.5213,13.4051";
         $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing via");
-        
+
         $routing = RoutingV8::instance()
             ->startingPoint(52.5160, 13.3779)
             ->destination(52.5185, 13.4283)
             ->returnAppend("summary")
             ->returnAppend("actions");
-        $url = "https://router.hereapi.com/v8/routes?return=summary%2Cactions&origin=52.516,13.3779&destination=52.5185,13.4283";
+        $url = "https://router.hereapi.com/v8/routes?return=summary,actions&origin=52.516,13.3779&destination=52.5185,13.4283";
         $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing return summary+actions (append)");
-        
+
         $routing = RoutingV8::instance()
             ->startingPoint(52.5160, 13.3779)
             ->destination(52.5185, 13.4283)
             ->returnInstructions();
-        $url = "https://router.hereapi.com/v8/routes?return=polyline%2Cactions%2Cinstructions&origin=52.516,13.3779&destination=52.5185,13.4283";
+        $url = "https://router.hereapi.com/v8/routes?return=polyline,actions,instructions&origin=52.516,13.3779&destination=52.5185,13.4283";
         $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing return instructions");
-        
+
         $routing = RoutingV8::instance()
             ->setAppIdAppCode("aa", "bb")
             ->startingPoint(52.5160, 13.3779)
             ->destination(52.5185, 13.4283)
             ->returnInstructions();
-        $url = "https://router.hereapi.com/v8/routes?return=polyline%2Cactions%2Cinstructions&origin=52.516,13.3779&destination=52.5185,13.4283&app_id=aa&app_code=bb";
+        $url = "https://router.hereapi.com/v8/routes?return=polyline,actions,instructions&origin=52.516,13.3779&destination=52.5185,13.4283&app_id=aa&app_code=bb";
         $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing with app_id and app_code");
 
         $routing = RoutingV8::instance()
@@ -135,8 +135,20 @@ class RoutingV8Test extends TestCase
             ->startingPoint(52.5160, 13.3779)
             ->destination(52.5185, 13.4283)
             ->returnInstructions();
-        $url = "https://router.hereapi.com/v8/routes?return=polyline%2Cactions%2Cinstructions&origin=52.516,13.3779&destination=52.5185,13.4283&apiKey=xxx";
+        $url = "https://router.hereapi.com/v8/routes?return=polyline,actions,instructions&origin=52.516,13.3779&destination=52.5185,13.4283&apiKey=xxx";
         $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing with apiKey");
+
+        $routing = RoutingV8::instance()
+            ->setApiKey("xxx")
+            ->startingPoint(52.51375, 13.42462)
+            ->destination(52.52332, 13.42800)
+            ->via(52.52426,13.43000)
+            ->byCar()
+            ->return("polyline")
+            ->returnAppend("summary");
+
+        $url = "https://router.hereapi.com/v8/routes?transportMode=car&return=polyline,summary&origin=52.51375,13.42462&destination=52.52332,13.428&via=52.52426,13.43&apiKey=xxx";
+        $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing with via");
 
 
     }
@@ -273,6 +285,7 @@ class RoutingV8Test extends TestCase
 
         $this->assertIsArray($routingActions, "Routing: Basic GET car actions with mock");
         $this->assertSame(0, sizeof($routingActions), "Routing: count actions from error with mock");
+
 
     }
 

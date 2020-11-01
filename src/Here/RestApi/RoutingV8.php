@@ -79,11 +79,11 @@ class RoutingV8 extends RestClient
      * Enum: "metric" "imperial"
      */
     private $paramUnits;
-    
+
     /**
      * @var array<LatLong>
      */
-    private $paramVia;
+    private $paramVia = [];
 
     /**
      * @var LatLong|null
@@ -140,7 +140,7 @@ class RoutingV8 extends RestClient
         $this->paramAvoidAreas = "";
 
         $this->departureTime = "";
-        
+
         $this->origin = null;
         $this->destination = null;
     }
@@ -277,7 +277,7 @@ class RoutingV8 extends RestClient
     /**
      * Set departure time
      * Format should be in RFC3339 Standard (Ex: 2019-06-24T01:23:45Z)
-     * 
+     *
      * @param string $time
      * @return $this
      */
@@ -286,7 +286,7 @@ class RoutingV8 extends RestClient
             $this->departureTime = $time;
         }
     }
-    
+
     /**
      * @param float $latitude
      * @param float $longitude
@@ -296,16 +296,16 @@ class RoutingV8 extends RestClient
     {
         $this->paramVia = [];
         $this->paramVia[] = new LatLong($latitude, $longitude);
-        
+
         return $this;
-    }    
+    }
     public function viaAppend(float $latitude, float $longitude): self
     {
         $this->paramVia[] = new LatLong($latitude, $longitude);
-        
+
         return $this;
     }
-    
+
     /**
      * A feature or list of features for route to avoid
      *
@@ -341,7 +341,7 @@ class RoutingV8 extends RestClient
     {
         $this->paramAvoid['areas'][] = "$west,$south,$east,$north";
         $this->paramAvoidAreas = implode('|', $this->paramAvoid['areas']);
-        
+
         return $this;
     }
 
@@ -389,7 +389,7 @@ class RoutingV8 extends RestClient
         }
 
         if (count($this->paramReturn) > 0) {
-            $retString = $this->addQueryParam($retString, "return", implode(",", $this->paramReturn));
+            $retString = $this->addQueryParam($retString, "return", implode(",", $this->paramReturn), false);
         }
 
         if ($this->paramLang !== "") {
@@ -416,9 +416,11 @@ class RoutingV8 extends RestClient
         if ($this->paramAvoidAreas) {
             $retString = $this->addQueryParam($retString, "avoid[areas]", $this->destination->paramAvoidAreas, false);
         }
-        if (count($this->paramVia) > 0) {
-            $retString = $this->addQueryParam($retString, "via", implode("&via=", $this->paramVia), false);
+
+        foreach ($this->paramVia as $viaValue) {
+            $retString = $this->addQueryParam($retString, "via", $viaValue->getString(), false);
         }
+
 
         $cred = $this->c->getCredentials();
         if (! $cred->isBearer()) {
