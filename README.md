@@ -9,6 +9,7 @@ Milk SDK PHP is a (fluent) open-source PHP library that makes it easy to integra
 - HERE **Weather** Destination API;
 - HERE **Geocoding** API;
 - HERE **Reverse Geocoding** API;
+- HERE **Isoline** API;
 
 ## Getting Started
 
@@ -22,11 +23,11 @@ composer require hi-folks/milk-sdk-php
 
 ### Configuring XYZ HUB
 
-With this SDK you can consume XYZ API.
+With this SDK you can consume DataHub (XYZ) API.
 You have 2 options:
 - use your own instance of XYZ HUB
 or
-- use XYZ HUB Cloud
+- use Data Hub Cloud https://developer.here.com/documentation/studio/map_customization_suite_hlp/dev_guide/index.html
 
 #### Configure SDK with your own instance of XYZ HUB
 
@@ -312,6 +313,18 @@ if ($r->isError()) {
 }
 ```
 
+## Isoline API
+```php
+use HiFolks\Milk\Here\RestApi\Isoline;
+$hereApiKey = "yourapikey";
+$isoline = Isoline::instance()
+    ->setApiKey($hereApiKey)
+    ->originPoint(41.890251, 12.492373)
+    ->byFoot()
+    ->rangeByTime(600) // 10 minutes
+    ->get();
+
+```
 
 
 ## Useful reference
@@ -338,4 +351,8 @@ if ($r->isError()) {
 ### HERE Rest Reverse Geocoding API
 
 - Overview: https://developer.here.com/documentation/geocoding-search-api/dev_guide/topics/endpoint-reverse-geocode-brief.html
+
+### HERE Rest Isoline API
+
+- Overview: https://developer.here.com/documentation/isoline-routing-api/dev_guide/index.html
 
