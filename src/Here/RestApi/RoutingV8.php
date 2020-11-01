@@ -30,7 +30,8 @@ class RoutingV8 extends RestClient
 
     /**
      * A comma separated list of features that routes will avoid.
-     * Enum [ seasonalClosure | tollRoad | controlledAccessHighway | ferry | carShuttleTrain | tunnel | dirtRoad | difficultTurns ]
+     * Enum [ seasonalClosure | tollRoad | controlledAccessHighway | ferry |
+     *      carShuttleTrain | tunnel | dirtRoad | difficultTurns ]
      * @var string
      */
     private $paramAvoidFeatures;
@@ -281,8 +282,9 @@ class RoutingV8 extends RestClient
      * @param string $time
      * @return $this
      */
-    public function departureTime(string $time) {
-        if (\DateTime::createFromFormat(\DateTime::RFC3339, $time) !== FALSE) {
+    public function departureTime(string $time)
+    {
+        if (\DateTime::createFromFormat(\DateTime::RFC3339, $time) !== false) {
             $this->departureTime = $time;
         }
     }
@@ -411,10 +413,10 @@ class RoutingV8 extends RestClient
             $retString = $this->addQueryParam($retString, "departureTime", $this->paramDepartureTime, false);
         }
         if ($this->paramAvoidFeatures) {
-            $retString = $this->addQueryParam($retString, "avoid[features]", $this->destination->paramAvoidFeatures, false);
+            $retString = $this->addQueryParam($retString, "avoid[features]", $this->paramAvoidFeatures, false);
         }
         if ($this->paramAvoidAreas) {
-            $retString = $this->addQueryParam($retString, "avoid[areas]", $this->destination->paramAvoidAreas, false);
+            $retString = $this->addQueryParam($retString, "avoid[areas]", $this->paramAvoidAreas, false);
         }
 
         foreach ($this->paramVia as $viaValue) {

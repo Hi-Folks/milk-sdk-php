@@ -17,4 +17,7 @@ phpstan: ## Execute phpstan from phpstan.neon
 phpcs: ## Execute PhpCS with PSR12 standard on src directory
 	vendor/bin/phpcs --standard=PSR12 src
 
+fixpsr12: ## Fix style for PSR12 standard on src directory
+	vendor/bin/phpcbf --standard=PSR12 src
+
 allcheck: phpcs phpstan test ## Perform all check: phpcs, phpstan and test

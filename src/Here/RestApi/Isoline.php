@@ -110,7 +110,6 @@ class Isoline extends RestClient
         $this->paramRoutingMode = "";
         $this->paramOrigin = null;
         $this->paramDestination = null;
-
     }
 
     /**
@@ -199,9 +198,9 @@ class Isoline extends RestClient
         if (! is_array($values)) {
             $value = $values;
             $values = [];
-            $values[]= $value;
+            $values[] = $value;
         }
-        $this->paramRange =[$values, $type ];
+        $this->paramRange = [$values, $type ];
         return $this;
     }
     public function rangeByTime($values): self
@@ -319,23 +318,23 @@ class Isoline extends RestClient
         if (! is_null($this->paramOrigin)) {
             $retString = $this->addQueryParam($retString, "origin", $this->paramOrigin->getString(), false);
         }
-        if ($this->paramDepartureTime!== "") {
+        if ($this->paramDepartureTime !== "") {
             $retString = $this->addQueryParam($retString, "departureTime", $this->paramDepartureTime);
         }
         if (! is_null($this->paramDestination)) {
             $retString = $this->addQueryParam($retString, "destination", $this->paramDestination->getString(), false);
         }
-        if ($this->paramArrivalTime!== "") {
+        if ($this->paramArrivalTime !== "") {
             $retString = $this->addQueryParam($retString, "arrivalTime", $this->paramArrivalTime);
         }
-        if (is_array($this->paramRange) && sizeof($this->paramRange)=== 2 ) {
+        if (is_array($this->paramRange) && sizeof($this->paramRange) === 2) {
             $retString = $this->addQueryParam($retString, "range[type]", $this->paramRange[1]);
-            $retString = $this->addQueryParam($retString, "range[values]", implode(",",$this->paramRange[0]));
+            $retString = $this->addQueryParam($retString, "range[values]", implode(",", $this->paramRange[0]));
         }
-        if ($this->paramRoutingMode!== "") {
+        if ($this->paramRoutingMode !== "") {
             $retString = $this->addQueryParam($retString, "routingMode", $this->paramRoutingMode);
         }
-        if ($this->paramTransportMode!== "") {
+        if ($this->paramTransportMode !== "") {
             $retString = $this->addQueryParam($retString, "transportMode", $this->paramTransportMode);
         } else {
             $retString = $this->addQueryParam($retString, "transportMode", "car");
