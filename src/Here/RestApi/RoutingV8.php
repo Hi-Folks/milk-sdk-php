@@ -2,6 +2,7 @@
 
 namespace HiFolks\Milk\Here\RestApi;
 
+use HiFolks\Milk\Here\Common\Bbox;
 use HiFolks\Milk\Here\RestApi\Common\RestClient;
 use HiFolks\Milk\Here\RestApi\Common\RestConfig;
 use HiFolks\Milk\Here\Common\LatLong;
@@ -38,7 +39,7 @@ class RoutingV8 extends RestClient
 
     /**
      * Array of user defined areas that routes will avoid to go through
-     * @var array<mixed>
+     * @var array<Bbox>
      */
     private $paramAvoidAreas;
 
@@ -341,21 +342,31 @@ class RoutingV8 extends RestClient
     }
 
 
-
     /**
      * A rectangular area on earth to avoid
      *
-     * @param float $west Longitude value of the westernmost point of the area.
-     * @param float $south Latitude value of the southernmost point of the area.
-     * @param float $east Longitude value of the easternmost point of the area.
-     * @param float $north Latitude value of the northernmost point of the area.
+     * @param float $westLongitude Longitude value of the westernmost point of the area.
+     * @param float $southLatitude Latitude value of the southernmost point of the area.
+     * @param float $eastLongitude Longitude value of the easternmost point of the area.
+     * @param float $northLatitude Latitude value of the northernmost point of the area.
      * @return $this
      */
-    public function avoidArea($west, $south, $east, $north)
+    public function avoidArea(float $westLongitude,
+                              float $southLatitude,
+                              float $eastLongitude,
+                              float $northLatitude)
     {
-        $this->paramAvoid['areas'][] = "$west,$south,$east,$north";
-        $this->paramAvoidAreas = implode('|', $this->paramAvoid['areas']);
 
+        $this->paramAvoidAreas[] = new Bbox($westLongitude, $southLatitude, $eastLongitude, $northLatitude);
+        return $this;
+    }
+
+    public function avoidAreaByCenter(float $latitude,
+                              float $longitude,
+                              $distance = 1)
+    {
+
+        $this->paramAvoidAreas[] = Bbox::createByCenter($latitude, $longitude, $distance);
         return $this;
     }
 
@@ -428,8 +439,8 @@ class RoutingV8 extends RestClient
             $retString = $this->addQueryParam($retString, "avoid[features]", implode(",",$this->paramAvoidFeatures), false);
         }
 
-        if ($this->paramAvoidAreas) {
-            $retString = $this->addQueryParam($retString, "avoid[areas]", $this->paramAvoidAreas, false);
+        if (is_array($this->paramAvoidAreas) && count($this->paramAvoidAreas)> 0) {
+            $retString = $this->addQueryParam($retString, "avoid[areas]", implode("|",$this->paramAvoidAreas), false);
         }
 
         foreach ($this->paramVia as $viaValue) {
@@ -461,6 +472,17 @@ class RoutingV8 extends RestClient
             return [];
         }
         return $result->getData()->routes[0]->sections[0]->actions;
+    }
+    /**
+     * @return mixed
+     */
+    public function getRoute()
+    {
+        $result = $this->get();
+        if ($result->isError()) {
+            return [];
+        }
+        return $result->getData()->routes[0];
     }
 
     protected function getPath(): string

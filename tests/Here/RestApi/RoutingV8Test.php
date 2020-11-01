@@ -197,7 +197,19 @@ class RoutingV8Test extends TestCase
             ->byCar();
 
         $url = "https://router.hereapi.com/v8/routes?transportMode=car&origin=47.25741,11.351458&destination=47.168076,11.86138&avoid%5Bfeatures%5D=tollRoad,carShuttleTrain,controlledAccessHighway,difficultTurns,dirtRoad,ferry,seasonalClosure,tunnel&apiKey=xxx";
-        $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing avoid Toll");
+        $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing avoid Everything");
+
+
+$routing = RoutingV8::instance()
+    ->setApiKey("xxx")
+    ->startingPoint(47.257410,11.351458)
+    ->destination(47.168076,11.861380)
+    ->avoidAreaByCenter(52,13, 30)
+    ->byFoot();
+
+        $url = "https://router.hereapi.com/v8/routes?transportMode=pedestrian&origin=47.25741,11.351458&destination=47.168076,11.86138&avoid%5Bareas%5D=bbox:12.971105927764,51.995291170474,13.028894072236,52.004708829526&apiKey=xxx";
+        $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing avoid bbox");
+
 
     }
 

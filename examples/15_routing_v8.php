@@ -55,3 +55,17 @@ foreach ($d->routes as $key => $route) {
     }
 
 }
+
+
+
+$routing = RoutingV8::instance()
+    ->setApiKey($hereApiKey)
+    ->startingPoint(47.257410,11.351458)
+    ->destination(47.168076,11.861380)
+    ->avoidAreaByCenter(52,13, 30)
+    //->avoidArea(13.082,52.416,13.628,52.626)
+    ->byFoot()
+    ->returnInstructions()
+    ->getDefaultActions();
+
+var_dump($routing);
