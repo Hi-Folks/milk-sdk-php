@@ -83,13 +83,20 @@ class RoutingV8 extends RestClient
      * @var LatLong|null
      */
     private $origin = null;
+
+    private $originAddress = "";
     /**
      * @var LatLong|null
      */
     private $destination = null;
 
+    private $destinationAddress = "";
+
+    private  $enableGeocoding = false;
 
     private const ENV_ROUTING_V8 = "ENV_ROUTING_V8";
+
+    private const DEFAULT_TRANSPORT_MODE = "car";
 
 
     /**
@@ -122,7 +129,7 @@ class RoutingV8 extends RestClient
 
         $this->contentType = "";
         $this->acceptContentType = "";
-        $this->paramTransportMode = "";
+        $this->paramTransportMode = self::DEFAULT_TRANSPORT_MODE;
         $this->paramRoutingMode = "";
         $this->paramReturn = [];
         $this->paramLang = "";
@@ -228,6 +235,13 @@ class RoutingV8 extends RestClient
         $this->paramReturn[] = "instructions";
         return $this;
     }
+
+    public function returnActions(): self
+    {
+        $this->paramReturn[] = "actions";
+        return $this;
+    }
+
 
     /**
      * @param string $lang
@@ -389,6 +403,23 @@ class RoutingV8 extends RestClient
         $this->origin = $latLong;
         return $this;
     }
+
+    public function enableGeocoding(bool $enable = true) {
+        $this->enableGeocoding = $enable;
+        return $this;
+    }
+
+    public function originAddress(string $address): self
+    {
+        $this->originAddress = $address;
+        return $this;
+    }
+    public function destinationAddress(string $address): self
+    {
+        $this->destinationAddress = $address;
+        return $this;
+    }
+
     public function destination(float $latitude, float $longitude): self
     {
         return $this->destinationLatLong(new LatLong($latitude, $longitude));
@@ -467,11 +498,49 @@ class RoutingV8 extends RestClient
      */
     public function getDefaultActions()
     {
+        $this->returnInstructions();
         $result = $this->get();
         if ($result->isError()) {
             return [];
         }
         return $result->getData()->routes[0]->sections[0]->actions;
+    }
+
+    public function get()
+    {
+
+        if (! $this->enableGeocoding) {
+            // maybe forcing enableGeocoding
+            $this->enableGeocoding =
+                (is_null($this->origin) && $this->originAddress !== "")
+                &&
+                (is_null($this->destination) && $this->destinationAddress !== "");
+        }
+
+        if ($this->enableGeocoding) {
+            if ($this->originAddress !== "") {
+                $g = Geocode::instance()
+                    ->setApiKey($this->getConfig()->getCredentials()->getApiKey())
+                    ->q($this->originAddress)
+                    ->get();
+                if (! $g->isError()) {
+                    $place = $g->getData()->items[0];
+                    $this->origin = new LatLong($place->position->lat, $place->position->lng);
+                }
+            }
+            if ($this->destinationAddress !== "") {
+                $g = Geocode::instance()
+                    ->setApiKey($this->getConfig()->getCredentials()->getApiKey())
+                    ->q($this->destinationAddress)
+                    ->get();
+                if (! $g->isError()) {
+                    $place = $g->getData()->items[0];
+                    $this->destination = new LatLong($place->position->lat, $place->position->lng);
+                }
+            }
+
+        }
+        return parent::get();
     }
     /**
      * @return mixed
