@@ -69,42 +69,42 @@ class RoutingV8Test extends TestCase
             ->startingPoint(52.5160, 13.3779)
             ->destination(52.5185, 13.4283)
             ->unitsImperial();
-        $url = "https://router.hereapi.com/v8/routes?units=imperial&origin=52.516,13.3779&destination=52.5185,13.4283";
+        $url = "https://router.hereapi.com/v8/routes?transportMode=car&units=imperial&origin=52.516,13.3779&destination=52.5185,13.4283";
         $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET units=imperial");
 
         $routing = RoutingV8::instance()
             ->startingPoint(52.5160, 13.3779)
             ->destination(52.5185, 13.4283)
             ->unitsMetric();
-        $url = "https://router.hereapi.com/v8/routes?units=metric&origin=52.516,13.3779&destination=52.5185,13.4283";
+        $url = "https://router.hereapi.com/v8/routes?transportMode=car&units=metric&origin=52.516,13.3779&destination=52.5185,13.4283";
         $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET units=metric");
 
         $routing = RoutingV8::instance()
             ->startingPoint(52.5160, 13.3779)
             ->destination(52.5185, 13.4283)
             ->return("summary");
-        $url = "https://router.hereapi.com/v8/routes?return=summary&origin=52.516,13.3779&destination=52.5185,13.4283";
+        $url = "https://router.hereapi.com/v8/routes?transportMode=car&return=summary&origin=52.516,13.3779&destination=52.5185,13.4283";
         $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET return summary");
 
         $routing = RoutingV8::instance()
             ->startingPoint(52.5160, 13.3779)
             ->destination(52.5185, 13.4283)
             ->routingModeFast();
-        $url = "https://router.hereapi.com/v8/routes?routingMode=fast&origin=52.516,13.3779&destination=52.5185,13.4283";
+        $url = "https://router.hereapi.com/v8/routes?routingMode=fast&transportMode=car&origin=52.516,13.3779&destination=52.5185,13.4283";
         $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing mode fast");
 
         $routing = RoutingV8::instance()
             ->startingPoint(52.5160, 13.3779)
             ->destination(52.5185, 13.4283)
             ->routingModeShort();
-        $url = "https://router.hereapi.com/v8/routes?routingMode=short&origin=52.516,13.3779&destination=52.5185,13.4283";
+        $url = "https://router.hereapi.com/v8/routes?routingMode=short&transportMode=car&origin=52.516,13.3779&destination=52.5185,13.4283";
         $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing mode short");
 
         $routing = RoutingV8::instance()
             ->startingPoint(52.5160, 13.3779)
             ->destination(52.5185, 13.4283)
             ->viaAppend(52.5213, 13.4051);
-        $url = "https://router.hereapi.com/v8/routes?origin=52.516,13.3779&destination=52.5185,13.4283&via=52.5213,13.4051";
+        $url = "https://router.hereapi.com/v8/routes?transportMode=car&origin=52.516,13.3779&destination=52.5185,13.4283&via=52.5213,13.4051";
         $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing via");
 
         $routing = RoutingV8::instance()
@@ -112,14 +112,14 @@ class RoutingV8Test extends TestCase
             ->destination(52.5185, 13.4283)
             ->returnAppend("summary")
             ->returnAppend("actions");
-        $url = "https://router.hereapi.com/v8/routes?return=summary,actions&origin=52.516,13.3779&destination=52.5185,13.4283";
+        $url = "https://router.hereapi.com/v8/routes?transportMode=car&return=summary,actions&origin=52.516,13.3779&destination=52.5185,13.4283";
         $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing return summary+actions (append)");
 
         $routing = RoutingV8::instance()
             ->startingPoint(52.5160, 13.3779)
             ->destination(52.5185, 13.4283)
             ->returnInstructions();
-        $url = "https://router.hereapi.com/v8/routes?return=polyline,actions,instructions&origin=52.516,13.3779&destination=52.5185,13.4283";
+        $url = "https://router.hereapi.com/v8/routes?transportMode=car&return=polyline,actions,instructions&origin=52.516,13.3779&destination=52.5185,13.4283";
         $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing return instructions");
 
         $routing = RoutingV8::instance()
@@ -127,7 +127,7 @@ class RoutingV8Test extends TestCase
             ->startingPoint(52.5160, 13.3779)
             ->destination(52.5185, 13.4283)
             ->returnInstructions();
-        $url = "https://router.hereapi.com/v8/routes?return=polyline,actions,instructions&origin=52.516,13.3779&destination=52.5185,13.4283&app_id=aa&app_code=bb";
+        $url = "https://router.hereapi.com/v8/routes?transportMode=car&return=polyline,actions,instructions&origin=52.516,13.3779&destination=52.5185,13.4283&app_id=aa&app_code=bb";
         $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing with app_id and app_code");
 
         $routing = RoutingV8::instance()
@@ -135,7 +135,7 @@ class RoutingV8Test extends TestCase
             ->startingPoint(52.5160, 13.3779)
             ->destination(52.5185, 13.4283)
             ->returnInstructions();
-        $url = "https://router.hereapi.com/v8/routes?return=polyline,actions,instructions&origin=52.516,13.3779&destination=52.5185,13.4283&apiKey=xxx";
+        $url = "https://router.hereapi.com/v8/routes?transportMode=car&return=polyline,actions,instructions&origin=52.516,13.3779&destination=52.5185,13.4283&apiKey=xxx";
         $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing with apiKey");
 
         $routing = RoutingV8::instance()
