@@ -24,6 +24,7 @@
         "ext-json": "*",
         "guzzlehttp/guzzle": "^6.3|^7.0",
         "jmikola/geojson": "^1.0",
+        "rozklad/heremaps-flexible-polyline": "^1.0",
         "vlucas/phpdotenv": "^3.3|^4.0|^5.2"
     },
     "require-dev": {

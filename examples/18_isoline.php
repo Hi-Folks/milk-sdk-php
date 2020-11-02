@@ -1,6 +1,7 @@
 <?php
 require __DIR__ . "/../vendor/autoload.php";
 
+use Heremaps\FlexiblePolyline\FlexiblePolyline;
 use HiFolks\Milk\Here\RestApi\Isoline;
 use HiFolks\Milk\Utils\Environment;
 
@@ -22,6 +23,13 @@ if ($i->isError()) {
 } else {
     $items = $i->getData()->isolines;
     foreach ($items as $key => $item) {
-        var_dump($item);
+        foreach ($item->polygons as $polygon) {
+            $data = FlexiblePolyline::decode($polygon->outer);
+            var_dump($data);
+            foreach ($data["polyline"] as $p) {
+                echo "[" . $p[1]. "," . $p[0] . "],".PHP_EOL;
+            }
+        }
+
     }
 }

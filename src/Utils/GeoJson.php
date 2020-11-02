@@ -2,6 +2,10 @@
 
 namespace HiFolks\Milk\Utils;
 
+use GeoJson\Feature\Feature;
+use GeoJson\Feature\FeatureCollection;
+use GeoJson\Geometry\Point;
+
 class GeoJson
 {
     /**
@@ -19,8 +23,8 @@ class GeoJson
      */
     public function addPoint(float $latitude, float $longitude, $properties = null, $id = null): void
     {
-        $point = new \GeoJson\Geometry\Point([ $longitude , $latitude]);
-        $f = new \GeoJson\Feature\Feature($point, $properties, $id);
+        $point = new Point([ $longitude , $latitude]);
+        $f = new Feature($point, $properties, $id);
         $this->featureCollection[] = $f;
     }
 
@@ -29,7 +33,7 @@ class GeoJson
      */
     public function getString(): string
     {
-        $fs = new \GeoJson\Feature\FeatureCollection($this->featureCollection);
+        $fs = new FeatureCollection($this->featureCollection);
         return json_encode($fs);
     }
 
