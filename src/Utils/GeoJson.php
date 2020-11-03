@@ -4,7 +4,9 @@ namespace HiFolks\Milk\Utils;
 
 use GeoJson\Feature\Feature;
 use GeoJson\Feature\FeatureCollection;
+use GeoJson\Geometry\LineString;
 use GeoJson\Geometry\Point;
+use Heremaps\FlexiblePolyline\FlexiblePolyline;
 
 class GeoJson
 {
@@ -12,6 +14,29 @@ class GeoJson
      * @var array<mixed>
      */
     private $featureCollection = [];
+
+    public function __construct()
+    {
+        $this->featureCollection = [];
+    }
+
+    public function addPolygonFromExtendedPolyline(string $polyline)
+    {
+        try {
+            $data = FlexiblePolyline::decode($polyline);
+            $arrayPolygon = [];
+            foreach ($data["polyline"] as $p) {
+                $arrayPolygon[] = [$p[1], $p[0]];
+
+            }
+            $polygon = new LineString($arrayPolygon);
+            $f = new Feature($polygon, [], null);
+            $this->featureCollection[] = $f;
+        } catch (\Exception $e) {
+
+        }
+
+    }
 
 
     /**
