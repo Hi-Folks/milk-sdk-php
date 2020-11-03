@@ -14,17 +14,19 @@ class Bbox
     private $northEast;
 
 
-    public function __construct(float $longitudeWest,
-                                float $latitudeSouth,
-                                float $longitudeEast,
-                                float $latitudeNorth)
-    {
-        $this->southWest= new LatLong($latitudeSouth, $longitudeWest);
-        $this->northEast= new LatLong($latitudeNorth, $longitudeEast);
+    public function __construct(
+        float $longitudeWest,
+        float $latitudeSouth,
+        float $longitudeEast,
+        float $latitudeNorth
+    ) {
+        $this->southWest = new LatLong($latitudeSouth, $longitudeWest);
+        $this->northEast = new LatLong($latitudeNorth, $longitudeEast);
     }
 
-    public static function createByCenter(float $latitude, float $longitude, float $distance = 1) {
-        $radius = $distance/ 6371.01; //6371.01 is the earth radius in KM
+    public static function createByCenter(float $latitude, float $longitude, float $distance = 1)
+    {
+        $radius = $distance / 6371.01; //6371.01 is the earth radius in KM
         $minLat = $latitude - $radius;
         $maxLat = $latitude + $radius;
         $deltaLon = asin(sin($radius) / cos($latitude));

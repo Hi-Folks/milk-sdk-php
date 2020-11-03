@@ -27,15 +27,12 @@ class GeoJson
             $arrayPolygon = [];
             foreach ($data["polyline"] as $p) {
                 $arrayPolygon[] = [$p[1], $p[0]];
-
             }
             $polygon = new LineString($arrayPolygon);
             $f = new Feature($polygon, [], null);
             $this->featureCollection[] = $f;
         } catch (\Exception $e) {
-
         }
-
     }
 
 

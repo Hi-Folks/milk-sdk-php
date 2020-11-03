@@ -92,7 +92,7 @@ class RoutingV8 extends RestClient
 
     private $destinationAddress = "";
 
-    private  $enableGeocoding = false;
+    private $enableGeocoding = false;
 
     private const ENV_ROUTING_V8 = "ENV_ROUTING_V8";
 
@@ -330,28 +330,36 @@ class RoutingV8 extends RestClient
         $this->paramAvoidFeatures = array_merge($this->paramAvoidFeatures, $feature);
         return $this;
     }
-    public function avoidTollRoad() {
+    public function avoidTollRoad()
+    {
         return $this->avoidFeatures("tollRoad");
     }
-    public function avoidFerry() {
+    public function avoidFerry()
+    {
         return $this->avoidFeatures("ferry");
     }
-    public function avoidSeasonalClosure() {
+    public function avoidSeasonalClosure()
+    {
         return $this->avoidFeatures("seasonalClosure");
     }
-    public function avoidControlledAccessHighway() {
+    public function avoidControlledAccessHighway()
+    {
         return $this->avoidFeatures("controlledAccessHighway");
     }
-    public function avoidCarShuttleTrain() {
+    public function avoidCarShuttleTrain()
+    {
         return $this->avoidFeatures("carShuttleTrain");
     }
-    public function avoidTunnel() {
+    public function avoidTunnel()
+    {
         return $this->avoidFeatures("tunnel");
     }
-    public function avoidDirtRoad() {
+    public function avoidDirtRoad()
+    {
         return $this->avoidFeatures("dirtRoad");
     }
-    public function avoidDifficultTurns() {
+    public function avoidDifficultTurns()
+    {
         return $this->avoidFeatures("difficultTurns");
     }
 
@@ -365,20 +373,22 @@ class RoutingV8 extends RestClient
      * @param float $northLatitude Latitude value of the northernmost point of the area.
      * @return $this
      */
-    public function avoidArea(float $westLongitude,
-                              float $southLatitude,
-                              float $eastLongitude,
-                              float $northLatitude)
-    {
+    public function avoidArea(
+        float $westLongitude,
+        float $southLatitude,
+        float $eastLongitude,
+        float $northLatitude
+    ) {
 
         $this->paramAvoidAreas[] = new Bbox($westLongitude, $southLatitude, $eastLongitude, $northLatitude);
         return $this;
     }
 
-    public function avoidAreaByCenter(float $latitude,
-                              float $longitude,
-                              $distance = 1)
-    {
+    public function avoidAreaByCenter(
+        float $latitude,
+        float $longitude,
+        $distance = 1
+    ) {
 
         $this->paramAvoidAreas[] = Bbox::createByCenter($latitude, $longitude, $distance);
         return $this;
@@ -404,7 +414,8 @@ class RoutingV8 extends RestClient
         return $this;
     }
 
-    public function enableGeocoding(bool $enable = true) {
+    public function enableGeocoding(bool $enable = true)
+    {
         $this->enableGeocoding = $enable;
         return $this;
     }
@@ -466,12 +477,17 @@ class RoutingV8 extends RestClient
         if ($this->paramDepartureTime) {
             $retString = $this->addQueryParam($retString, "departureTime", $this->paramDepartureTime, false);
         }
-        if (is_array($this->paramAvoidFeatures) && count($this->paramAvoidFeatures)> 0) {
-            $retString = $this->addQueryParam($retString, "avoid[features]", implode(",",$this->paramAvoidFeatures), false);
+        if (is_array($this->paramAvoidFeatures) && count($this->paramAvoidFeatures) > 0) {
+            $retString = $this->addQueryParam(
+                $retString,
+                "avoid[features]",
+                implode(",", $this->paramAvoidFeatures),
+                false
+            );
         }
 
-        if (is_array($this->paramAvoidAreas) && count($this->paramAvoidAreas)> 0) {
-            $retString = $this->addQueryParam($retString, "avoid[areas]", implode("|",$this->paramAvoidAreas), false);
+        if (is_array($this->paramAvoidAreas) && count($this->paramAvoidAreas) > 0) {
+            $retString = $this->addQueryParam($retString, "avoid[areas]", implode("|", $this->paramAvoidAreas), false);
         }
 
         foreach ($this->paramVia as $viaValue) {
@@ -538,7 +554,6 @@ class RoutingV8 extends RestClient
                     $this->destination = new LatLong($place->position->lat, $place->position->lng);
                 }
             }
-
         }
         return parent::get();
     }
