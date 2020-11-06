@@ -61,7 +61,8 @@ class RoutingV8 extends RestClient
     private $paramAlternatives;
 
     /**
-     * Departure Time in RFC3339 Section 5.6 standards
+     * Departure Time
+     * https://www.php.net/manual/en/datetime.formats.php
      *
      * @var string
      */
@@ -139,7 +140,7 @@ class RoutingV8 extends RestClient
         $this->paramAvoidFeatures = [];
         $this->paramAvoidAreas = [];
 
-        $this->departureTime = "";
+        $this->paramDepartureTime = "";
 
         $this->origin = null;
         $this->destination = null;
@@ -283,16 +284,15 @@ class RoutingV8 extends RestClient
 
     /**
      * Set departure time
-     * Format should be in RFC3339 Standard (Ex: 2019-06-24T01:23:45Z)
-     *
+     * The accepted format is exlained here:
+     * https://www.php.net/manual/en/datetime.formats.php
      * @param string $time
      * @return $this
      */
     public function departureTime(string $time)
     {
-        if (\DateTime::createFromFormat(\DateTime::RFC3339, $time) !== false) {
-            $this->departureTime = $time;
-        }
+        $this->paramDepartureTime = $time;
+        return $this;
     }
 
     /**
@@ -474,8 +474,8 @@ class RoutingV8 extends RestClient
         if ($this->destination) {
             $retString = $this->addQueryParam($retString, "destination", $this->destination->getString(), false);
         }
-        if ($this->paramDepartureTime) {
-            $retString = $this->addQueryParam($retString, "departureTime", $this->paramDepartureTime, false);
+        if ($this->paramDepartureTime !== "") {
+            $retString = $this->addQueryParam($retString, "departureTime", date("Y-m-d\TH:i:sP", strtotime($this->paramDepartureTime)), false);
         }
         if (is_array($this->paramAvoidFeatures) && count($this->paramAvoidFeatures) > 0) {
             $retString = $this->addQueryParam(
