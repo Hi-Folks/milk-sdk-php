@@ -1,4 +1,20 @@
 # Changelog
+## 0.1.2 - 2020-11-06
+### Add
+- Routing V8: add avoid param, thanks to @torelafes;
+- Routing V8: add helper methods for avoidFerry, avoidTunnel, avoidDirtRoad etc;
+- Routing V8: add departureTime param, thanks to @torelafes;
+- Implement Bbox class;
+- Routing V8: add auto geocoding in routing, you can use address and not just latitude longitude;
+- Add Extended polyline encoding/decoding, thanks to https://github.com/rozklad/heremaps-flexible-polyline;
+- Isoline: export **GeoJSON**;
+
+
+### Change
+- Routing V8: Fix multiple via param;
+
+
+
 
 ## 0.1.1 - 2020-10-31
 
