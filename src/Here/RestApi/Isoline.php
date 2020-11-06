@@ -19,48 +19,50 @@ class Isoline extends RestClient
      * @var LatLong|null
      */
     private $paramOrigin = null;
+
     /**
-     *  @property string $paramDepartureTime Specifies the time of departure.
-     * @var string
+     * @var string Specifies the time of departure.
      */
     private $paramDepartureTime;
+
     /**
      * @var LatLong|null
      */
     private $paramDestination = null;
+
     /**
-     *  @property string $paramArrivalTime Specifies the time of arrival.
-     * @var string
+     * @var string Specifies the time of arrival.
      */
     private $paramArrivalTime;
+
     /**
-     *  @property mixed[] $paramRange .
-     * @var string
+     * @var mixed[]
      */
     private $paramRange;
+
     /**
-     *
-     *  @property string $routingMode Specifies which optimization is applied during route calculation.
      * Enum [ fast | short ]
-     * @var string
+     * @var string Specifies which optimization is applied during route calculation.
      */
     private $paramRoutingMode;
+
     /**
-     *
      * Mode of transport to be used for the calculation of the route.
      * Enum [car | pedestrian | truck]
      * @var string
      */
     private $paramTransportMode;
+
     /**
      * Limits the number of points in the resulting isoline geometry
      * @var int
      */
     private $paramShapeMaxPoints;
+
     /**
      * Specifies how isoline calculation is optimized.
      * Enum [balanced | quality | performance]
-     * defaul: balanced
+     * default: balanced
      * @var string
      */
     private $paramOptimizeFor;

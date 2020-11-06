@@ -13,13 +13,21 @@ class GeoJson
     /**
      * @var array<mixed>
      */
-    private $featureCollection = [];
+    private $featureCollection;
 
+    /**
+     * GeoJson constructor.
+     */
     public function __construct()
     {
         $this->featureCollection = [];
     }
 
+    /**
+     * @param string $polyline
+     *
+     * @return bool
+     */
     public function addPolygonFromExtendedPolyline(string $polyline)
     {
         try {
@@ -32,7 +40,9 @@ class GeoJson
             $f = new Feature($polygon, [], null);
             $this->featureCollection[] = $f;
         } catch (\Exception $e) {
+            return false;
         }
+        return true;
     }
 
 
