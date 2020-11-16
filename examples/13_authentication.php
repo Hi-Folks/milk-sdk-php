@@ -11,7 +11,8 @@ $keySecret = $_ENV['HERE_API_KEY_SECRET'];
 
 $myToken= RestAuth::getAccessToken($keyId, $keySecret);
 echo $myToken;
-$routing = RoutingV8::setToken($myToken)
+$routing = RoutingV8::instance()
+    ->setToken($myToken)
     ->byCar()
     ->routingModeFast()
     ->startingPoint(52.5160, 13.3779)
