@@ -1,4 +1,10 @@
 # Changelog
+## 0.1.3 - 2021-04-15
+### Add
+- Add PHP 8 compatibility
+- Add new Workflow for Github Actions
+- Add new examples for geocoding and authentication
+
 ## 0.1.2 - 2020-11-06
 ### Add
 - Routing V8: add avoid param, thanks to @torelafes;
