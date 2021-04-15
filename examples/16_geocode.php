@@ -17,7 +17,13 @@ $geocode = Geocode::instance()
     ->get();
 
 
+$dump = Geocode::instance()
+    ->setApiKey($hereApiKey)
+    ->country("Italia")
+    ->q("Colosseo")
+    ->langIta();
 
+$dump->debug();
 
 if ($geocode->isError()) {
     echo "Error: ". $geocode->getErrorMessage();
