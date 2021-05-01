@@ -24,7 +24,7 @@ class Bbox
         $this->northEast = new LatLong($latitudeNorth, $longitudeEast);
     }
 
-    public static function createByCenter(float $latitude, float $longitude, float $distance = 1)
+    public static function createByCenter(float $latitude, float $longitude, float $distance = 1): Bbox
     {
         $radius = $distance / 6371.01; //6371.01 is the earth radius in KM
         $minLat = $latitude - $radius;

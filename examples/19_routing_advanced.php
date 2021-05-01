@@ -11,6 +11,7 @@ $whenStart = "+24 hour";
 
 $routing = RoutingV8::instance()
     ->setApiKey($hereApiKey)
+    ->enableGeocoding()
     ->originAddress("Duomo, Milan, Italy")
     ->destinationAddress("Colosseum, Rome, Italy")
     ->departureTime("+24 hour");

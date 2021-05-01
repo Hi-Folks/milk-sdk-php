@@ -79,20 +79,25 @@ class RoutingV8 extends RestClient
      * @var array<LatLong>
      */
     private $paramVia = [];
-
     /**
      * @var LatLong|null
      */
     private $origin = null;
-
+    /**
+     * @var string
+     */
     private $originAddress = "";
     /**
      * @var LatLong|null
      */
     private $destination = null;
-
+    /**
+     * @var string
+     */
     private $destinationAddress = "";
-
+    /**
+     * @var boolean
+     */
     private $enableGeocoding = false;
 
     private const ENV_ROUTING_V8 = "ENV_ROUTING_V8";
@@ -111,12 +116,14 @@ class RoutingV8 extends RestClient
     }
 
     /**
-     * @param string $xyzToken
+     * @param string $apiToken
      * @return RoutingV8
      */
-    public static function instance($xyzToken = ""): self
+    public static function instance($apiToken = ""): self
     {
-        return new RoutingV8(new RestConfig($xyzToken));
+        $rc = new RestConfig();
+        $rc->setApiKey($apiToken);
+        return new RoutingV8($rc);
     }
 
     public function getHostname(): string
@@ -145,8 +152,6 @@ class RoutingV8 extends RestClient
         $this->origin = null;
         $this->destination = null;
     }
-
-
 
     /**
      * @param string $mode
@@ -243,7 +248,6 @@ class RoutingV8 extends RestClient
         return $this;
     }
 
-
     /**
      * @param string $lang
      * @return self
@@ -284,12 +288,12 @@ class RoutingV8 extends RestClient
 
     /**
      * Set departure time
-     * The accepted format is exlained here:
+     * The accepted format is exlpained here:
      * https://www.php.net/manual/en/datetime.formats.php
      * @param string $time
      * @return $this
      */
-    public function departureTime(string $time)
+    public function departureTime(string $time): self
     {
         $this->paramDepartureTime = $time;
         return $this;
@@ -317,10 +321,10 @@ class RoutingV8 extends RestClient
     /**
      * A feature or list of features for route to avoid
      *
-     * @param string|array $feature feature or features to avoid
+     * @param string|array<string> $feature feature or features to avoid
      * @return $this
      */
-    public function avoidFeatures($feature)
+    public function avoidFeatures($feature): self
     {
         //$this->paramAvoidFeatures = [];
 
@@ -330,39 +334,38 @@ class RoutingV8 extends RestClient
         $this->paramAvoidFeatures = array_merge($this->paramAvoidFeatures, $feature);
         return $this;
     }
-    public function avoidTollRoad()
+    public function avoidTollRoad(): self
     {
         return $this->avoidFeatures("tollRoad");
     }
-    public function avoidFerry()
+    public function avoidFerry(): self
     {
         return $this->avoidFeatures("ferry");
     }
-    public function avoidSeasonalClosure()
+    public function avoidSeasonalClosure(): self
     {
         return $this->avoidFeatures("seasonalClosure");
     }
-    public function avoidControlledAccessHighway()
+    public function avoidControlledAccessHighway(): self
     {
         return $this->avoidFeatures("controlledAccessHighway");
     }
-    public function avoidCarShuttleTrain()
+    public function avoidCarShuttleTrain(): self
     {
         return $this->avoidFeatures("carShuttleTrain");
     }
-    public function avoidTunnel()
+    public function avoidTunnel(): self
     {
         return $this->avoidFeatures("tunnel");
     }
-    public function avoidDirtRoad()
+    public function avoidDirtRoad(): self
     {
         return $this->avoidFeatures("dirtRoad");
     }
-    public function avoidDifficultTurns()
+    public function avoidDifficultTurns(): self
     {
         return $this->avoidFeatures("difficultTurns");
     }
-
 
     /**
      * A rectangular area on earth to avoid
@@ -378,30 +381,31 @@ class RoutingV8 extends RestClient
         float $southLatitude,
         float $eastLongitude,
         float $northLatitude
-    ) {
+    ): self {
 
         $this->paramAvoidAreas[] = new Bbox($westLongitude, $southLatitude, $eastLongitude, $northLatitude);
         return $this;
     }
 
+    /**
+     * @param float $latitude
+     * @param float $longitude
+     * @param int $distance
+     * @return $this
+     */
     public function avoidAreaByCenter(
         float $latitude,
         float $longitude,
         $distance = 1
-    ) {
-
+    ): self {
         $this->paramAvoidAreas[] = Bbox::createByCenter($latitude, $longitude, $distance);
         return $this;
     }
-
 
     public function langIta(): self
     {
         return $this->lang("it-IT");
     }
-
-
-
 
     public function startingPoint(float $latitude, float $longitude): self
     {
@@ -414,7 +418,7 @@ class RoutingV8 extends RestClient
         return $this;
     }
 
-    public function enableGeocoding(bool $enable = true)
+    public function enableGeocoding(bool $enable = true): self
     {
         $this->enableGeocoding = $enable;
         return $this;
@@ -475,7 +479,12 @@ class RoutingV8 extends RestClient
             $retString = $this->addQueryParam($retString, "destination", $this->destination->getString(), false);
         }
         if ($this->paramDepartureTime !== "") {
-            $retString = $this->addQueryParam($retString, "departureTime", date("Y-m-d\TH:i:sP", strtotime($this->paramDepartureTime)), false);
+            $retString = $this->addQueryParam(
+                $retString,
+                "departureTime",
+                date("Y-m-d\TH:i:sP", strtotime($this->paramDepartureTime)),
+                false
+            );
         }
         if (is_array($this->paramAvoidFeatures) && count($this->paramAvoidFeatures) > 0) {
             $retString = $this->addQueryParam(
@@ -535,8 +544,7 @@ class RoutingV8 extends RestClient
 
         if ($this->enableGeocoding) {
             if ($this->originAddress !== "") {
-                $g = Geocode::instance()
-                    ->setApiKey($this->getConfig()->getCredentials()->getApiKey())
+                $g = Geocode::instance($this->getConfig()->getCredentials()->getApiKey())
                     ->q($this->originAddress)
                     ->get();
                 if (! $g->isError()) {
@@ -545,8 +553,7 @@ class RoutingV8 extends RestClient
                 }
             }
             if ($this->destinationAddress !== "") {
-                $g = Geocode::instance()
-                    ->setApiKey($this->getConfig()->getCredentials()->getApiKey())
+                $g = Geocode::instance($this->getConfig()->getCredentials()->getApiKey())
                     ->q($this->destinationAddress)
                     ->get();
                 if (! $g->isError()) {

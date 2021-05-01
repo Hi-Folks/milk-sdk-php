@@ -17,8 +17,7 @@ $geocode = Geocode::instance()
     ->get();
 
 
-$dump = Geocode::instance()
-    ->setApiKey($hereApiKey)
+$dump = Geocode::instance($hereApiKey)
     ->country("Italia")
     ->q("Colosseo")
     ->langIta();

@@ -67,13 +67,16 @@ class Geocode extends RestClient
     }
 
     /**
-     * @param string $xyzToken
+     * @param string $apiToken
      * @return Geocode
      */
-    public static function instance($xyzToken = ""): self
+    public static function instance($apiToken = ""): self
     {
-        return new Geocode(new RestConfig($xyzToken));
+        $r = new RestConfig();
+        $r->setApiKey($apiToken);
+        return new Geocode($r);
     }
+
 
     public function getHostname(): string
     {

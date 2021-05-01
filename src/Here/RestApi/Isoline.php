@@ -205,14 +205,29 @@ class Isoline extends RestClient
         $this->paramRange = [$values, $type ];
         return $this;
     }
+
+    /**
+     * @param int|array<int> $values
+     * @return self
+     */
     public function rangeByTime($values): self
     {
         return $this->range($values, "time");
     }
+
+    /**
+     * @param int|array<int> $values
+     * @return self
+     */
     public function rangeByDistance($values): self
     {
         return $this->range($values, "distance");
     }
+
+    /**
+     * @param int|array<int> $values
+     * @return self
+     */
     public function rangeByConsumption($values): self
     {
         return $this->range($values, "consumption");
