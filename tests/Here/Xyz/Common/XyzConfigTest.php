@@ -1,8 +1,9 @@
 <?php
 
+namespace HiFolks\Milk\Tests\Here\Xyz\Common;
+
 use HiFolks\Milk\Here\Xyz\Common\XyzConfig;
 use PHPUnit\Framework\TestCase;
-
 
 class XyzConfigTest extends TestCase
 {
@@ -18,8 +19,7 @@ class XyzConfigTest extends TestCase
         $this->assertIsString($config->getCredentials()->getAccessToken(), "Checking Access Token type");
 
         $this->assertSame($host, $config->getHostname(), "Checking Hostname");
-        $this->assertSame($token, $config->getCredentials()->getAccessToken(),  "Checking Access Token");
-
+        $this->assertSame($token, $config->getCredentials()->getAccessToken(), "Checking Access Token");
     }
 
     public function testSetEnvAndHost()
@@ -37,6 +37,5 @@ class XyzConfigTest extends TestCase
 
         $config->setEnvironmentAndHostname("XXX", "");
         $this->assertSame("", $config->getHostname(), "Checking Hostname");
-
     }
 }

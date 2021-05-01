@@ -1,5 +1,7 @@
 <?php
 
+namespace HiFolks\Milk\Tests\Here\Xyz\Space;
+
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -9,7 +11,6 @@ use HiFolks\Milk\Here\Xyz\Common\XyzConfig;
 use HiFolks\Milk\Here\Xyz\Space\XyzSpace;
 use PHPUnit\Framework\TestCase;
 
-
 class XyzSpaceTest extends TestCase
 {
 
@@ -18,36 +19,35 @@ class XyzSpaceTest extends TestCase
     public function testSpace()
     {
         $host = "http://localhost:8080";
-        $config = XyzConfig::getInstance("",$host);
+        $config = XyzConfig::getInstance("", $host);
         $space = new XyzSpace($config);
-        $this->assertSame($host."/hub/spaces", $space->getUrl(), "Space: Basic GET");
+        $this->assertSame($host . "/hub/spaces", $space->getUrl(), "Space: Basic GET");
 
-        $spaceId= "1234";
+        $spaceId = "1234";
         $space = XyzSpace::instance()->spaceId($spaceId);
         $space = (new XyzSpace($config))->spaceId($spaceId);
-        $this->assertSame($host."/hub/spaces/".$spaceId, $space->getUrl(), "Space: Basic GET");
+        $this->assertSame($host . "/hub/spaces/" . $spaceId, $space->getUrl(), "Space: Basic GET");
 
 
         $space = (new XyzSpace($config))->ownerAll();
-        $this->assertSame($host."/hub/spaces?owner=".urlencode("*"), $space->getUrl(), "Space: Basic GET");
+        $this->assertSame($host . "/hub/spaces?owner=" . urlencode("*"), $space->getUrl(), "Space: Basic GET");
 
         $space = (new XyzSpace($config))->ownerOthers();
-        $this->assertSame($host."/hub/spaces?owner=others", $space->getUrl(), "Space: Basic GET");
+        $this->assertSame($host . "/hub/spaces?owner=others", $space->getUrl(), "Space: Basic GET");
 
-        $ownerId="OWNERID";
+        $ownerId = "OWNERID";
         $space = (new XyzSpace($config))->ownerSomeOther($ownerId);
-        $this->assertSame($host."/hub/spaces?owner=".$ownerId, $space->getUrl(), "Space: Basic GET");
+        $this->assertSame($host . "/hub/spaces?owner=" . $ownerId, $space->getUrl(), "Space: Basic GET");
 
         $space = (new XyzSpace($config))->ownerMe();
-        $this->assertSame($host."/hub/spaces?owner=me", $space->getUrl(), "Space: Basic GET");
+        $this->assertSame($host . "/hub/spaces?owner=me", $space->getUrl(), "Space: Basic GET");
 
-        $limit=3;
+        $limit = 3;
         $space = (new XyzSpace($config))->ownerMe()->limit($limit);
-        $this->assertSame($host."/hub/spaces?limit=".$limit."&owner=me", $space->getUrl(), "Space: Basic GET");
+        $this->assertSame($host . "/hub/spaces?limit=" . $limit . "&owner=me", $space->getUrl(), "Space: Basic GET");
 
         $space = (new XyzSpace($config))->includeRights();
-        $this->assertSame($host."/hub/spaces?includeRights=true", $space->getUrl(), "Space: include rights");
-
+        $this->assertSame($host . "/hub/spaces?includeRights=true", $space->getUrl(), "Space: include rights");
     }
 
     public function testManageSpace()
@@ -58,8 +58,8 @@ class XyzSpaceTest extends TestCase
         $responseString = '{
             "id": "x-demospace",
             "owner":"{appId}",
-            "title": "'.$spaceTitle.'",
-            "description": "'.$spaceDescription.'"
+            "title": "' . $spaceTitle . '",
+            "description": "' . $spaceDescription . '"
         }';
         $responseString40x = '{
           "type": "ErrorResponse",
@@ -79,7 +79,7 @@ class XyzSpaceTest extends TestCase
         $spaceTitle = "My Space";
         $spaceDescription = "Description";
         $host = "http://localhost:8080";
-        $config = XyzConfig::getInstance("",$host);
+        $config = XyzConfig::getInstance("", $host);
         $space = new XyzSpace($config);
         $space->setHandler($handlerStack);
         // 200
@@ -97,6 +97,5 @@ class XyzSpaceTest extends TestCase
         $response = $space->create($spaceTitle, $spaceDescription);
         $this->assertSame(true, $response->isError(), "Check Response from create");
         $this->assertStringContainsString("401", $response->getErrorMessage(), "Error message for 401");
-
     }
 }
