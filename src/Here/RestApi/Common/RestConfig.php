@@ -13,7 +13,8 @@ class RestConfig extends ApiConfig
      */
     public function __construct($apiToken = "", $hostname = "", $env = self::ENV_CUSTOM)
     {
-        parent::__construct($apiToken, $hostname, $env);
+        //parent::__construct($apiToken, $hostname, $env);
+        $this->initApiConfig($apiToken, $hostname, $env);
     }
 
     /**

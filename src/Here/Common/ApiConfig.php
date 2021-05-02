@@ -81,8 +81,17 @@ class ApiConfig
      */
     public function __construct($apiToken = "", $hostname = "", $env = self::ENV_CUSTOM)
     {
-        // Setting things:
+        $this->initApiConfig($apiToken, $hostname, $env);
+    }
 
+    /**
+     * @param string $apiToken
+     * @param string $hostname
+     * @param string $env
+     */
+    public function initApiConfig($apiToken = "", $hostname = "", $env = self::ENV_CUSTOM): void
+    {
+        // Setting things:
         $this->setHostname($hostname);
         $this->setEnvironment($env);
         $this->credentials = new ApiCredentials($apiToken);
