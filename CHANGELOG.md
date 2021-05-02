@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.4 - WIP
+## 0.1.4 - 2021-05-02
 ### Add
 - Added some tests for Utils;
 
