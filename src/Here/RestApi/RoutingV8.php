@@ -528,7 +528,11 @@ class RoutingV8 extends RestClient
         if ($result->isError()) {
             return [];
         }
-        return $result->getData()->routes[0]->sections[0]->actions;
+        try {
+            return $result->getData()->routes[0]->sections[0]->actions;
+        } catch (\Exception $e) {
+            return [];
+        }
     }
 
     public function get()

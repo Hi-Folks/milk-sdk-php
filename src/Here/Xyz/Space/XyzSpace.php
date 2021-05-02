@@ -243,16 +243,16 @@ class XyzSpace extends XyzClient
 
     /**
      * @param int $limit
-     * @return mixed[]
+     * @return array<mixed>
      */
-    public function getLimited(int $limit)
+    public function getLimited(int $limit): array
     {
         /** @var XyzResponse $response */
         $response = $this->get();
         if ($response->isError()) {
             return [];
         }
-        $array = $response->getData();
+        $array = $response->getDataArray();
         return array_slice($array, 0, $limit);
     }
 }

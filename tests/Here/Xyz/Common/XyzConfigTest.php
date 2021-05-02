@@ -5,11 +5,15 @@ namespace HiFolks\Milk\Tests\Here\Xyz\Common;
 use HiFolks\Milk\Here\Xyz\Common\XyzConfig;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class XyzConfigTest
+ * @package HiFolks\Milk\Tests\Here\Xyz\Common
+ */
 class XyzConfigTest extends TestCase
 {
 
 
-    public function testConfig()
+    public function testConfig(): void
     {
         $host = "http://localhost";
         $token = "a";
@@ -22,7 +26,7 @@ class XyzConfigTest extends TestCase
         $this->assertSame($token, $config->getCredentials()->getAccessToken(), "Checking Access Token");
     }
 
-    public function testSetEnvAndHost()
+    public function testSetEnvAndHost(): void
     {
         $config = new XyzConfig();
         $config->setEnvironmentAndHostname("PRD");

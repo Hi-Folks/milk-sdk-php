@@ -16,7 +16,7 @@ class XyzSpaceTest extends TestCase
 
 
 
-    public function testSpace()
+    public function testSpace(): void
     {
         $host = "http://localhost:8080";
         $config = XyzConfig::getInstance("", $host);
@@ -50,7 +50,7 @@ class XyzSpaceTest extends TestCase
         $this->assertSame($host . "/hub/spaces?includeRights=true", $space->getUrl(), "Space: include rights");
     }
 
-    public function testManageSpace()
+    public function testManageSpace(): void
     {
         $spaceTitle = "My Space";
         $spaceDescription = "Description";
@@ -86,8 +86,12 @@ class XyzSpaceTest extends TestCase
         $response = $space->create($spaceTitle, $spaceDescription);
 
         $this->assertSame(false, $response->isError(), "Check Response from create");
-        $this->assertSame($spaceTitle, $response->getData()->title, "Check created space title");
-        $this->assertSame($spaceDescription, $response->getData()->description, "Check created space description");
+        $this->assertSame($spaceTitle, $response->getDataObject()->title, "Check created space title");
+        $this->assertSame(
+            $spaceDescription,
+            $response->getDataObject()->description,
+            "Check created space description"
+        );
         $this->assertStringContainsString("title", $response->getDataAsJsonString(), "Check getDataAsJsonString");
         // 400
         $response = $space->create($spaceTitle, $spaceDescription);

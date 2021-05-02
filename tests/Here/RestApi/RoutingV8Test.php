@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class RoutingV8Test extends TestCase
 {
-    public function testBasicRouting()
+    public function testBasicRouting(): void
     {
         $baseUrlRoute = "https://router.hereapi.com/v8/routes";
         $routing = RoutingV8::instance()
@@ -240,7 +240,7 @@ class RoutingV8Test extends TestCase
         $this->assertSame($url, $routing->getUrl(), "Routing: Basic GET routing avoid bbox");
     }
 
-    public function testBasicRoutingWithMock()
+    public function testBasicRoutingWithMock(): void
     {
         $responseString = '{
   "routes": [
@@ -288,10 +288,7 @@ class RoutingV8Test extends TestCase
             "duration": 126,
             "length": 1200
           },
-          "polyline":
-          "BG2znmkDi89wZ9ChKAA1IvfAArH5cAArHvbAA1CrJAArF5SAAtP9yBAAT1E3E3QAA_BrH3M9sBAA_F5SAA3KlkBAA1EtNAApB_".
-          "DAAhC1EAApB1I_D5OAA3ErPAApFtTAAtN_wBAA1GtVAA5U3lCAA_DhOAA3KliBAAtXjvCAArDtLAA1EhQAA1CrJAA_".
-          "BrFAAvbl9CAAhIvZ_FtTrDtLAAV1I1CtNAA1E3QAArLnoB1G5YAAhGhSpBrFAAhC1GAA1FxT",
+          "polyline": "something",
           "spans": [
             {
               "offset": 0,
@@ -354,6 +351,7 @@ class RoutingV8Test extends TestCase
             new Response(401, ['content-type' => 'application/json'], $responseString401)
         ]);
         $handlerStack = HandlerStack::create($mock);
+
 
         $config = RestConfig::getInstance("");
         $routingObject = new RoutingV8($config);

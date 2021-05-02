@@ -63,11 +63,11 @@ class ApiResponse
     }
 
     /**
-     * @return null
+     * @return string
      */
-    public function getErrorMessage()
+    public function getErrorMessage(): string
     {
-        return $this->error;
+        return is_null($this->error) ? "" : $this->error;
     }
 
     /**
@@ -76,6 +76,31 @@ class ApiResponse
     public function getData()
     {
         return $this->content;
+    }
+
+    /**
+     * @return object
+     */
+    public function getDataObject()
+    {
+        $data = $this->getData();
+        if (is_object($data)) {
+            return $data;
+        }
+        //return (object) new \stdClass();
+        return (object)[];
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    public function getDataArray()
+    {
+        $data = $this->getData();
+        if (is_array($data)) {
+            return $data;
+        }
+        return [];
     }
 
     /**
