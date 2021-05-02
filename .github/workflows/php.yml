@@ -1,5 +1,5 @@
 # GithHub Actions Workflow generated with Ghygen
-# Original configuration: https://ghygen.hi-folks.dev?code=088277841820383692dcd096551c78ba
+# Original configuration: https://ghygen.hi-folks.dev?code=91056007db1bacb147ae6179ca8782e0
 name: Code Quality for PHP SDK
 on:
     push:
@@ -16,7 +16,7 @@ jobs:
         strategy:
             matrix:
                 operating-system: [ubuntu-latest]
-                php-versions: [ '8.0','7.4','7.3' ]
+                php-versions: [ '8.0','7.4' ]
                 dependency-stability: [ prefer-stable ]
 
         name: P${{ matrix.php-versions }} - L${{ matrix.laravel }} - ${{ matrix.dependency-stability }} - ${{ matrix.operating-system}}
