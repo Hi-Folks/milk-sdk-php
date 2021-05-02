@@ -1,4 +1,15 @@
 # Changelog
+
+## 0.1.4 - WIP
+### Add
+- Added some tests for Utils;
+
+### Change
+- Removed support for PHP7.3;
+- Improved code quality also for /tests and refactoring stuff (based on feedback provided by code quality phpcs + phpstan);
+- Update GitHub Actions Workflow by Ghygen (https://ghygen.hi-folks.dev/);
+
+
 ## 0.1.3 - 2021-04-15
 ### Add
 - Add PHP 8 compatibility
