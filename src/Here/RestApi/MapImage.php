@@ -138,10 +138,10 @@ class MapImage extends RestClient
         if ($this->paramCenter) {
             $retString = $this->addQueryParam($retString, "c", $this->paramCenter->getString(), false);
         }
-        if ($this->paramWidth> 0) {
+        if ($this->paramWidth > 0) {
             $retString = $this->addQueryParam($retString, "w", $this->paramWidth, false);
         }
-        if ($this->paramHeight> 0) {
+        if ($this->paramHeight > 0) {
             $retString = $this->addQueryParam($retString, "h", $this->paramHeight, false);
         }
         if ($this->paramZoom) {
