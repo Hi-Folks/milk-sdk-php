@@ -1,4 +1,5 @@
 <?php
+
 namespace HiFolks\Milk\Here\RestApi;
 
 use HiFolks\Milk\Here\Common\LatLong;
@@ -16,13 +17,16 @@ class MapImage extends RestClient
 
     private ?LatLong $paramCenter;
 
-    private $paramCenterAddress;
+    private ?string $paramCenterAddress;
 
-    private $paramZoom;
+    private ?int $paramZoom;
 
-    private $paramPois;
+    /**
+     * @var array<mixed>|null
+     */
+    private ?array $paramPois;
 
-    private $enableGeocoding;
+    private ?bool $enableGeocoding;
 
 
 
@@ -62,7 +66,7 @@ class MapImage extends RestClient
         parent::reset();
         $this->contentType = "";
         $this->acceptContentType = "";
-        $this->paramCenter = new LatLong(self::DEFAULT_LATITUDE , self::DEFAULT_LONGITUDE);
+        $this->paramCenter = new LatLong(self::DEFAULT_LATITUDE, self::DEFAULT_LONGITUDE);
         $this->paramZoom = self::DEFAULT_ZOOM;
         $this->enableGeocoding = false;
         $this->paramCenterAddress = "";
@@ -70,7 +74,7 @@ class MapImage extends RestClient
     }
 
     /**
-     * @param string $mode
+     * @param int $zoom
      * @return self
      */
     public function zoom(int $zoom): self
@@ -128,15 +132,15 @@ class MapImage extends RestClient
         if ($this->paramZoom) {
             $retString = $this->addQueryParam($retString, "z", $this->paramZoom, false);
         }
-        for ($i = 0 ;  $i < count($this->paramPois); $i++) {
+        for ($i = 0; $i < count($this->paramPois); $i++) {
             $item = $this->paramPois[$i];
             $retStringValue = "";
             $retStringValue = $item["lat"] . "," . $item["lng"];
             if (
-                $item["fillColor"] !=="" ||
-                $item["textColor"] !=="" ||
-                $item["textSize"] !=="" ||
-                $item["customText"] !==""
+                $item["fillColor"] !== "" ||
+                $item["textColor"] !== "" ||
+                $item["textSize"] !== "" ||
+                $item["customText"] !== ""
             ) {
                 $retStringValue = $retStringValue . ";" .
                     $item["fillColor"] . ";" .
@@ -146,7 +150,7 @@ class MapImage extends RestClient
             }
             $retString = $this->addQueryParam(
                 $retString,
-                "poix". strval($i),
+                "poix" . strval($i),
                 $retStringValue
             );
         }
@@ -166,7 +170,7 @@ class MapImage extends RestClient
     }
 
 
-    public function resolveGeocoding()
+    public function resolveGeocoding(): void
     {
 
         if (! $this->enableGeocoding) {
@@ -186,7 +190,6 @@ class MapImage extends RestClient
                 }
             }
         }
-
     }
 
     public function get()
