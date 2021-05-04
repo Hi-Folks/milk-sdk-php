@@ -16,16 +16,14 @@ class MapImage extends RestClient
     private const BASE_URL = "https://image.maps.ls.hereapi.com";
 
     private ?LatLong $paramCenter;
-
     private ?string $paramCenterAddress;
-
     private ?int $paramZoom;
-
     /**
      * @var array<mixed>|null
      */
     private ?array $paramPois;
-
+    private ?int $paramWidth;
+    private ?int $paramHeight;
     private ?bool $enableGeocoding;
 
 
@@ -71,6 +69,8 @@ class MapImage extends RestClient
         $this->enableGeocoding = false;
         $this->paramCenterAddress = "";
         $this->paramPois = [];
+        $this->paramWidth = 0;
+        $this->paramHeight = 0;
     }
 
     /**
@@ -93,7 +93,16 @@ class MapImage extends RestClient
         $this->paramCenterAddress = $address;
         return $this;
     }
-
+    public function width(int $width): self
+    {
+        $this->paramWidth = $width;
+        return $this;
+    }
+    public function height(int $height): self
+    {
+        $this->paramHeight = $height;
+        return $this;
+    }
     public function addPoi(
         float $lat,
         float $lng,
@@ -128,6 +137,12 @@ class MapImage extends RestClient
 
         if ($this->paramCenter) {
             $retString = $this->addQueryParam($retString, "c", $this->paramCenter->getString(), false);
+        }
+        if ($this->paramWidth> 0) {
+            $retString = $this->addQueryParam($retString, "w", $this->paramWidth, false);
+        }
+        if ($this->paramHeight> 0) {
+            $retString = $this->addQueryParam($retString, "h", $this->paramHeight, false);
         }
         if ($this->paramZoom) {
             $retString = $this->addQueryParam($retString, "z", $this->paramZoom, false);

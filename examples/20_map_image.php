@@ -31,7 +31,10 @@ $image = MapImage::instance($hereApiKey)
     ->addPoi(45,12 ,"ff0000")
     ->addPoi(45.1,12.1 ,"00ff00")
     ->addPoi(45.2,12.2 ,"0000ff","","12", "Test 3")
-    ->zoom(8)
+    ->zoom(12)
+
+    ->height(2048)
+    ->width(2048/1.4)
     ->getUrl();
 
 print_line("Image", $image);
