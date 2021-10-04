@@ -1,4 +1,5 @@
 <?php
+
 require __DIR__ . "/../vendor/autoload.php";
 
 use HiFolks\Milk\Here\RestApi\RoutingV8;
@@ -22,7 +23,7 @@ $routingActions = RoutingV8::instance()
     ->getDefaultActions();
 
 foreach ($routingActions as $key => $action) {
-    echo " - ".$action->instruction . PHP_EOL;
+    echo " - " . $action->instruction . PHP_EOL;
 }
 
 
@@ -41,28 +42,26 @@ $d = $routing->getData();
 foreach ($d->routes as $key => $route) {
     var_dump($route->sections);
     foreach ($route->sections as $section) {
-        echo "----- SECTION ".$section->id ." (" . $section->type. ")".PHP_EOL;
+        echo "----- SECTION " . $section->id . " (" . $section->type . ")" . PHP_EOL;
         foreach ($section->actions as $key => $action) {
-            echo " --- ".$action->instruction . PHP_EOL;
+            echo " --- " . $action->instruction . PHP_EOL;
             echo "     Action: " . $action->action .
                 "; Duration:" . $action->duration .
                 "; Length:" . $action->length .
                 "; Offset:" . $action->offset . PHP_EOL ;
                 //"; Direction:" . $action->direction .
                 //"; Exit:" . $action->exit . PHP_EOL;
-
         }
     }
-
 }
 
 
 
 $routing = RoutingV8::instance()
     ->setApiKey($hereApiKey)
-    ->startingPoint(47.257410,11.351458)
-    ->destination(47.168076,11.861380)
-    ->avoidAreaByCenter(52,13, 30)
+    ->startingPoint(47.257410, 11.351458)
+    ->destination(47.168076, 11.861380)
+    ->avoidAreaByCenter(52, 13, 30)
     //->avoidArea(13.082,52.416,13.628,52.626)
     ->byCar()
     ->returnInstructions()

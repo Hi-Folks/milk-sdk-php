@@ -1,4 +1,5 @@
 <?php
+
 require __DIR__ . "/../vendor/autoload.php";
 
 use HiFolks\Milk\Here\RestApi\Geocode;
@@ -25,10 +26,10 @@ $dump = Geocode::instance($hereApiKey)
 $dump->debug();
 
 if ($geocode->isError()) {
-    echo "Error: ". $geocode->getErrorMessage();
+    echo "Error: " . $geocode->getErrorMessage();
 } else {
     $items = $geocode->getData()->items;
     foreach ($items as $key => $item) {
-        echo " - " .$item->title. " : ".$item->position->lat . "," . $item->position->lng . PHP_EOL;
+        echo " - " . $item->title . " : " . $item->position->lat . "," . $item->position->lng . PHP_EOL;
     }
 }

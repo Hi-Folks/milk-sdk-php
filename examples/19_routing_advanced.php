@@ -1,4 +1,5 @@
 <?php
+
 require __DIR__ . "/../vendor/autoload.php";
 
 use HiFolks\Milk\Here\RestApi\RoutingV8;
@@ -20,9 +21,9 @@ $routingActions = $routing->getDefaultActions();
 
 $totalDuration = 0;
 foreach ($routingActions as $key => $action) {
-    echo " - ".$action->instruction . " (" . $action->duration .")".PHP_EOL;
+    echo " - " . $action->instruction . " (" . $action->duration . ")" . PHP_EOL;
     $totalDuration = $totalDuration + $action->duration;
 }
-echo "When  : ". $whenStart  . PHP_EOL;
+echo "When  : " . $whenStart  . PHP_EOL;
 echo "Total : " . gmdate("H\h:i\m:s\s", $totalDuration) . PHP_EOL;
 echo $routing->getUrl() . PHP_EOL;

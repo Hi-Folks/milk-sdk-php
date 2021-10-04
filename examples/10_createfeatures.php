@@ -1,4 +1,5 @@
 <?php
+
 require __DIR__ . "/../vendor/autoload.php";
 
 
@@ -19,7 +20,7 @@ $properties = [
 
 $spaceId = readline("Space ID : ");
 
-$geoJson->addPoint(41.890251, 12.492373, $properties ,1);
+$geoJson->addPoint(41.890251, 12.492373, $properties, 1);
 $result = $feature->addTags([ "milk"])->create($spaceId, $geoJson->getString());
 
 $feature->debug();

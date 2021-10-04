@@ -9,7 +9,7 @@ Dotenv\Dotenv::createImmutable(__DIR__ . "/../")->load();
 $keyId = $_ENV['HERE_API_KEY_ID'];
 $keySecret = $_ENV['HERE_API_KEY_SECRET'];
 
-$myToken= RestAuth::getAccessToken($keyId, $keySecret);
+$myToken = RestAuth::getAccessToken($keyId, $keySecret);
 echo $myToken;
 $routing = RoutingV8::instance()
     ->setToken($myToken)
@@ -29,4 +29,3 @@ if ($r->isError()) {
 } else {
     var_dump($r->getData());
 }
-
