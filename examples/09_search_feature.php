@@ -6,6 +6,7 @@
  * https://xyz.api.here.com/hub/static/swagger/#/Read%20Features/getFeature
  *
  */
+
 require __DIR__ . "/../vendor/autoload.php";
 
 use HiFolks\Milk\Here\Xyz\Space\XyzSpaceFeature;
@@ -18,7 +19,7 @@ function print_row($item, $key)
     echo "------------------------" . PHP_EOL;
 }
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__."/../");
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/../");
 $dotenv->load();
 
 $spaceId = "sSQRaPFS";
@@ -30,11 +31,9 @@ $xyzSpaceFeature->cleanSearchParams();
 $xyzSpaceFeature->addSearchParams("p.cad", 62, "=");
 $result = $xyzSpaceFeature->search($spaceId)->get();
 if ($result->isError()) {
-    echo "Error: ". $result->getErrorMessage();
+    echo "Error: " . $result->getErrorMessage();
 } else {
-
     array_walk($result->getData()->features, 'print_row');
-
 }
 $xyzSpaceFeature->debug();
 

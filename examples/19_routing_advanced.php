@@ -1,4 +1,5 @@
 <?php
+
 require __DIR__ . "/../vendor/autoload.php";
 
 use HiFolks\Milk\Here\RestApi\RoutingV8;
@@ -9,22 +10,20 @@ $hereApiKey = Environment::getEnv('HERE_API_KEY');
 
 $whenStart = "+24 hour";
 
-$routing = RoutingV8::instance()
-    ->setApiKey($hereApiKey)
+$routing = RoutingV8::instance($hereApiKey)
     ->enableGeocoding()
-    ->originAddress("Duomo, Milan, Italy")
-    ->destinationAddress("Colosseum, Rome, Italy")
+    ->langIta()
+    ->originAddress("Venezia, Italia")
+    ->destinationAddress("Colosseo Roma, Italia")
     ->departureTime("+24 hour");
 
 $routingActions = $routing->getDefaultActions();
 
 $totalDuration = 0;
 foreach ($routingActions as $key => $action) {
-    echo " - ".$action->instruction . " (" . $action->duration .")".PHP_EOL;
+    echo " - " . $action->instruction . " (" . $action->duration . ")" . PHP_EOL;
     $totalDuration = $totalDuration + $action->duration;
 }
-echo "When  : ". $whenStart  . PHP_EOL;
+echo "When  : " . $whenStart  . PHP_EOL;
 echo "Total : " . gmdate("H\h:i\m:s\s", $totalDuration) . PHP_EOL;
 echo $routing->getUrl() . PHP_EOL;
-
-

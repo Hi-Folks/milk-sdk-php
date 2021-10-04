@@ -1,4 +1,5 @@
 <?php
+
 require __DIR__ . "/../vendor/autoload.php";
 
 use HiFolks\Milk\Here\Xyz\Common\XyzConfig;
@@ -12,10 +13,10 @@ function print_row($item, $key)
 
 
 Dotenv\Dotenv::createImmutable(__DIR__ . "/../")->load();
-$xyzToken = Environment::getEnv( 'XYZ_ACCESS_TOKEN');
+$xyzToken = Environment::getEnv('XYZ_ACCESS_TOKEN');
 
-$xyzHost = Environment::getEnv( 'XYZ_API_HOSTNAME');
-$config= XyzConfig::getInstance($xyzToken, $xyzHost);
+$xyzHost = Environment::getEnv('XYZ_API_HOSTNAME');
+$config = XyzConfig::getInstance($xyzToken, $xyzHost);
 
 $space = new XyzSpace($config);
 echo "GET" . PHP_EOL;
@@ -23,11 +24,11 @@ echo "GET" . PHP_EOL;
 $s = $space->get();
 
 if ($s->isError()) {
-    echo "Error: " . $s->getErrorMessage(). PHP_EOL;
+    echo "Error: " . $s->getErrorMessage() . PHP_EOL;
     $space->debug();
     die();
 } else {
-    echo $space->getUrl(). PHP_EOL;
+    echo $space->getUrl() . PHP_EOL;
     $space->debug();
     $a = $s->getData();
     array_walk($a, 'print_row');

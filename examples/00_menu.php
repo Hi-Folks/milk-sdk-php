@@ -1,16 +1,17 @@
 <?php
+
 require __DIR__ . "/../vendor/autoload.php";
 
-use \HiFolks\Milk\Here\Xyz\Space\XyzSpace;
-use \HiFolks\Milk\Here\Xyz\Space\XyzSpaceStatistics;
-use \HiFolks\Milk\Here\Xyz\Space\XyzSpaceFeature;
-use \HiFolks\Milk\Utils\Obj;
+use HiFolks\Milk\Here\Xyz\Space\XyzSpace;
+use HiFolks\Milk\Here\Xyz\Space\XyzSpaceStatistics;
+use HiFolks\Milk\Here\Xyz\Space\XyzSpaceFeature;
+use HiFolks\Milk\Utils\Obj;
 
 Dotenv\Dotenv::createImmutable(__DIR__ . "/../")->load();
 $xyzToken = $_ENV['XYZ_ACCESS_TOKEN']; //getenv('XYZ_ACCESS_TOKEN');
 print_r(getenv());
-echo "-".$xyzToken."-";
-$spaceId="";
+echo "-" . $xyzToken . "-";
+$spaceId = "";
 $limitPage = 5;
 
 
@@ -24,7 +25,8 @@ function print_obj($item, $key)
     echo "------------------------" . PHP_EOL;
 }
 
-function print_menu() {
+function print_menu()
+{
     echo "============================" . PHP_EOL;
     echo "* Select                   *" . PHP_EOL;
     echo "============================" . PHP_EOL;
@@ -36,26 +38,24 @@ function print_menu() {
     echo "* v     -> View you state (spaceid, token etc)" . PHP_EOL;
     echo "* h     -> View this menu" . PHP_EOL;
     echo "============================" . PHP_EOL;
-
-
 }
 
-$choice= "h";
+$choice = "h";
 while ($choice !== "q") {
     switch ($choice) {
         case "sp":
-            echo "Setting your space ID, current is (".$spaceId.")" . PHP_EOL;
+            echo "Setting your space ID, current is (" . $spaceId . ")" . PHP_EOL;
             $tempSpaceId = readline("Space ID:");
-            if (strlen($tempSpaceId)>0) {
+            if (strlen($tempSpaceId) > 0) {
                 $spaceId = $tempSpaceId;
                 echo "Your space ID is: (" . $spaceId . ")" . PHP_EOL;
             } else {
                 echo "Your space ID is not changed (" . $spaceId . ")" . PHP_EOL;
             }
-        break;
+            break;
         case "st":
             if ($spaceId == "") {
-                echo "Please insert your space id (sp)". PHP_EOL;
+                echo "Please insert your space id (sp)" . PHP_EOL;
             } else {
                 echo "Calculating statistics for spacdeid (" . $spaceId . ")" . PHP_EOL;
                 $o1 = XyzSpaceStatistics::instance($xyzToken)->spaceId($spaceId)->get();
@@ -66,18 +66,18 @@ while ($choice !== "q") {
                 echo $o1->byteSize->estimated ? "The size is estimated" : "The size is real:)";
                 echo PHP_EOL;
             }
-        break;
+            break;
         case "si":
             echo "Iterating features of " . $spaceId . " space" . PHP_EOL;
             $xyzSpaceFeature = XyzSpaceFeature::instance($xyzToken);
             $result = $xyzSpaceFeature->iterate($spaceId)->limit($limitPage)->get();
             if ($result->isError()) {
-                echo "Error: ". $result->getErrorMessage();
+                echo "Error: " . $result->getErrorMessage();
             } else {
                 array_walk($result->getData()->features, 'print_obj');
             }
 
-        break;
+            break;
 
 
 
@@ -115,7 +115,4 @@ while ($choice !== "q") {
     }
 
     $choice = readline("Make your choice:");
-
 }
-
-

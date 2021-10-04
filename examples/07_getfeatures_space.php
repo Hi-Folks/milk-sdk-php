@@ -6,6 +6,7 @@
  * https://xyz.api.here.com/hub/static/swagger/#/Read%20Features/getFeatures
  *
  */
+
 require __DIR__ . "/../vendor/autoload.php";
 
 use HiFolks\Milk\Here\Xyz\Space\XyzSpaceFeature;
@@ -17,7 +18,7 @@ function print_row($item, $key)
     echo "------------------------" . PHP_EOL;
 }
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__."/../");
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/../");
 $dotenv->load();
 
 $spaceId = "zwtPDoOU";
@@ -35,7 +36,5 @@ if ($result->isError()) {
 } else {
     $a = $result->getData();
     array_walk($a->features, 'print_row');
-
-
 }
 echo PHP_EOL;
