@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.5 - WIP
+### Add
+- HERE Map Api
+
 ## 0.1.4 - 2021-05-02
 ### Add
 - Added some tests for Utils;
