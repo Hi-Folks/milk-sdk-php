@@ -64,7 +64,8 @@ class MapImage extends RestClient
         parent::reset();
         $this->contentType = "";
         $this->acceptContentType = "";
-        $this->paramCenter = new LatLong(self::DEFAULT_LATITUDE, self::DEFAULT_LONGITUDE);
+        //$this->paramCenter = new LatLong(self::DEFAULT_LATITUDE, self::DEFAULT_LONGITUDE);
+        $this->paramCenter = null;
         $this->paramZoom = self::DEFAULT_ZOOM;
         $this->enableGeocoding = false;
         $this->paramCenterAddress = "";

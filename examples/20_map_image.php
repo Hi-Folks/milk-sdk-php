@@ -14,18 +14,6 @@ function print_line($label, $value ="", $delimiterValue="")
     }
 }
 
-/*$image = MapImage::instance($hereApiKey)
-    ->centerAddress("Vicenza")
-    ->zoom(12)
-    ->getUrl();
-print_line("Image", $image);
-*/
-$image = MapImage::instance($hereApiKey)
-    ->center(45.548,11.54947)
-    ->zoom(8)
-    ->getUrl();
-print_line("Image", $image);
-
 $image = MapImage::instance($hereApiKey)
     ->center(45.548,11.54947)
     ->addPoi(45,12 ,"ff0000")
@@ -36,5 +24,17 @@ $image = MapImage::instance($hereApiKey)
     ->height(2048)
     ->width(2048/1.4)
     ->getUrl();
-
 print_line("Image", $image);
+$image = MapImage::instance($hereApiKey)
+    //->center(45.548,11.54947)
+    ->zoom(12)
+
+    ->height(2048)
+    ->width(2048/1.4);
+
+$image->addPoi(45,12 ,"ff0000");
+$image->addPoi(45.1,12.1 ,"00ff00");
+$image->addPoi(45.2,12.2 ,"0000ff","","12", "Test 3");
+
+$imageUrl = $image->getUrl();
+print_line("Image: ", $imageUrl);
