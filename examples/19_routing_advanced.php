@@ -9,11 +9,11 @@ $hereApiKey = Environment::getEnv('HERE_API_KEY');
 
 $whenStart = "+24 hour";
 
-$routing = RoutingV8::instance()
-    ->setApiKey($hereApiKey)
+$routing = RoutingV8::instance($hereApiKey)
     ->enableGeocoding()
-    ->originAddress("Duomo, Milan, Italy")
-    ->destinationAddress("Colosseum, Rome, Italy")
+    ->langIta()
+    ->originAddress("Venezia, Italia")
+    ->destinationAddress("Colosseo Roma, Italia")
     ->departureTime("+24 hour");
 
 $routingActions = $routing->getDefaultActions();
@@ -26,5 +26,3 @@ foreach ($routingActions as $key => $action) {
 echo "When  : ". $whenStart  . PHP_EOL;
 echo "Total : " . gmdate("H\h:i\m:s\s", $totalDuration) . PHP_EOL;
 echo $routing->getUrl() . PHP_EOL;
-
-

@@ -64,7 +64,7 @@ $routing = RoutingV8::instance()
     ->destination(47.168076,11.861380)
     ->avoidAreaByCenter(52,13, 30)
     //->avoidArea(13.082,52.416,13.628,52.626)
-    ->byFoot()
+    ->byCar()
     ->returnInstructions()
     ->getDefaultActions();
 
