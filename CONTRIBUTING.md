@@ -36,11 +36,25 @@ Before submitting a pull request:
 - Check the codebase to ensure that your feature doesn't already exist.
 - Check the pull requests to ensure that another person hasn't already submitted the feature or fix.
 
-## Requirements
+## Open a Pull Request
 
-If the project maintainer has any additional requirements, you will find them listed here.
+In order to maintain consistency of the source code we follow the PSR-12 coding standard and use PHPStan for static code analysis.
+You can use the command:
 
-- **[PSR-2 Coding Standard](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)** - The easiest way to apply the conventions is to install [PHP Code Sniffer](https://pear.php.net/package/PHP_CodeSniffer).
+```sh
+make allcheck
+```
+
+to launch
+- **[PSR-12 Coding Standard](https://www.php-fig.org/psr/psr-12/)**, under the hood is used [PHP Code Sniffer](https://pear.php.net/package/PHP_CodeSniffer);
+- **PHPstan** with [level 7](https://phpstan.org/user-guide/rule-levels)
+- **Phpunit** to execute all tests from ./tests/*
+
+I suggest you to launch *make allcheck* before committing and creating a PR.
+
+If you want to work on a PR, I suggest you to create a new branch starting from **master branch**, and use it when to submit your new **P**ull **R**equest to the original repository.
+
+If you want to contribute with an high quality PR, I suggest you to focus not just on the source code but also:
 
 - **Add tests!** - Your patch won't be accepted if it doesn't have tests.
 
@@ -52,4 +66,5 @@ If the project maintainer has any additional requirements, you will find them li
 
 - **Send coherent history** - Make sure each individual commit in your pull request is meaningful. If you had to make multiple intermediate commits while developing, please [squash them](https://www.git-scm.com/book/en/v2/Git-Tools-Rewriting-History#Changing-Multiple-Commit-Messages) before submitting.
 
-**Happy coding**!
+
+**Happy coding!**
