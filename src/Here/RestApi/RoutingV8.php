@@ -86,11 +86,9 @@ class RoutingV8 extends RestClient
     /**
      * @var string
      */
-    private $originAddress = "";
-    /**
-     * @var LatLong|null
-     */
-    private $destination = null;
+    private string $originAddress = "";
+
+    private ?LatLong $destination = null;
 
     private string $destinationAddress = "";
 
