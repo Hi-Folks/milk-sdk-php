@@ -325,23 +325,38 @@ $isoline = Isoline::instance()
     ->get();
 
 ```
-## Map Image APi
+## Map Image Api
+With MapImage class you can create static image of a map.
+For the map you can define:
+- *center()*: the center of the map;
+- *addPoi()*: add a point in the map;
+- *zoom()*: set the zoom level;
+- *height()*: set the height of image (in pixel);
+- *width()*: set the width of the image (in pixel).
 ```php
 use Hifolks\milk\here\RestApi\MapImage;
 $hereApiKey = "yourapikey";
-$image = MapImage::instance($hereApiKey)
+$imageUrl = MapImage::instance($hereApiKey)
     ->center(45.548, 11.54947)
     ->addPoi(45, 12, "ff0000")
     ->addPoi(45.1, 12.1, "00ff00")
     ->addPoi(45.2, 12.2, "0000ff", "", "12", "Test 3")
     ->zoom(12)
-
     ->height(2048)
     ->width(2048 / 1.4)
     ->getUrl();
-print_line("Image", $image);
-
 ```
+
+You can use also the Geocoding functionality with *centerAddress()* method.
+```php
+$image = MapImage::instance($hereApiKey)
+    ->centerAddress("Venezia")
+    ->zoom(12)
+    ->height(2048)
+    ->width(intval(2048 / 1.4));
+$imageUrl = $image->getUrl();
+```
+
 
 ## Useful reference
 
