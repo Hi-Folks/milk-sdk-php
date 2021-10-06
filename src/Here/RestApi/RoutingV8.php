@@ -91,14 +91,10 @@ class RoutingV8 extends RestClient
      * @var LatLong|null
      */
     private $destination = null;
-    /**
-     * @var string
-     */
-    private $destinationAddress = "";
-    /**
-     * @var boolean
-     */
-    private $enableGeocoding = false;
+
+    private string $destinationAddress = "";
+
+    private bool $enableGeocoding = false;
 
     private const ENV_ROUTING_V8 = "ENV_ROUTING_V8";
 
