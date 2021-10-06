@@ -2,7 +2,7 @@
 
 ## 0.1.5 - WIP
 ### Add
-- HERE Map Api
+- HERE Map Api integration. Now you can generate static image for map using 
 
 ## 0.1.4 - 2021-05-02
 ### Add
