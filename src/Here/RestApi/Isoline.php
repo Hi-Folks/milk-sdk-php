@@ -36,7 +36,7 @@ class Isoline extends RestClient
     private string $paramArrivalTime;
 
     /**
-     * @var array
+     * @var array<mixed>
      */
     private array $paramRange;
 
