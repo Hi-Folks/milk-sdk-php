@@ -200,6 +200,11 @@ $spaceId = "yourspaceid";
 $result = XyzSpaceFeature::instance($xyzToken)->spatial($spaceId,  41.890251, 12.492373,  1000)->get();
 ```
 
+## Obtain HERE API Key
+To use HERE Location Services you will need an API key. The API key is a unique identifier that is used to authenticate API requests associated with your project.
+There is a official tutorial for retrieving the API Key:
+https://developer.here.com/tutorials/getting-here-credentials/
+
 ## Weather API
 
 To retrieve weather forecasts in Berlin:
