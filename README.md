@@ -20,7 +20,170 @@ In your PHP project install package via Composer:
 ```sh
 composer require hi-folks/milk-sdk-php
 ```
+## Obtain HERE API Key
+To use HERE Location Services you will need an API key. The API key is a unique identifier that is used to authenticate API requests associated with your project.
+There is a official tutorial for retrieving the API Key:
+https://developer.here.com/tutorials/getting-here-credentials/
 
+## Weather API
+
+To retrieve weather forecasts in Berlin:
+
+```php
+$jsonWeather = Weather::instance()
+    ->setAppIdAppCode($hereAppId, $hereAppCode)
+    ->productForecast7days()
+    ->name("Berlin")
+    ->get();
+var_dump($jsonWeather->getData());
+var_dump($jsonWeather->isError());
+var_dump($jsonWeather->getErrorMessage());
+var_dump($jsonWeather->getDataAsJsonString());
+```
+
+## Routing API (v7)
+To retrieve the fastest route by foot
+
+```php
+$r = (new RoutingV7())
+    ->setApiKey($hereApiKey)
+    ->byFoot()
+    ->typeFastest()
+    ->startingPoint(52.5160, 13.3779)
+    ->destination(52.5185, 13.4283)
+    ->get();
+var_dump($r->getData());
+var_dump($r->isError());
+var_dump($r->getErrorMessage());
+var_dump($r->getDataAsJsonString());
+```
+
+Instead of using get(), you could use _getManeuverInstructions()_ method:
+
+```php
+$r = (new RoutingV7())
+    ->setApiKey($hereApiKey)
+    ->byFoot()
+    ->typeFastest()
+    ->startingPoint(52.5160, 13.3779)
+    ->destination(52.5185, 13.4283)
+    ->getManeuverInstructions();
+
+var_dump($r);
+```
+
+## Routing API (v8)
+To retrieve the fastest route by car
+
+```php
+$routingActions = RoutingV8::instance()
+    ->setApiKey($hereApiKey)
+    ->byCar()
+    ->routingModeFast()
+    ->startingPoint(52.5160, 13.3779)
+    ->destination(52.5185, 13.4283)
+    ->returnInstructions()
+    ->langIta()
+    ->getDefaultActions();
+
+foreach ($routingActions as $key => $action) {
+    echo " - ".$action->instruction . PHP_EOL;
+}
+```
+
+## Geocoding API
+In order to retrieve geo-coordinates (latitude, longitude) of a known address or place.
+
+```php
+use HiFolks\Milk\Here\RestApi\Geocode;
+$hereApiKey = "Your API KEY";
+$r = Geocode::instance()
+    ->setApiKey($hereApiKey)
+    ->country("Italia")
+    ->q("Colosseo")
+    ->langIta()
+    ->get();
+var_dump($r->getData());
+var_dump($r->isError());
+var_dump($r->getErrorMessage());
+var_dump($r->getDataAsJsonString());
+```
+
+## Reverse Geocoding API
+In order to find the nearest address to specific geo-coordinates:
+
+```php
+use HiFolks\Milk\Here\RestApi\ReverseGeocode;
+$hereApiKey = "Your API KEY";
+$r = ReverseGeocode::instance()
+    ->setApiKey($hereApiKey)
+    ->at(41.88946,12.49239)
+    ->limit(5)
+    ->lang("en_US")
+    ->get();
+var_dump($r->getData());
+var_dump($r->isError());
+var_dump($r->getErrorMessage());
+var_dump($r->getDataAsJsonString());
+
+if ($r->isError()) {
+    echo "Error: ". $r->getErrorMessage();
+} else {
+    $items = $r->getData()->items;
+    foreach ($items as $key => $item) {
+        echo " - " .$item->title.
+            " : ( ".$item->position->lat . "," . $item->position->lng .
+            " ) , distance:" . $item->distance . " , type: " . $item->resultType . PHP_EOL;
+    }
+}
+```
+
+## Isoline API
+```php
+use HiFolks\Milk\Here\RestApi\Isoline;
+$hereApiKey = "yourapikey";
+$isoline = Isoline::instance()
+    ->setApiKey($hereApiKey)
+    ->originPoint(41.890251, 12.492373)
+    ->byFoot()
+    ->rangeByTime(600) // 10 minutes
+    ->get();
+
+```
+## Map Image Api
+With MapImage class you can create static image of a map.
+For the map you can define:
+- *center()*: the center of the map;
+- *addPoi()*: add a point in the map;
+- *zoom()*: set the zoom level;
+- *height()*: set the height of image (in pixel);
+- *width()*: set the width of the image (in pixel).
+```php
+use Hifolks\milk\here\RestApi\MapImage;
+$hereApiKey = "yourapikey";
+$imageUrl = MapImage::instance($hereApiKey)
+    ->center(45.548, 11.54947)
+    ->addPoi(45, 12, "ff0000")
+    ->addPoi(45.1, 12.1, "00ff00")
+    ->addPoi(45.2, 12.2, "0000ff", "", "12", "Test 3")
+    ->zoom(12)
+    ->height(2048)
+    ->width(2048 / 1.4)
+    ->getUrl();
+```
+
+You can use also the Geocoding functionality with *centerAddress()* method.
+```php
+$image = MapImage::instance($hereApiKey)
+    ->centerAddress("Venezia")
+    ->zoom(12)
+    ->height(2048)
+    ->width(intval(2048 / 1.4));
+$imageUrl = $image->getUrl();
+```
+
+
+## Use HERE Data Hub
 ### Configuring XYZ HUB
 
 With this SDK you can consume DataHub (XYZ) API.
@@ -198,168 +361,6 @@ To search feature close to latitude=41.890251 and longitude=12.492373 with a rad
 ```php
 $spaceId = "yourspaceid";
 $result = XyzSpaceFeature::instance($xyzToken)->spatial($spaceId,  41.890251, 12.492373,  1000)->get();
-```
-
-## Obtain HERE API Key
-To use HERE Location Services you will need an API key. The API key is a unique identifier that is used to authenticate API requests associated with your project.
-There is a official tutorial for retrieving the API Key:
-https://developer.here.com/tutorials/getting-here-credentials/
-
-## Weather API
-
-To retrieve weather forecasts in Berlin:
-
-```php
-$jsonWeather = Weather::instance()
-    ->setAppIdAppCode($hereAppId, $hereAppCode)
-    ->productForecast7days()
-    ->name("Berlin")
-    ->get();
-var_dump($jsonWeather->getData());
-var_dump($jsonWeather->isError());
-var_dump($jsonWeather->getErrorMessage());
-var_dump($jsonWeather->getDataAsJsonString());
-```
-
-## Routing API (v7)
-To retrieve the fastest route by foot
-
-```php
-$r = (new RoutingV7())
-    ->setApiKey($hereApiKey)
-    ->byFoot()
-    ->typeFastest()
-    ->startingPoint(52.5160, 13.3779)
-    ->destination(52.5185, 13.4283)
-    ->get();
-var_dump($r->getData());
-var_dump($r->isError());
-var_dump($r->getErrorMessage());
-var_dump($r->getDataAsJsonString());
-```
-
-Instead of using get(), you could use _getManeuverInstructions()_ method:
-
-```php
-$r = (new RoutingV7())
-    ->setApiKey($hereApiKey)
-    ->byFoot()
-    ->typeFastest()
-    ->startingPoint(52.5160, 13.3779)
-    ->destination(52.5185, 13.4283)
-    ->getManeuverInstructions();
-
-var_dump($r);
-```
-
-## Routing API (v8)
-To retrieve the fastest route by car
-
-```php
-$routingActions = RoutingV8::instance()
-    ->setApiKey($hereApiKey)
-    ->byCar()
-    ->routingModeFast()
-    ->startingPoint(52.5160, 13.3779)
-    ->destination(52.5185, 13.4283)
-    ->returnInstructions()
-    ->langIta()
-    ->getDefaultActions();
-
-foreach ($routingActions as $key => $action) {
-    echo " - ".$action->instruction . PHP_EOL;
-}
-```
-
-## Geocoding API
-In order to retrieve geo-coordinates (latitude, longitude) of a known address or place.
-
-```php
-use HiFolks\Milk\Here\RestApi\Geocode;
-$hereApiKey = "Your API KEY";
-$r = Geocode::instance()
-    ->setApiKey($hereApiKey)
-    ->country("Italia")
-    ->q("Colosseo")
-    ->langIta()
-    ->get();
-var_dump($r->getData());
-var_dump($r->isError());
-var_dump($r->getErrorMessage());
-var_dump($r->getDataAsJsonString());
-```
-
-## Reverse Geocoding API
-In order to find the nearest address to specific geo-coordinates:
-
-```php
-use HiFolks\Milk\Here\RestApi\ReverseGeocode;
-$hereApiKey = "Your API KEY";
-$r = ReverseGeocode::instance()
-    ->setApiKey($hereApiKey)
-    ->at(41.88946,12.49239)
-    ->limit(5)
-    ->lang("en_US")
-    ->get();
-var_dump($r->getData());
-var_dump($r->isError());
-var_dump($r->getErrorMessage());
-var_dump($r->getDataAsJsonString());
-
-if ($r->isError()) {
-    echo "Error: ". $r->getErrorMessage();
-} else {
-    $items = $r->getData()->items;
-    foreach ($items as $key => $item) {
-        echo " - " .$item->title.
-            " : ( ".$item->position->lat . "," . $item->position->lng .
-            " ) , distance:" . $item->distance . " , type: " . $item->resultType . PHP_EOL;
-    }
-}
-```
-
-## Isoline API
-```php
-use HiFolks\Milk\Here\RestApi\Isoline;
-$hereApiKey = "yourapikey";
-$isoline = Isoline::instance()
-    ->setApiKey($hereApiKey)
-    ->originPoint(41.890251, 12.492373)
-    ->byFoot()
-    ->rangeByTime(600) // 10 minutes
-    ->get();
-
-```
-## Map Image Api
-With MapImage class you can create static image of a map.
-For the map you can define:
-- *center()*: the center of the map;
-- *addPoi()*: add a point in the map;
-- *zoom()*: set the zoom level;
-- *height()*: set the height of image (in pixel);
-- *width()*: set the width of the image (in pixel).
-```php
-use Hifolks\milk\here\RestApi\MapImage;
-$hereApiKey = "yourapikey";
-$imageUrl = MapImage::instance($hereApiKey)
-    ->center(45.548, 11.54947)
-    ->addPoi(45, 12, "ff0000")
-    ->addPoi(45.1, 12.1, "00ff00")
-    ->addPoi(45.2, 12.2, "0000ff", "", "12", "Test 3")
-    ->zoom(12)
-    ->height(2048)
-    ->width(2048 / 1.4)
-    ->getUrl();
-```
-
-You can use also the Geocoding functionality with *centerAddress()* method.
-```php
-$image = MapImage::instance($hereApiKey)
-    ->centerAddress("Venezia")
-    ->zoom(12)
-    ->height(2048)
-    ->width(intval(2048 / 1.4));
-$imageUrl = $image->getUrl();
 ```
 
 
