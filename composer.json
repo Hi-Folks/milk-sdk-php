@@ -1,5 +1,6 @@
 {
     "name": "hi-folks/milk-sdk-php",
+    "version": "0.1.5",
     "description": "Milk SDK PHP is a (fluent) open-source PHP library that makes it easy to integrate your PHP application with location services",
     "keywords": [
         "geolocation",

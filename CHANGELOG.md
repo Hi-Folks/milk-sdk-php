@@ -1,8 +1,14 @@
 # Changelog
 
-## 0.1.5 - WIP
+## 0.1.5 - 2021-10-06
 ### Add
-- HERE Map Api integration. Now you can generate static image for map using 
+- HERE Map Api integration. Now you can generate static image for map using HERE Map Image
+### Hacktoberfest
+- Update some examples;
+- update GitHub Actions workflow;
+- Update CONTRIBUTING.md, thanks to @iridacea
+- Create CODE_OF_CONDUCT.md;
+- Update Isoling.PHP for type declarations, thanks to @KamaZz
 
 ## 0.1.4 - 2021-05-02
 ### Add
