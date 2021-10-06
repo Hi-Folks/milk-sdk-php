@@ -25,14 +25,13 @@ class MapImageTest extends TestCase
             ->height(2048)
             ->width(intval(2048 / 1.4));
         $url =
-            $baseUrlRoute . "?c=45.548,11.54947&w=1462&h=2048&z=12&poix0=45%2C12%3Bff0000%3B%3B%3B%3B&poix1=45.1%2C12.1%3B00ff00%3B%3B%3B%3B&poix2=45.2%2C12.2%3B0000ff%3B%3B12%3BTest+3%3B&apiKey=XYZ";
+            $baseUrlRoute . "?c=45.548,11.54947&w=1462&h=2048&z=12" .
+        "&poix0=45%2C12%3Bff0000%3B%3B%3B%3B&poix1=45.1%2C12.1%3B00ff00%3B%3B%3B%3B" .
+        "&poix2=45.2%2C12.2%3B0000ff%3B%3B12%3BTest+3%3B&apiKey=XYZ";
         $this->assertSame(
             $url,
             $image->getUrl(),
             "Static Image, get URL"
         );
-
     }
-
-
 }
