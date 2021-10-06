@@ -8,7 +8,7 @@
 - update GitHub Actions workflow;
 - Update CONTRIBUTING.md, thanks to @iridacea
 - Create CODE_OF_CONDUCT.md;
-- Update Isoling.PHP for type declarations, thanks to @KamaZz
+- Update Isoline.php for type declarations, thanks to @KamaZz
 - Add Map Image API usage documentation, thanks to @soil-droid
 
 ## 0.1.4 - 2021-05-02
