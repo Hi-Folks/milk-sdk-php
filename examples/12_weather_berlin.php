@@ -22,11 +22,11 @@ $w = Weather::instance();
 
 
 $jsonWeather = $w
-    //->setApiKey($hereApiKey)
-        ->setAppIdAppCode($hereAppId, $hereAppCode)
-                ->productAlerts()
-                ->name("Berlin")
-                ->get();
+    ->setAppIdAppCode($hereAppId, $hereAppCode)
+    ->productForecast7days()
+    //->productAlerts()
+    ->name("Berlin")
+    ->get();
 
 $w->debug();
 
