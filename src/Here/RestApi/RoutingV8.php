@@ -43,6 +43,9 @@ class RoutingV8 extends RestClient
      */
     private array $paramAvoidAreas;
 
+    /**
+     * @var array<string>
+     */
     private array $paramReturn;
 
     private string $paramLang;
@@ -64,6 +67,9 @@ class RoutingV8 extends RestClient
      */
     private string $paramUnits;
 
+    /**
+     * @var array<LatLong>
+     */
     private array $paramVia = [];
 
     private ?LatLong $origin = null;
