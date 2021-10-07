@@ -15,19 +15,19 @@ class RoutingV8 extends RestClient
 {
 
     private const BASE_URL = "https://router.hereapi.com";
+
     /**
-     *  @property string $routingMode Specifies which optimization is applied during route calculation.
+     * Specifies which optimization is applied during route calculation.
      * Enum [ fast | short ]
-     * @var string
      */
-    private $paramRoutingMode;
+    private string $paramRoutingMode;
+
     /**
      *
      * Mode of transport to be used for the calculation of the route.
      * Enum [car | pedestrian | truck | bicycle | scooter ]
-     * @var string
      */
-    private $paramTransportMode;
+    private string $paramTransportMode;
 
     /**
      * Array of features that routes will avoid.
@@ -35,57 +35,39 @@ class RoutingV8 extends RestClient
      *      carShuttleTrain | tunnel | dirtRoad | difficultTurns ]
      * @var array<string>
      */
-    private $paramAvoidFeatures;
+    private array $paramAvoidFeatures;
 
     /**
      * Array of user defined areas that routes will avoid to go through
      * @var array<Bbox>
      */
-    private $paramAvoidAreas;
+    private array $paramAvoidAreas;
+
+    private array $paramReturn;
+
+    private string $paramLang;
 
     /**
-     * @var array<string>
-     */
-    private $paramReturn;
-
-    /**
-     * @var string
-     */
-    private $paramLang;
-
-    /**
-     * @var int
      * Number of alternative routes to return aside from the optimal route.
-     *
      */
-    private $paramAlternatives;
+    private int $paramAlternatives;
 
     /**
      * Departure Time
      * https://www.php.net/manual/en/datetime.formats.php
-     *
-     * @var string
      */
-    private $paramDepartureTime;
+    private string $paramDepartureTime;
 
     /**
-     * @var string
      * Units of measurement used in guidance instructions. The default is metric.
      * Enum: "metric" "imperial"
      */
-    private $paramUnits;
+    private string $paramUnits;
 
-    /**
-     * @var array<LatLong>
-     */
-    private $paramVia = [];
-    /**
-     * @var LatLong|null
-     */
-    private $origin = null;
-    /**
-     * @var string
-     */
+    private array $paramVia = [];
+
+    private ?LatLong $origin = null;
+
     private string $originAddress = "";
 
     private ?LatLong $destination = null;
