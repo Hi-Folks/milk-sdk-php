@@ -15,6 +15,7 @@ use HiFolks\Milk\Here\RestApi\Common\RestConfig;
 class Geocode extends RestClient
 {
     private const BASE_URL = "https://geocode.search.hereapi.com";
+
     /**
      * Specify the center of the search context expressed as coordinates.
      * Format: {latitude},{longitude}
@@ -22,36 +23,28 @@ class Geocode extends RestClient
      * Example: -13.163068,-72.545128 (Machu Picchu Mountain, Peru)
      * @var array<float>
      */
-    private $paramAt;
+    private array $paramAt;
 
     /**
      * Search within a geographic area.
      * Format: countryCode:{countryCode}[,{countryCode}]*
      * Examples: countryCode:USA or countryCode:CAN,MEX,USA
-     * @var string
      */
-    private $paramIn;
+    private string $paramIn;
 
     /**
      * Maximum number of results to be returned.
-     * @var int
      */
-    private $paramLimit;
+    private int $paramLimit;
 
-    /**
-     * @var string
-     */
-    private $paramQ;
+    private string $paramQ;
 
     /**
      * @var array<string>
      */
-    private $paramQq;
+    private array $paramQq;
 
-    /**
-     * @var string
-     */
-    private $paramLang;
+    private string $paramLang;
 
     private const ENV_GEOCODE = "ENV_GEOCODE";
 
