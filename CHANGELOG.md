@@ -1,4 +1,8 @@
 # Changelog
+## 0.1.6 - WIP
+### Hacktoberfest
+- Type casts for RoutingV8, Geocode, Isoline, thanks to @kjellknapen
+- Avoid duplicate code for adding api key in src/Here/RestApi/* files, thanks to @JohnAyling1979
 
 ## 0.1.5 - 2021-10-06
 ### Add
