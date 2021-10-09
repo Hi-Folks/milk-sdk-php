@@ -81,7 +81,21 @@ abstract class RestClient extends ApiClient
         return $this;
     }
 
+    public function makeCredentialQueryParams(string $retString): string
+    {
+        $cred = $this->c->getCredentials();
+        if (! $cred->isBearer()) {
+            if ($cred->getApiKey() !== "") {
+                $retString = $this->addQueryParam($retString, "apiKey", $cred->getApiKey());
+            }
+            if ($cred->getAppId() !== "" && $cred->getAppCode() !== "") {
+                $retString = $this->addQueryParam($retString, "app_id", $cred->getAppId());
+                $retString = $this->addQueryParam($retString, "app_code", $cred->getAppCode());
+            }
+        }
 
+        return $retString;
+    }
 
     /**
      * Show and list in console the current attributes of the object (spaceId, Url, content type etc)
