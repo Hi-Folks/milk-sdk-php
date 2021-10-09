@@ -135,16 +135,7 @@ class ReverseGeocode extends RestClient
         }
 
 
-        $cred = $this->c->getCredentials();
-        if (! $cred->isBearer()) {
-            if ($cred->getApiKey() !== "") {
-                $retString = $this->addQueryParam($retString, "apiKey", $cred->getApiKey());
-            }
-            if ($cred->getAppId() !== "" && $cred->getAppCode() !== "") {
-                $retString = $this->addQueryParam($retString, "app_id", $cred->getAppId());
-                $retString = $this->addQueryParam($retString, "app_code", $cred->getAppCode());
-            }
-        }
+        $retString = $this->makeCredentialQueryParams($retString);
 
         return $retString;
     }
