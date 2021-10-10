@@ -1,8 +1,12 @@
 # Changelog
-## 0.1.6 - WIP
+## 0.1.6 - 2021-10-10
+### Add
+- HERE Discover API integration. Now you can search and validate an address via Discover API
+
 ### Hacktoberfest
 - Type casts for RoutingV8, Geocode, Isoline, thanks to @kjellknapen
 - Avoid duplicate code for adding api key in src/Here/RestApi/* files, thanks to @JohnAyling1979
+- creating a new cover image.
 
 ## 0.1.5 - 2021-10-06
 ### Add

@@ -6,14 +6,15 @@
 ![Milk SDK PHP](milk-sdk-php.png "Milk SDK PHP")
 
 Milk SDK PHP is a (fluent) open-source PHP library that makes it easy to integrate your PHP application with location services like:
-- HERE **Routing** API (**V8** and **V7**);
-- HERE **Weather** Destination API;
-- HERE **Geocoding** API;
-- HERE **Reverse Geocoding** API;
-- HERE **Isoline** API;
-- HERE **Discover** API;
-- HERE **Data Hub** API (was XYZ Api);
-- ... other coming soon
+- [HERE **Routing** API **V8**](#routing-api-v8) and [**V7**](#routing-api-v7): for calculate routes from a starting point to destination;
+- [HERE **Weather** Destination API](#weather-api): for getting weather forecasts;
+- [HERE **Geocoding** API](#geocoding-api): for converting addresses into geographic coordinates;
+- [HERE **Reverse Geocoding** API](#reverse-geocoding-api): for converting coordinates into addresses;
+- [HERE **Isoline** API](#isoline-api): for calculating the area that a driver (or a biker or a walker) can reach within a given time or distance;
+- [HERE **Discover** API](#discover-api): for searching addresses, places and locations;
+- [HERE **Map Image** API](#map-image-api): for creating static image of a map;
+- [HERE **Data Hub** API](#use-here-data-hub);
+- ... other coming soon ...
 
 
 ## Getting Started
