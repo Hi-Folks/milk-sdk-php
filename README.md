@@ -3,6 +3,8 @@
 [![Actions Status](https://github.com/hi-folks/milk-sdk-php/workflows/PHP%20check%20test/badge.svg)](https://github.com/hi-folks/milk-sdk-php/actions)
 [![GitHub license](https://img.shields.io/github/license/hi-folks/milk-sdk-php)](https://github.com/hi-folks/milk-sdk-php/blob/master/LICENSE.md)
 
+![Milk SDK PHP](milk-sdk-php.png "Milk SDK PHP")
+
 Milk SDK PHP is a (fluent) open-source PHP library that makes it easy to integrate your PHP application with location services like:
 - HERE **Data Hub** API (was XYZ Api);
 - HERE **Routing** API (**V8** and **V7**);
