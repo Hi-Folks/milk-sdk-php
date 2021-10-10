@@ -6,12 +6,15 @@
 ![Milk SDK PHP](milk-sdk-php.png "Milk SDK PHP")
 
 Milk SDK PHP is a (fluent) open-source PHP library that makes it easy to integrate your PHP application with location services like:
-- HERE **Data Hub** API (was XYZ Api);
 - HERE **Routing** API (**V8** and **V7**);
 - HERE **Weather** Destination API;
 - HERE **Geocoding** API;
 - HERE **Reverse Geocoding** API;
 - HERE **Isoline** API;
+- HERE **Discover** API;
+- HERE **Data Hub** API (was XYZ Api);
+- ... other coming soon
+
 
 ## Getting Started
 
@@ -184,7 +187,20 @@ $image = MapImage::instance($hereApiKey)
 $imageUrl = $image->getUrl();
 ```
 
-
+## Discover API
+If you need to  search an address or a place and you need to validate it and obtain some other information about the location, you can use *Discover API* endpoint via Discover class.
+```php
+$address = "Basilica San Marco,  venezia";
+// instance the class
+$discover = Discover::instance($hereApiKey)
+// define the address
+    ->q($address)
+// define a center point (for example Rome)
+    ->at(41.902782, 12.496366)
+// define where to limit the search, in this case ITA is the country code for Italy
+    ->inCountry("ITA")
+    ->get();
+```
 ## Use HERE Data Hub
 ### Configuring XYZ HUB
 
