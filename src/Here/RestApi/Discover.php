@@ -106,6 +106,12 @@ class Discover extends RestClient
         return $this;
     }
 
+    public function inItaly(): Discover
+    {
+        $this->inCountry("ITA");
+        $this->at(41.902782, 12.496366);
+        return $this;
+    }
     /**
      * Maximum number of results to be returned.
      */
