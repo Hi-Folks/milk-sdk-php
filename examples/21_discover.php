@@ -25,4 +25,15 @@ foreach ($discover->getDataObject()->items as $item) {
     echo "Normalized and valid address: " . $item->address->label . PHP_EOL;
 }
 
+$address = "Basilica San Marco,  venezia";
+$discover = Discover::instance($hereApiKey)
+    ->q($address)
+    ->inItaly()
+    ->get();
+
+//var_dump($discover->getData());
+echo "I Was searching: " . $address . PHP_EOL;
+foreach ($discover->getDataObject()->items as $item) {
+    echo "Normalized and valid address: " . $item->address->label . PHP_EOL;
+}
 

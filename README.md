@@ -201,6 +201,17 @@ $discover = Discover::instance($hereApiKey)
     ->inCountry("ITA")
     ->get();
 ```
+
+If you need to search an address in Italy, you can use inItaly() method:
+```php
+$address = "Basilica San Marco,  venezia";
+$discover = Discover::instance($hereApiKey)
+    ->q($address)
+    ->inItaly()
+    ->get();
+```
+
+
 ## Use HERE Data Hub
 ### Configuring XYZ HUB
 
