@@ -33,7 +33,19 @@ https://developer.here.com/tutorials/getting-here-credentials/
 
 ## Weather API
 
-To retrieve weather forecasts in Berlin:
+With Weather API class you can get weather forecasts, observation, or alerts for a specific location.
+
+You can call the following methods to get the corresponding weather information:
+
+- *productObservation()*: Get current weather conditions from the eight closest locations to the specified location.
+- *productAlerts()*: Get forecasted weather alerts for the next 24 hours.
+- *productForecast7days()*: Get morning, afternoon, evening and night weather forecasts for the next seven days.
+- *productForecast7daysSimple()*: Get daily weather forecasts for the next seven days.
+- *productForecastAstronomy()*: Get information on when the sun and moon rise and set, and on the phase of the moon for the next seven days.
+- *productForecastHourly()*: Get hourly weather forecasts for the next seven days.
+- *productNwsAlerts()*: Get all active watches and warnings for the US and Canada.
+
+For example, to retrieve weather forecasts in Berlin:
 
 ```php
 $jsonWeather = Weather::instance()
